@@ -6,7 +6,7 @@ import { useOnboarding } from "./onboarding/OnboardingProvider";
 import styles from "./Nav.module.css";
 
 export const GITHUB_URL = "https://github.com/amanibobo/tug-fleet-replay";
-const FEEDBACK_URL = "mailto:feedback@tugboard.example?subject=Tugboard%20feedback";
+const FEEDBACK_URL = "mailto:amanibobo1@gmail.com?subject=Tugboard%20feedback";
 
 export default function Nav() {
   const path = usePathname();
