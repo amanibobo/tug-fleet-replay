@@ -434,6 +434,73 @@ export const FIGURES: Record<string, FigureDef> = {
     },
   },
 
+  "the-whole-system": {
+    height: 560,
+    caption: "Everything in one drawing: sources, the pipeline, the export files, and the static and live paths to the console.",
+    draw: (s) => {
+      // sources
+      s.text(70, 28, "sources", { size: 13, tone: "muted" });
+      s.file(20, 44, 100, 56, { label: "NOAA AIS", size: 11 });
+      s.file(20, 118, 100, 56, { label: "live AIS", size: 11, fill: "green" });
+      s.mono(70, 196, "same schema", { size: 9 });
+      s.arrow(125, 72, 160, 100);
+      s.arrow(125, 146, 160, 118);
+      // pipeline
+      s.text(300, 28, "pipeline (python)", { size: 13, tone: "muted" });
+      s.box(165, 44, 270, 150, { dashed: true, faint: true });
+      s.box(180, 60, 70, 38, { label: "fetch", size: 11 });
+      s.arrow(252, 79, 272, 79);
+      s.box(275, 60, 70, 38, { label: "resample", size: 10 });
+      s.arrow(347, 79, 367, 79);
+      s.box(370, 60, 54, 38, { label: "label", size: 11 });
+      s.bend(397, 100, 397, 120, 372, 134);
+      s.box(300, 118, 70, 38, { label: "simulate", size: 10, fill: "green" });
+      s.arrow(298, 137, 278, 137);
+      s.box(200, 118, 76, 38, { label: "export", size: 11 });
+      s.mono(300, 182, "config.yaml holds every estimate", { size: 9 });
+      // export files
+      s.text(560, 28, "export", { size: 13, tone: "muted" });
+      s.arrow(437, 120, 468, 100);
+      s.file(475, 44, 84, 44, { label: "fleet.json", size: 10 });
+      s.file(475, 96, 84, 44, { label: "tug-days", size: 10 });
+      s.file(475, 148, 84, 44, { label: "summary\n+ sweep", size: 9 });
+      s.file(600, 96, 100, 44, { label: ".rrd per\ntug-day", size: 9, fill: "amber" });
+      s.arrow(437, 137, 468, 152);
+      s.arrow(437, 128, 595, 118);
+      // static path
+      s.text(190, 250, "static path", { size: 13, tone: "muted" });
+      s.box(20, 266, 330, 110, { dashed: true, faint: true });
+      s.box(36, 300, 92, 44, { label: "landing", size: 11 });
+      s.box(140, 300, 92, 44, { label: "console", size: 11, fill: "blue" });
+      s.box(244, 300, 92, 44, { label: "docs", size: 11 });
+      s.mono(185, 364, "Vercel · shipped with the site · no backend", { size: 9 });
+      s.bend(517, 196, 517, 240, 186, 262, { dashed: true });
+      // live path
+      s.text(540, 250, "live path (AWS, one CDK stack)", { size: 13, tone: "muted" });
+      s.box(380, 266, 330, 180, { dashed: true, faint: true });
+      s.box(392, 288, 70, 36, { label: "replayer", size: 10 });
+      s.mono(427, 338, "MQTT · 120x", { size: 9 });
+      s.arrow(464, 306, 486, 306);
+      s.box(488, 288, 64, 36, { label: "IoT Core", size: 10 });
+      s.arrow(554, 306, 576, 306);
+      s.box(578, 288, 60, 36, { label: "Lambda", size: 10, fill: "amber" });
+      s.db(600, 348, 60, 44, { label: "Dynamo", size: 9 });
+      s.db(528, 348, 60, 44, { label: "S3", size: 10 });
+      s.bend(608, 326, 620, 340, 628, 346);
+      s.bend(590, 326, 570, 340, 560, 346);
+      s.arrow(640, 306, 660, 306);
+      s.box(662, 280, 42, 52, { label: "WS\nAPI", size: 9 });
+      s.mono(545, 418, "CloudFront serves tug-days, summary, recordings", { size: 9 });
+      s.bend(560, 196, 560, 240, 420, 284, { dashed: true });
+      // live back to the console
+      s.bend(683, 334, 683, 470, 186, 470);
+      s.arrow(186, 470, 186, 350);
+      s.mono(430, 488, "snapshot + telemetry over the socket", { size: 9 });
+      // inspector
+      s.bend(650, 142, 712, 200, 700, 516);
+      s.mono(560, 536, "recordings open in the Rerun inspector", { size: 9 });
+    },
+  },
   "design-and-getting-it-wrong-a-few-times": {
     height: 230,
     caption: "Four versions of the design, in order.",

@@ -196,3 +196,15 @@ Hand-check the 50 sampled segments against the rules and publish the agreement s
 small classifier on the rule labels plus that sample and compare it to the rules in the Rerun
 validation view. Record a full week of live traffic and rebuild on it. Record the 75-second
 demo. Ship the React Native tug screen from the same JSON.
+
+## The whole system
+
+One picture of everything above. Data comes in from NOAA's archive or the live AIS stream and
+goes through the same pipeline: fetch, resample, label, simulate, export. The export is a
+handful of files: the week as one compact JSON, one file per tug-day, the summary with the
+battery sweep, and one Rerun recording per tug-day. From there it splits. The static path
+ships those files with the site, so the landing, the console and this page need no backend.
+The live path replays the same files as telemetry through AWS IoT Core, a Lambda, DynamoDB
+and S3, and pushes them to the console over a WebSocket, the way a real fleet would arrive.
+
+[diagram: the whole system: sources on the left, the pipeline in the middle, the export files, then two paths to the console, static and live, with the Rerun recordings feeding the inspector.]

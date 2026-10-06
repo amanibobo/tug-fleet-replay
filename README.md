@@ -22,6 +22,8 @@ Live: https://tug-fleet-replay.vercel.app
 
 ## Architecture
 
+![Sources, the pipeline, the export files, and the static and live paths to the console](docs/media/architecture.png)
+
 ```
 NOAA AIS ──▶ fetch_ais ──▶ parquet ──▶ pipeline (label, simulate, sweep) ──▶ fleet.json, tugdays/*.json, summary.json, *.rrd
                                                                                       │
