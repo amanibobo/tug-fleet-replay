@@ -18,7 +18,7 @@ import json
 import os
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -68,7 +68,7 @@ async def record(raw_dir: Path, bbox: dict, seconds: float | None = None, log=pr
                 await ws.send(json.dumps(subscription(key, bbox)))
                 backoff = 1.0
                 async for msg in ws:
-                    d = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+                    d = datetime.now(UTC).strftime("%Y-%m-%d")
                     if d != day or fh is None or fh.closed:
                         if fh and not fh.closed:
                             fh.close()
