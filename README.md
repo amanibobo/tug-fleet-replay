@@ -16,7 +16,7 @@ Live: https://tug-fleet-replay.vercel.app
 4. **Sweep**: repeats the simulation for every battery size from 1,000 to 8,000 kWh and prices charging on a time-of-use tariff, charge-on-arrival vs scheduled.
 5. **Export**: writes `fleet.json`, one JSON per tug-day, `summary.json`, and one Rerun recording per tug-day.
 6. **Replay**: publishes each tug's telemetry on a sped-up clock to AWS IoT Core (or a local WebSocket stand-in, or a live Rerun viewer). Replayed data enters through the same path a real boat's would, so swapping in a live source changes one component.
-7. **Product**: a black landing page at `/` (headline, demo placeholder, one paragraph, four schematic diagrams), a `/docs` page that explains how each piece was built with Excalidraw-style figures (rendered from `docs/BUILD_LOG.md`), the dark fleet console at `/app` (MapLibre map with boat-silhouette markers, battery bars, replay clock, battery-size slider, getting-started checklist and a guided tour), and tug-day pages at `/app/tugs/[id]` with a timeline, a charging schedule and an embedded Rerun inspector.
+7. **Product**: a black landing page at `/` (headline, demo placeholder, one paragraph, four schematic diagrams), an alternate paper landing at `/paper` (a side-profile tug drawn as animated ink dashes over a Paper shader grain), a `/docs` page that explains how each piece was built with Excalidraw-style figures (rendered from `docs/BUILD_LOG.md`), the dark fleet console at `/app` (MapLibre map with boat-silhouette markers, battery bars, replay clock, battery-size slider, getting-started checklist and a guided tour), and tug-day pages at `/app/tugs/[id]` with a timeline, a charging schedule and an embedded Rerun inspector.
 
 ## Architecture
 

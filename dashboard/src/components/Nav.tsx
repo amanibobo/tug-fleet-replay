@@ -16,6 +16,7 @@ export default function Nav() {
   const onboarding = useOnboarding();
   const done = Object.values(onboarding.state.steps).filter(Boolean).length;
   const total = Object.keys(onboarding.state.steps).length;
+  if (path.startsWith("/paper")) return null; // the paper landing draws its own corners
 
   if (landing) {
     return (
