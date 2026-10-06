@@ -7,14 +7,16 @@ interface Props {
   unit?: string;
   hint?: ReactNode;
   className?: string;
+  /** Value size: 16px in the rail (default), 20px on the tug day page. */
+  size?: "md" | "lg";
 }
 
-/** Label 13px ink-3 above, value 26px/600 below, unit 13px ink-3. */
-export default function Stat({ label, value, unit, hint, className }: Props) {
+/** Label 11px fg-3 above, value 16px/500 below, unit 12px fg-3. */
+export default function Stat({ label, value, unit, hint, className, size = "md" }: Props) {
   return (
     <div className={`${styles.stat} ${className ?? ""}`}>
-      {label ? <span className="label">{label}</span> : null}
-      <div className={`stat ${styles.value}`}>
+      {label ? <span className={styles.label}>{label}</span> : null}
+      <div className={`stat ${styles.value} ${size === "lg" ? styles.lg : ""}`}>
         {value}
         {unit ? <span className={styles.unit}>{unit}</span> : null}
       </div>

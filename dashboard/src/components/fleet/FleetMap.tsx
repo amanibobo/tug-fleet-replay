@@ -4,14 +4,29 @@ import { useEffect, useRef } from "react";
 import maplibregl, { type Map as MlMap, type Marker, type GeoJSONSource } from "maplibre-gl";
 import type { Feature, FeatureCollection, LineString } from "geojson";
 import { tugMarkup } from "@/components/TugIcon";
-import { ACTIVITY_HEX } from "@/lib/format";
+import { ACTIVITY_HEX, GENERATOR_HEX } from "@/lib/format";
 import type { LngLat, Telemetry } from "@/lib/types";
 import { prefersReducedMotion } from "@/lib/useAnimatedNumber";
 import styles from "./FleetMap.module.css";
 
-/** CARTO Positron, no key, not tinted. */
-export const MAP_STYLE = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
+/** CARTO Dark Matter, no key. Labels are dimmed in `dimLabels` once the style loads. */
+export const MAP_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 const CENTER: LngLat = [-118.232, 33.738];
+
+/** Quiet the basemap: labels in fg-3 with the page color as halo, sentence case, boundaries faded. */
+export function dimLabels(map: MlMap) {
+  for (const layer of map.getStyle().layers ?? []) {
+    if (layer.type === "symbol") {
+      map.setLayoutProperty(layer.id, "text-transform", "none");
+      map.setPaintProperty(layer.id, "text-color", "#6e6e75");
+      map.setPaintProperty(layer.id, "text-halo-color", "#0a0a0a");
+      map.setPaintProperty(layer.id, "text-halo-width", 1);
+      map.setPaintProperty(layer.id, "text-opacity", 0.8);
+    } else if (layer.type === "line" && /boundary|admin/.test(layer.id)) {
+      map.setPaintProperty(layer.id, "line-opacity", 0.35);
+    }
+  }
+}
 
 interface Props {
   tugs: Telemetry[];
@@ -24,7 +39,7 @@ interface MarkerEntry {
   /** The boat model, aligned to the map so it turns with it. */
   boat: Marker;
   boatEl: HTMLDivElement;
-  /** Battery pill and name label, aligned to the viewport so they stay readable. */
+  /** Battery bar and name chip, aligned to the viewport so they stay readable. */
   tag: Marker;
   tagEl: HTMLDivElement;
   fill: HTMLDivElement;
@@ -127,6 +142,7 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
     mapRef.current = map;
 
     map.on("load", () => {
+      dimLabels(map);
       map.addSource("trails", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       map.addLayer({
         id: "trails",
@@ -135,7 +151,7 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": ["get", "color"],
-          "line-opacity": 0.8,
+          "line-opacity": 0.75,
           "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1.4, 14, 3],
         },
       });
@@ -209,7 +225,7 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
           if (!pts || pts.length < 2) continue;
           features.push({
             type: "Feature",
-            properties: { color: tug.generator_on ? "#ef4444" : ACTIVITY_HEX[tug.activity], id: tug.tug_id },
+            properties: { color: tug.generator_on ? GENERATOR_HEX : ACTIVITY_HEX[tug.activity], id: tug.tug_id },
             geometry: { type: "LineString", coordinates: pts },
           });
         }

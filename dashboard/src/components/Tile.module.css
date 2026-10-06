@@ -1,12 +1,9 @@
 .tile {
-  background: var(--tile);
-  border-radius: var(--r-tile);
-  color: var(--ink);
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  border-radius: var(--d-radius);
+  color: var(--d-fg);
   min-width: 0;
-}
-
-.white {
-  background: #ffffff;
 }
 
 .pad_none {
@@ -14,11 +11,11 @@
 }
 
 .pad_sm {
-  padding: 14px 16px;
+  padding: 12px 16px;
 }
 
 .pad_md {
-  padding: 20px;
+  padding: 16px;
 }
 
 .head {
@@ -26,12 +23,14 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  min-height: 24px;
-  margin-bottom: 14px;
+  min-height: 20px;
+  margin-bottom: 12px;
 }
 
 .pad_none .head {
-  padding: 20px 20px 0;
+  padding: 12px 16px;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--d-line);
 }
 
 .note {

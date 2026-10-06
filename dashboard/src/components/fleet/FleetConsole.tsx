@@ -2,12 +2,10 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useMemo, useState } from "react";
-import FixtureBadge from "@/components/FixtureBadge";
 import Footer from "@/components/Footer";
 import Checklist from "@/components/onboarding/Checklist";
 import { useOnboarding } from "@/components/onboarding/OnboardingProvider";
 import Tour from "@/components/onboarding/Tour";
-import { dateRange } from "@/lib/format";
 import { useFleet } from "@/lib/useFleet";
 import { useSummary } from "@/lib/useSummary";
 import ClockPanel from "./ClockPanel";
@@ -50,27 +48,8 @@ export default function FleetConsole() {
   );
 
   return (
-    <main className={styles.root}>
+    <main className={styles.root} data-console>
       <aside className={styles.rail} aria-label="Fleet console">
-        <div className={styles.railHead}>
-          <div className={styles.titleRow}>
-            <h1 className={styles.h1}>Fleet replay</h1>
-            {fleet.fixture ? <FixtureBadge /> : null}
-          </div>
-          <p className={styles.sub}>
-            {fleet.dataset ? (
-              <>
-                Ports of Los Angeles and Long Beach, {dateRange(fleet.dataset.start, fleet.dataset.end)},{" "}
-                {fleet.dataset.source ?? "NOAA AIS"}
-              </>
-            ) : fleet.status === "error" ? (
-              "Fleet data unavailable."
-            ) : (
-              "Loading fleet"
-            )}
-          </p>
-        </div>
-
         <ClockPanel
           clock={fleet.clock}
           playing={fleet.playing}
@@ -85,7 +64,15 @@ export default function FleetConsole() {
 
         <HeadlinePanel summary={summary} onSlide={() => onboarding.complete("slider")} />
 
-        <FleetList tugs={fleet.tugs} selectedId={selectedId} onSelect={onSelect} loading={fleet.status === "loading"} clock={fleet.clock} />
+        <FleetList
+          tugs={fleet.tugs}
+          selectedId={selectedId}
+          onSelect={onSelect}
+          loading={fleet.status === "loading"}
+          error={fleet.status === "error"}
+          clock={fleet.clock}
+          fixture={fleet.fixture}
+        />
 
         <Footer className={styles.footer} dataset={fleet.dataset} />
       </aside>

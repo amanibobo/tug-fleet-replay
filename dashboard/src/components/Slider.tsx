@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, type ChangeEvent, type CSSProperties } from "react";
+import { useId, type ChangeEvent, type CSSProperties, type ReactNode } from "react";
 import styles from "./Slider.module.css";
 
 interface Props {
@@ -9,23 +9,28 @@ interface Props {
   max: number;
   step: number;
   onChange: (v: number) => void;
-  /** Visible label above the track. Omit it and pass `ariaLabel` for a bare slider. */
+  /** Visible label on the left of the row above the track. Omit it and pass `ariaLabel` for a bare slider. */
   label?: string;
+  /** Right side of the label row, usually the value in mono. */
+  trailing?: ReactNode;
   ariaLabel?: string;
   className?: string;
   disabled?: boolean;
 }
 
-/** 4px pill track, filled part in ink, 18px white thumb with the soft shadow. */
-export default function Slider({ value, min, max, step, onChange, label, ariaLabel, className, disabled }: Props) {
+/** 2px track, played part in fg, 12px fg thumb. */
+export default function Slider({ value, min, max, step, onChange, label, trailing, ariaLabel, className, disabled }: Props) {
   const id = useId();
   const pct = max > min ? ((value - min) / (max - min)) * 100 : 0;
   return (
     <div className={`${styles.wrap} ${className ?? ""}`} data-disabled={disabled || undefined}>
       {label ? (
-        <label htmlFor={id} className={`label ${styles.label}`}>
-          {label}
-        </label>
+        <div className={styles.labelRow}>
+          <label htmlFor={id} className={`label ${styles.label}`}>
+            {label}
+          </label>
+          {trailing != null ? <span className={`mono ${styles.trailing}`}>{trailing}</span> : null}
+        </div>
       ) : null}
       <div className={styles.trackWrap} style={{ "--pct": `${pct}%` } as CSSProperties}>
         <div className={styles.track} aria-hidden />

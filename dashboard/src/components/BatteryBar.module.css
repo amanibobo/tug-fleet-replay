@@ -1,20 +1,16 @@
 .track {
   position: relative;
-  background: #ffffff;
-  border-radius: var(--r-pill);
+  background: var(--d-line-2);
+  border-radius: 1px;
   overflow: hidden;
   flex: none;
-}
-
-.track[data-track="tile"] {
-  background: var(--tile);
 }
 
 .fill {
   position: absolute;
   inset: 0 auto 0 0;
-  border-radius: var(--r-pill);
+  border-radius: 1px;
   transition:
-    width var(--t) var(--ease),
-    background var(--t) var(--ease);
+    width var(--d-t) var(--d-ease),
+    background var(--d-t) var(--d-ease);
 }

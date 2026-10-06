@@ -5,16 +5,14 @@
 
 .body {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 200px;
+  grid-template-columns: minmax(0, 1fr) 180px;
   gap: 20px;
   align-items: start;
 }
 
 .strip {
   min-width: 0;
-  padding: 14px 12px 10px;
-  background: #ffffff;
-  border-radius: var(--r-card);
+  padding: 8px 0 4px;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -28,31 +26,32 @@
 .rowLabel,
 .axisLabel {
   font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  fill: var(--ink-3);
+  font-size: 11px;
+  font-weight: 400;
+  fill: var(--d-fg-3);
   font-variant-numeric: tabular-nums;
 }
 
 .baseline,
 .tick {
-  stroke: var(--divider);
+  stroke: var(--d-line-2);
   stroke-width: 1;
 }
 
 .bar {
-  fill: var(--green);
+  fill: var(--d-green);
 }
 
 .readout {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 6px;
+  gap: 14px;
+  padding: 8px 0 0 20px;
+  border-left: 1px solid var(--d-line);
 }
 
 .footnote {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 @media (max-width: 760px) {
@@ -64,6 +63,8 @@
   .readout {
     flex-direction: row;
     gap: 32px;
-    padding-top: 0;
+    padding: 12px 0 0;
+    border-left: none;
+    border-top: 1px solid var(--d-line);
   }
 }

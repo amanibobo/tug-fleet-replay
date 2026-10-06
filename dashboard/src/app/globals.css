@@ -1,52 +1,44 @@
 :root {
-  --bg: #ffffff;
-  --tile: #f4f4f5;
-  --tile-2: #e9e9ec;
-  --divider: #ececef;
-  --ink: #0a0a0b;
-  --ink-2: #52525b;
-  --ink-3: #8a8a93;
-
-  /* accents: vivid, used on glyphs, chips, markers, series */
-  --blue: #3b82f6;
-  --blue-soft: #e8f0fe;
-  --orange: #f97316;
-  --orange-soft: #fff1e6;
-  --green: #22c55e;
-  --green-soft: #e7f8ee;
-  --red: #ef4444;
-  --red-soft: #fdecec;
-  --purple: #8b5cf6;
-  --purple-soft: #f1ebfe;
-  --amber: #f59e0b;
-  --amber-soft: #fff6e0;
-  --teal: #14b8a6;
-  --teal-soft: #e3f7f4;
-  --navy: #0b1220;
-
-  --act-transit: var(--blue);
-  --act-assist: var(--orange);
-  --act-idle: #a1a1aa;
-  --act-charging: var(--green);
-  --status-generator: var(--red);
+  /* ---- v7 dark system (shared by console, landing, docs). See docs/DESIGN.md "v7". ---- */
+  --d-bg: #0a0a0a;
+  --d-bg-landing: #000000;
+  --d-rail: #0f0f10;
+  --d-surface: #141415;
+  --d-surface-2: #1b1b1d;
+  --d-line: rgba(255, 255, 255, 0.08);
+  --d-line-2: rgba(255, 255, 255, 0.16);
+  --d-fg: #f2f2f2;
+  --d-fg-2: #a3a3a8;
+  --d-fg-3: #6e6e75;
+  --d-green: #43ce95;
+  --d-blue: #78b1f5;
+  --d-amber: #efba53;
+  --d-red: #f07878;
+  --d-orange: #f59a55;
+  --d-act-transit: var(--d-blue);
+  --d-act-assist: var(--d-orange);
+  --d-act-idle: #5c5c63;
+  --d-act-charging: var(--d-green);
+  --d-radius: 8px;
+  --d-radius-sm: 4px;
+  --d-radius-pill: 9999px;
+  --d-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --d-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --d-t: 160ms;
 
   /* Geist throughout; swap the family here. */
   --font-sans: var(--font-geist), "Geist", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --r-tile: 18px;
-  --r-card: 14px;
-  --r-ctrl: 10px;
-  --r-pill: 9999px;
-  --shadow-float: 0 8px 30px rgba(0, 0, 0, 0.08);
-  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --t: 200ms;
+  /* Motion aliases kept for the landing and the CSS modules. */
+  --ease: var(--d-ease);
+  --t: var(--d-t);
   --t-slow: 400ms;
 
-  --rail-w: 400px;
-  --nav-h: 56px;
+  --rail-w: 340px;
+  --nav-h: 48px;
   --gutter: 20px;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 *,
@@ -64,10 +56,10 @@ body {
 }
 
 html {
-  background: var(--bg);
-  color: var(--ink);
+  background: var(--d-bg);
+  color: var(--d-fg);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.5;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -75,14 +67,13 @@ html {
 
 body {
   min-height: 100dvh;
-  background: var(--bg);
+  background: var(--d-bg);
 }
 
-/* The landing is the one black page; paint the document behind it too so overscroll stays black. */
+/* The landing and docs sit on pure black; paint the document behind them too so overscroll stays black. */
 html:has(main[data-landing]),
 html:has(main[data-landing]) body {
-  background: #000000;
-  color-scheme: dark;
+  background: var(--d-bg-landing);
 }
 
 main[data-landing] :focus-visible {
@@ -108,11 +99,11 @@ p {
 }
 
 ::selection {
-  background: var(--blue-soft);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 :focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--d-fg);
   outline-offset: 2px;
 }
 
@@ -122,72 +113,72 @@ p {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.02;
-  color: var(--ink);
+  color: var(--d-fg);
 }
 
 .headline {
-  font-size: clamp(64px, 6vw, 80px);
+  font-size: 56px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1;
-  color: var(--ink);
+  color: var(--d-fg);
   font-variant-numeric: tabular-nums;
 }
 
 .title {
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  color: var(--ink);
-}
-
-.section {
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  color: var(--ink);
+  color: var(--d-fg);
+}
+
+.section {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--d-fg);
 }
 
 .heading {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0;
   line-height: 1.3;
-  color: var(--ink);
+  color: var(--d-fg);
 }
 
 .body {
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.55;
-  color: var(--ink);
+  color: var(--d-fg);
 }
 
 .secondary {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
-  color: var(--ink-2);
+  color: var(--d-fg-2);
 }
 
 .label {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 1.3;
-  color: var(--ink-3);
+  color: var(--d-fg-3);
 }
 
 .footnote {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.5;
-  color: var(--ink-3);
+  color: var(--d-fg-3);
 }
 
 .mono {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 1;
@@ -195,11 +186,11 @@ p {
 }
 
 .stat {
-  font-size: 26px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   line-height: 1;
-  color: var(--ink);
+  color: var(--d-fg);
   font-variant-numeric: tabular-nums;
 }
 
@@ -208,117 +199,110 @@ p {
 }
 
 .muted {
-  color: var(--ink-2);
+  color: var(--d-fg-2);
 }
 
-/* ---- buttons: pills ---- */
+/* ---- buttons: flat, 28px, small radius ---- */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 36px;
-  padding: 0 16px;
-  border-radius: var(--r-pill);
-  font-size: 14px;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: var(--d-radius-sm);
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0;
-  border: 1px solid var(--ink);
-  background: var(--ink);
-  color: #ffffff;
+  border: 1px solid var(--d-fg);
+  background: var(--d-fg);
+  color: #0a0a0a;
   white-space: nowrap;
   transition:
-    background var(--t) var(--ease),
-    border-color var(--t) var(--ease),
-    color var(--t) var(--ease),
-    opacity var(--t) var(--ease),
-    transform var(--t) var(--ease);
+    background var(--d-t) var(--d-ease),
+    border-color var(--d-t) var(--d-ease),
+    color var(--d-t) var(--d-ease),
+    opacity var(--d-t) var(--d-ease);
 }
 
 .btn:hover {
-  background: #27272a;
-  border-color: #27272a;
-}
-
-.btn:active {
-  transform: scale(0.98);
+  background: #ffffff;
+  border-color: #ffffff;
 }
 
 .btn:disabled {
   opacity: 0.4;
   cursor: default;
-  transform: none;
 }
 
 .btnSecondary {
-  background: #ffffff;
-  color: var(--ink);
-  border-color: var(--divider);
+  background: var(--d-surface);
+  color: var(--d-fg);
+  border-color: var(--d-line-2);
 }
 
 .btnSecondary:hover {
-  background: var(--tile);
-  border-color: var(--divider);
+  background: var(--d-surface-2);
+  border-color: var(--d-line-2);
 }
 
 .btnGhost {
   background: transparent;
-  color: var(--ink-2);
+  color: var(--d-fg-2);
   border-color: transparent;
 }
 
 .btnGhost:hover {
-  background: var(--tile);
-  color: var(--ink);
+  background: var(--d-surface-2);
+  color: var(--d-fg);
   border-color: transparent;
 }
 
 .btnIcon {
-  width: 36px;
+  width: 28px;
   padding: 0;
 }
 
 .btnSmall {
-  height: 30px;
-  padding: 0 12px;
-  font-size: 13px;
+  height: 24px;
+  padding: 0 8px;
+  font-size: 12px;
 }
 
-/* ---- segmented control: a toggle ---- */
+/* ---- segmented control: a toggle on a surface-2 track ---- */
 .segmented {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  height: 36px;
-  padding: 3px;
-  border-radius: var(--r-pill);
-  background: var(--tile);
+  gap: 1px;
+  height: 24px;
+  padding: 2px;
+  border-radius: var(--d-radius-sm);
+  background: var(--d-surface-2);
 }
 
 .segmented > button {
   height: 100%;
-  padding: 0 12px;
+  padding: 0 7px;
   border: none;
-  border-radius: var(--r-pill);
+  border-radius: 3px;
   background: transparent;
-  color: var(--ink-2);
-  font-size: 13px;
+  color: var(--d-fg-2);
+  font-size: 11px;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
+  line-height: 1;
   transition:
-    background var(--t) var(--ease),
-    color var(--t) var(--ease),
-    box-shadow var(--t) var(--ease);
+    background var(--d-t) var(--d-ease),
+    color var(--d-t) var(--d-ease);
 }
 
 .segmented > button:hover:not(:disabled) {
-  color: var(--ink);
+  color: var(--d-fg);
 }
 
 .segmented > button[aria-checked="true"] {
-  background: #ffffff;
-  color: var(--ink);
-  box-shadow: var(--shadow-float);
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--d-fg);
 }
 
 .segmented > button:disabled {
@@ -330,60 +314,52 @@ p {
   outline-offset: -2px;
 }
 
-/* ---- chips ---- */
+/* ---- chips: bordered, no fill ---- */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 24px;
-  padding: 0 10px;
-  border-radius: var(--r-pill);
-  font-size: 12px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: var(--d-radius-sm);
+  border: 1px solid var(--d-line-2);
+  font-size: 11px;
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
-  background: var(--tile-2);
-  color: var(--ink-2);
+  background: transparent;
+  color: var(--d-fg-2);
 }
 
 .chipBlue {
-  background: var(--blue-soft);
-  color: var(--blue);
+  color: var(--d-blue);
+  border-color: color-mix(in srgb, var(--d-blue) 40%, transparent);
 }
 
 .chipGreen {
-  background: var(--green-soft);
-  color: var(--green);
+  color: var(--d-green);
+  border-color: color-mix(in srgb, var(--d-green) 40%, transparent);
 }
 
 .chipOrange {
-  background: var(--orange-soft);
-  color: var(--orange);
+  color: var(--d-orange);
+  border-color: color-mix(in srgb, var(--d-orange) 40%, transparent);
 }
 
 .chipRed {
-  background: var(--red-soft);
-  color: var(--red);
-}
-
-.chipPurple {
-  background: var(--purple-soft);
-  color: var(--purple);
+  color: var(--d-red);
+  border-color: color-mix(in srgb, var(--d-red) 40%, transparent);
 }
 
 .chipAmber {
-  background: var(--amber-soft);
-  color: var(--amber);
-}
-
-.chipTeal {
-  background: var(--teal-soft);
-  color: var(--teal);
+  color: var(--d-amber);
+  border-color: color-mix(in srgb, var(--d-amber) 40%, transparent);
 }
 
 .chipInk {
-  background: var(--ink);
-  color: #ffffff;
+  background: var(--d-fg);
+  border-color: var(--d-fg);
+  color: #0a0a0a;
 }
 
 /* ---- page scaffolding ---- */
@@ -394,27 +370,34 @@ p {
 }
 
 .footer {
-  color: var(--ink-3);
-  font-size: 13px;
+  color: var(--d-fg-3);
+  font-size: 11px;
   line-height: 1.5;
 }
 
 /* ---- maplibre overrides ---- */
 .maplibregl-ctrl-attrib {
-  background: rgba(255, 255, 255, 0.9) !important;
-  color: var(--ink-3) !important;
+  background: var(--d-surface) !important;
+  color: var(--d-fg-3) !important;
   font-size: 10px !important;
   font-family: var(--font-sans) !important;
-  border-radius: var(--r-pill) !important;
-  padding: 2px 8px !important;
+  border-radius: var(--d-radius-sm) !important;
+  border: 1px solid var(--d-line) !important;
+  padding: 1px 6px !important;
 }
 
 .maplibregl-ctrl-attrib a {
-  color: var(--ink-2) !important;
+  color: var(--d-fg-2) !important;
+}
+
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  background: var(--d-surface) !important;
+  min-height: 20px !important;
 }
 
 .maplibregl-ctrl-attrib-button {
-  border-radius: 50% !important;
+  border-radius: var(--d-radius-sm) !important;
+  filter: invert(1) opacity(0.5);
 }
 
 .maplibregl-ctrl-bottom-right {
@@ -428,85 +411,90 @@ p {
 /* ---- driver.js tour popover ---- */
 .driver-popover.tb-popover {
   font-family: var(--font-sans);
-  color: var(--ink);
-  background: #ffffff;
-  border-radius: var(--r-card);
-  box-shadow: var(--shadow-float);
-  padding: 18px 18px 16px;
-  min-width: 260px;
-  max-width: 320px;
+  color: var(--d-fg);
+  background: var(--d-surface);
+  border: 1px solid var(--d-line-2);
+  border-radius: var(--d-radius);
+  box-shadow: var(--d-shadow);
+  padding: 14px 14px 12px;
+  min-width: 240px;
+  max-width: 300px;
 }
 
 .tb-popover .driver-popover-title {
-  font-size: 15px;
+  font-family: var(--font-sans);
+  font-size: 13px;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--ink);
+  color: var(--d-fg);
   padding-right: 24px;
 }
 
 .tb-popover .driver-popover-description {
-  margin-top: 6px;
-  font-size: 14px;
+  font-family: var(--font-sans);
+  margin-top: 4px;
+  font-size: 12px;
   line-height: 1.5;
-  color: var(--ink-2);
+  color: var(--d-fg-2);
 }
 
 .tb-popover .driver-popover-footer {
-  margin-top: 16px;
+  margin-top: 14px;
   gap: 10px;
 }
 
 .tb-popover .driver-popover-progress-text {
-  font-size: 13px;
-  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--d-fg-3);
 }
 
 .tb-popover .driver-popover-close-btn {
-  color: var(--ink-3);
-  font-size: 20px;
-  width: 32px;
-  height: 32px;
-  top: 8px;
-  right: 8px;
-  border-radius: 50%;
+  color: var(--d-fg-3);
+  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  top: 6px;
+  right: 6px;
+  border-radius: var(--d-radius-sm);
 }
 
 .tb-popover .driver-popover-close-btn:hover {
-  color: var(--ink);
-  background: var(--tile);
+  color: var(--d-fg);
+  background: var(--d-surface-2);
 }
 
 .tb-popover .driver-popover-footer-btn {
   font-family: var(--font-sans);
-  height: 32px;
-  padding: 0 14px;
-  border-radius: var(--r-pill);
-  font-size: 13px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--d-radius-sm);
+  font-size: 12px;
   font-weight: 500;
   line-height: 1;
   text-shadow: none;
-  border: 1px solid var(--divider);
-  background: #ffffff;
-  color: var(--ink);
+  border: 1px solid var(--d-line-2);
+  background: transparent;
+  color: var(--d-fg-2);
 }
 
 .tb-popover .driver-popover-next-btn {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: #ffffff;
+  background: var(--d-fg);
+  border-color: var(--d-fg);
+  color: #0a0a0a;
 }
 
 .tb-popover .driver-popover-next-btn:hover,
 .tb-popover .driver-popover-next-btn:focus {
-  background: #27272a;
-  border-color: #27272a;
-  color: #ffffff;
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #0a0a0a;
 }
 
 .tb-popover .driver-popover-prev-btn:hover,
 .tb-popover .driver-popover-prev-btn:focus {
-  background: var(--tile);
+  background: var(--d-surface-2);
+  color: var(--d-fg);
 }
 
 .tb-popover .driver-popover-navigation-btns button + button {
@@ -515,6 +503,31 @@ p {
 
 .tb-popover .driver-popover-arrow {
   border-width: 6px;
+  border-color: var(--d-surface);
+}
+
+.tb-popover .driver-popover-arrow-side-left {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+}
+
+.tb-popover .driver-popover-arrow-side-right {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.tb-popover .driver-popover-arrow-side-top {
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.tb-popover .driver-popover-arrow-side-bottom {
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {

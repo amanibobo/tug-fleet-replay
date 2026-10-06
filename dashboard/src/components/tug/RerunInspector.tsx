@@ -109,7 +109,7 @@ export default function RerunInspector({ open, onClose, recordingUrl, title }: P
                     width="100%"
                     height="100%"
                     hide_welcome_screen
-                    theme="light"
+                    theme="dark"
                     onReady={() => setReady(true)}
                   />
                 </div>

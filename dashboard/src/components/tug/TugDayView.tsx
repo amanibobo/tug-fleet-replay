@@ -125,11 +125,11 @@ export default function TugDayView({ id }: { id: string }) {
           </button>
         </div>
         <div className={styles.statRow}>
-          <Stat label="Energy" value={totals ? fmtInt(totals.energy_kwh) : "0"} unit="kWh" />
-          <Stat label="Generator" value={totals ? fmtInt(totals.generator_kwh) : "0"} unit="kWh" />
-          <Stat label="Charged" value={totals ? fmtInt(totals.charged_kwh) : "0"} unit="kWh" />
-          <Stat label="Minimum charge" value={totals ? fmtPct(totals.min_soc) : "0%"} />
-          <Stat label="Jobs" value={day ? fmtInt(day.jobs.length) : "0"} />
+          <Stat size="lg" className={styles.statCell} label="Energy" value={totals ? fmtInt(totals.energy_kwh) : "0"} unit="kWh" />
+          <Stat size="lg" className={styles.statCell} label="Generator" value={totals ? fmtInt(totals.generator_kwh) : "0"} unit="kWh" />
+          <Stat size="lg" className={styles.statCell} label="Charged" value={totals ? fmtInt(totals.charged_kwh) : "0"} unit="kWh" />
+          <Stat size="lg" className={styles.statCell} label="Minimum charge" value={totals ? fmtPct(totals.min_soc) : "0%"} />
+          <Stat size="lg" className={styles.statCell} label="Jobs" value={day ? fmtInt(day.jobs.length) : "0"} />
         </div>
         <Footnote />
       </Tile>
@@ -140,11 +140,11 @@ export default function TugDayView({ id }: { id: string }) {
         title="Battery and activity"
         note={
           <span className={styles.legend} aria-hidden>
-            <LegendItem color="var(--act-transit)" label="Transit" />
-            <LegendItem color="var(--act-assist)" label="Assist" />
-            <LegendItem color="var(--act-idle)" label="Idle" />
-            <LegendItem color="var(--act-charging)" label="Charging" />
-            <LegendItem color="var(--red)" label="Generator" />
+            <LegendItem color="var(--d-act-transit)" label="Transit" />
+            <LegendItem color="var(--d-act-assist)" label="Assist" />
+            <LegendItem color="var(--d-act-idle)" label="Idle" />
+            <LegendItem color="var(--d-act-charging)" label="Charging" />
+            <LegendItem color="var(--d-red)" label="Generator" />
           </span>
         }
       >
@@ -200,7 +200,7 @@ function LegendItem({ color, label }: { color: string; label: string }) {
 function ChevronIcon({ dir }: { dir: "left" | "right" }) {
   return (
     <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden style={{ transform: dir === "left" ? "scaleX(-1)" : undefined }}>
-      <path d="M4 1.5L8.5 6 4 10.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <path d="M4 1.5L8.5 6 4 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
     </svg>
   );
 }

@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 import Slider from "@/components/Slider";
-import Tile from "@/components/Tile";
 import { DAY_MS, hhmmss, isoDate, prettyDate } from "@/lib/format";
 import { SPEEDS, type FleetState } from "@/lib/useFleet";
 import styles from "./ClockPanel.module.css";
 
 type Props = Pick<FleetState, "clock" | "playing" | "speed" | "setPlaying" | "setSpeed" | "seek" | "range" | "controllable" | "status">;
 
+/** Transport row (play, clock, speed) over a 2px week scrubber with day ticks. */
 export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed, seek, range, controllable, status }: Props) {
   const days = useMemo(() => {
     if (!range) return [];
@@ -20,35 +20,44 @@ export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed
   }, [range]);
 
   return (
-    <Tile className={styles.panel} aria-label="Replay clock" data-tour="clock">
-      <div className={styles.top}>
-        <div className={styles.clock} aria-live="off">
-          <span className={styles.date}>{clock != null ? prettyDate(clock) : "Waiting for data"}</span>
-          <span className={styles.timeRow}>
-            <span className={`mono ${styles.time}`}>{clock != null ? hhmmss(clock) : "--:--:--"}</span>
-            <span className={styles.tz}>UTC</span>
-          </span>
-        </div>
-      </div>
-
-      <div className={styles.controls}>
+    <section className={styles.panel} aria-label="Replay clock" data-tour="clock">
+      <div className={styles.row}>
         <button
           type="button"
-          className="btn btnIcon"
+          className={styles.play}
           onClick={() => setPlaying(!playing)}
           disabled={!controllable || status !== "ready"}
           aria-label={playing ? "Pause replay" : "Play replay"}
         >
           {playing ? <PauseIcon /> : <PlayIcon />}
         </button>
-        <div className="segmented" role="radiogroup" aria-label="Replay speed">
-          {SPEEDS.map((s) => (
-            <button key={s} type="button" role="radio" aria-checked={speed === s} onClick={() => setSpeed(s)} disabled={!controllable}>
-              {s}x
-            </button>
-          ))}
-        </div>
-        {!controllable ? <span className={`chip chipGreen ${styles.live}`}>Live from server</span> : null}
+
+        <span className={`mono ${styles.clock}`} aria-live="off">
+          {clock != null ? (
+            <>
+              {prettyDate(clock)}
+              <span className={styles.dot}> · </span>
+              {hhmmss(clock)}
+              <span className={styles.tz}> UTC</span>
+            </>
+          ) : status === "error" ? (
+            "No data"
+          ) : (
+            "Waiting for data"
+          )}
+        </span>
+
+        {controllable ? (
+          <div className={`segmented ${styles.speed}`} role="radiogroup" aria-label="Replay speed">
+            {SPEEDS.map((s) => (
+              <button key={s} type="button" role="radio" aria-checked={speed === s} onClick={() => setSpeed(s)} aria-label={`${s}x`}>
+                {s}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <span className={`chip chipGreen ${styles.speed}`}>Live</span>
+        )}
       </div>
 
       <div className={styles.scrub}>
@@ -77,23 +86,23 @@ export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed
           ))}
         </div>
       </div>
-    </Tile>
+    </section>
   );
 }
 
 function PlayIcon() {
   return (
-    <svg width="12" height="14" viewBox="0 0 10 12" aria-hidden>
-      <path d="M0 0l10 6-10 6z" fill="currentColor" />
+    <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden>
+      <path d="M1 1l8 5-8 5z" fill="currentColor" />
     </svg>
   );
 }
 
 function PauseIcon() {
   return (
-    <svg width="12" height="14" viewBox="0 0 10 12" aria-hidden>
-      <rect x="0" y="0" width="3.5" height="12" rx="1" fill="currentColor" />
-      <rect x="6.5" y="0" width="3.5" height="12" rx="1" fill="currentColor" />
+    <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden>
+      <rect x="1" y="1" width="2.5" height="10" fill="currentColor" />
+      <rect x="6.5" y="1" width="2.5" height="10" fill="currentColor" />
     </svg>
   );
 }

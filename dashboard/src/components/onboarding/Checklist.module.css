@@ -1,7 +1,7 @@
 .root {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: 16px;
+  bottom: 16px;
   z-index: 30;
 }
 
@@ -9,34 +9,35 @@
   display: none;
   align-items: center;
   gap: 8px;
-  height: 36px;
-  padding: 0 14px;
-  border: none;
-  border-radius: var(--r-pill);
-  background: var(--ink);
-  color: #ffffff;
-  font-size: 13px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--d-line-2);
+  border-radius: var(--d-radius-pill);
+  background: var(--d-surface);
+  color: var(--d-fg);
+  font-size: 12px;
   font-weight: 500;
-  box-shadow: var(--shadow-float);
+  box-shadow: var(--d-shadow);
 }
 
 .pillDot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--green);
+  background: var(--d-green);
 }
 
 .card {
-  width: 320px;
-  padding: 16px;
-  background: #ffffff;
-  border-radius: var(--r-tile);
-  box-shadow: var(--shadow-float), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  width: 300px;
+  padding: 14px;
+  background: var(--d-surface);
+  border: 1px solid var(--d-line-2);
+  border-radius: var(--d-radius);
+  box-shadow: var(--d-shadow);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  animation: rise var(--t-slow) var(--ease);
+  gap: 10px;
+  animation: rise var(--t-slow) var(--d-ease);
 }
 
 @keyframes rise {
@@ -49,23 +50,23 @@
 .head {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .ring {
   flex: none;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
 }
 
 .ringFill {
-  transition: stroke-dashoffset var(--t-slow) var(--ease);
+  transition: stroke-dashoffset var(--t-slow) var(--d-ease);
 }
 
 .titles {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   flex: 1;
   min-width: 0;
 }
@@ -78,20 +79,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--d-radius-sm);
   background: transparent;
-  color: var(--ink-3);
+  color: var(--d-fg-3);
   transition:
-    background var(--t) var(--ease),
-    color var(--t) var(--ease);
+    background var(--d-t) var(--d-ease),
+    color var(--d-t) var(--d-ease);
 }
 
 .close:hover {
-  background: var(--tile);
-  color: var(--ink);
+  background: var(--d-surface-2);
+  color: var(--d-fg);
 }
 
 .steps {
@@ -105,10 +106,10 @@
 .step {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 52px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--divider);
+  gap: 10px;
+  min-height: 44px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--d-line);
 }
 
 .step:last-child {
@@ -118,32 +119,32 @@
 .mark {
   display: inline-flex;
   flex: none;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .stepText {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   min-width: 0;
 }
 
 .stepTitle {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--d-fg);
 }
 
 .step[data-done] .stepTitle {
-  color: var(--ink-3);
+  color: var(--d-fg-3);
   text-decoration: line-through;
-  text-decoration-color: var(--ink-3);
+  text-decoration-color: var(--d-fg-3);
 }
 
 .stepLine {
-  font-size: 13px;
-  color: var(--ink-3);
+  font-size: 12px;
+  color: var(--d-fg-3);
   line-height: 1.4;
 }
 

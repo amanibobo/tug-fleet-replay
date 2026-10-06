@@ -1,26 +1,36 @@
 .stat {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
+}
+
+.label {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--d-fg-3);
 }
 
 .value {
   display: flex;
   align-items: baseline;
-  gap: 5px;
+  gap: 4px;
   white-space: nowrap;
 }
 
+.lg {
+  font-size: 20px;
+}
+
 .unit {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0;
-  color: var(--ink-3);
+  color: var(--d-fg-3);
 }
 
 .hint {
-  font-size: 13px;
-  color: var(--ink-3);
+  font-size: 11px;
+  color: var(--d-fg-3);
   line-height: 1.4;
 }

@@ -6,7 +6,7 @@ import { driver, type Driver } from "driver.js";
 import { useOnboarding } from "./OnboardingProvider";
 
 interface Props {
-  /** Fleet data is loaded and the tiles are on screen. */
+  /** Fleet data is loaded and the rail sections are on screen. */
   ready: boolean;
   /** Selects the first tug so its "Open day" button exists for the last stop. */
   selectFirst: () => void;
@@ -57,10 +57,10 @@ export default function Tour({ ready, selectFirst }: Props) {
         prevBtnText: "Back",
         doneBtnText: "Done",
         popoverClass: "tb-popover",
-        stagePadding: 8,
-        stageRadius: 18,
-        overlayColor: "#0a0a0b",
-        overlayOpacity: 0.4,
+        stagePadding: 6,
+        stageRadius: 6,
+        overlayColor: "#000000",
+        overlayOpacity: 0.6,
         allowClose: true,
         smoothScroll: true,
         onDestroyed: () => setTourActive(false),
@@ -88,7 +88,7 @@ export default function Tour({ ready, selectFirst }: Props) {
             element: SEL.fleet,
             popover: {
               title: "The fleet",
-              description: "Every tug in the week with its status and charge. Click one to open its detail card.",
+              description: "Every tug in the week with its status and charge. Click a row to expand its detail.",
               side: "right",
               align: "start",
             },

@@ -5,13 +5,13 @@ import { STEP_IDS, useOnboarding, type StepId } from "./OnboardingProvider";
 import styles from "./Checklist.module.css";
 
 const STEPS: Record<StepId, { title: string; line: string }> = {
-  play: { title: "Play the replay", line: "Press play or pause in the clock tile." },
+  play: { title: "Play the replay", line: "Press play or pause in the transport row." },
   select: { title: "Select a tug", line: "Click a boat on the map or a row in the fleet." },
   slider: { title: "Move the battery slider", line: "Watch the headline change with pack size." },
   openDay: { title: "Open a tug day", line: "Open day shows one day in full detail." },
 };
 
-/** Frigade-style floating card, bottom-right of the console. Collapses to a pill on phones. */
+/** Floating panel, bottom-right of the console. Collapses to a pill on phones. */
 export default function Checklist() {
   const { state, loaded, open, setOpen, requestTour, tourActive } = useOnboarding();
   const [expanded, setExpanded] = useState(false);
@@ -19,7 +19,7 @@ export default function Checklist() {
 
   const done = STEP_IDS.filter((id) => state.steps[id]).length;
   const total = STEP_IDS.length;
-  const r = 14;
+  const r = 12;
   const c = 2 * Math.PI * r;
 
   return (
@@ -32,19 +32,19 @@ export default function Checklist() {
       <section className={styles.card} aria-label="Getting started">
         <header className={styles.head}>
           <div className={styles.ring} aria-hidden>
-            <svg width="36" height="36" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r={r} fill="none" stroke="var(--tile-2)" strokeWidth="3" />
+            <svg width="30" height="30" viewBox="0 0 30 30">
+              <circle cx="15" cy="15" r={r} fill="none" stroke="var(--d-line-2)" strokeWidth="2" />
               <circle
-                cx="18"
-                cy="18"
+                cx="15"
+                cy="15"
                 r={r}
                 fill="none"
-                stroke="var(--green)"
-                strokeWidth="3"
+                stroke="var(--d-green)"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeDasharray={c}
                 strokeDashoffset={c * (1 - done / total)}
-                transform="rotate(-90 18 18)"
+                transform="rotate(-90 15 15)"
                 className={styles.ringFill}
               />
             </svg>
@@ -65,7 +65,7 @@ export default function Checklist() {
             aria-label="Dismiss checklist"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
-              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>
         </header>
@@ -78,13 +78,13 @@ export default function Checklist() {
               <li key={id} className={styles.step} data-done={ok || undefined}>
                 <span className={styles.mark} aria-hidden>
                   {ok ? (
-                    <svg width="18" height="18" viewBox="0 0 18 18">
-                      <circle cx="9" cy="9" r="8.25" fill="var(--ink)" />
-                      <path d="M5.5 9.3l2.3 2.3 4.7-4.9" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                      <circle cx="8" cy="8" r="7.5" fill="var(--d-fg)" />
+                      <path d="M4.8 8.2l2.1 2.1 4.3-4.5" fill="none" stroke="#0a0a0a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   ) : (
-                    <svg width="18" height="18" viewBox="0 0 18 18">
-                      <circle cx="9" cy="9" r="8.25" fill="none" stroke="var(--tile-2)" strokeWidth="1.5" />
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                      <circle cx="8" cy="8" r="7.5" fill="none" stroke="var(--d-line-2)" strokeWidth="1" />
                     </svg>
                   )}
                 </span>
@@ -98,10 +98,10 @@ export default function Checklist() {
         </ol>
 
         <div className={styles.actions}>
-          <button type="button" className="btn btnSmall" onClick={requestTour}>
+          <button type="button" className="btn" onClick={requestTour}>
             Take the tour
           </button>
-          <button type="button" className={`btn btnGhost btnSmall ${styles.collapse}`} onClick={() => setExpanded(false)}>
+          <button type="button" className={`btn btnGhost ${styles.collapse}`} onClick={() => setExpanded(false)}>
             Hide
           </button>
         </div>

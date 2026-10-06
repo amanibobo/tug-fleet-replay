@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { GITHUB_URL, PORTFOLIO_URL } from "@/components/Nav";
+import HowItWorks from "./HowItWorks";
 import styles from "./Landing.module.css";
 
-/** The landing: a black page, one headline, the demo frame, one paragraph. The console keeps the light system. */
+/** The landing: a black page, one headline, the demo frame, one paragraph, then the schematic "how it works" grid. */
 export default function Landing() {
   return (
     <main className={styles.main} data-landing>
@@ -53,6 +54,8 @@ export default function Landing() {
           </a>
         </p>
       </section>
+
+      <HowItWorks />
     </main>
   );
 }

@@ -1,0 +1,265 @@
+/* Small animated SVGs for the `[svg-anim: ...]` markers: CSS loops of 4 to 8 s, static under reduced motion. */
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--d-fg-2);
+  overflow: visible;
+}
+
+.svg :is(path, line, rect, polyline, circle) {
+  vector-effect: non-scaling-stroke;
+}
+
+.stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.faint {
+  opacity: 0.45;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--d-fg-3);
+}
+
+/* ---- rows through a filter ---- */
+.row {
+  fill: var(--d-fg-2);
+  animation-duration: 6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay);
+  opacity: 0;
+}
+
+.drop {
+  animation-name: drop;
+}
+
+.keep {
+  animation-name: keep;
+}
+
+@keyframes drop {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  45% {
+    transform: translate(300px, 0);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(312px, 70px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(312px, 70px);
+    opacity: 0;
+  }
+}
+
+@keyframes keep {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  45% {
+    transform: translate(300px, 0);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(560px, 0);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(560px, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(560px, 0);
+    opacity: 0;
+  }
+}
+
+/* ---- irregular fixes snapping to the minute grid ---- */
+.fix {
+  fill: var(--d-fg);
+  animation: snap 6s var(--d-ease) infinite;
+}
+
+@keyframes snap {
+  0%,
+  25% {
+    transform: translate(0, 0);
+  }
+  45%,
+  80% {
+    transform: translate(var(--dx), 70px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* ---- tug approaching a ship: the label flips inside the hull circle ---- */
+.approach {
+  animation: approach 7s ease-in-out infinite;
+}
+
+@keyframes approach {
+  0%,
+  10% {
+    transform: translateX(0);
+  }
+  55%,
+  75% {
+    transform: translateX(262px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.whenFar {
+  animation: far 7s linear infinite;
+}
+
+.whenNear {
+  animation: near 7s linear infinite;
+}
+
+@keyframes far {
+  0%,
+  41% {
+    opacity: 1;
+  }
+  42%,
+  91% {
+    opacity: 0;
+  }
+  92%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes near {
+  0%,
+  41% {
+    opacity: 0;
+  }
+  42%,
+  91% {
+    opacity: 1;
+  }
+  92%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- state of charge draining past 15%, generator on, recovering to 35% ---- */
+.soc {
+  fill: var(--d-fg);
+  transform-origin: 60px 0;
+  transform-box: view-box;
+  animation: soc 8s linear infinite;
+}
+
+@keyframes soc {
+  0% {
+    transform: scaleX(0.62);
+  }
+  40% {
+    transform: scaleX(0.14);
+  }
+  70% {
+    transform: scaleX(0.36);
+  }
+  100% {
+    transform: scaleX(0.62);
+  }
+}
+
+.gen {
+  animation: gen 8s linear infinite;
+}
+
+@keyframes gen {
+  0%,
+  39% {
+    opacity: 0;
+  }
+  41%,
+  69% {
+    opacity: 1;
+  }
+  71%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- packets along the data path ---- */
+.pkt {
+  fill: var(--d-fg);
+  offset-path: path("M60 100 H200 H340 H480 H620");
+  offset-rotate: 0deg;
+  animation: travel 6s linear infinite;
+  animation-delay: var(--delay);
+  opacity: 0;
+}
+
+@keyframes travel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row,
+  .fix,
+  .approach,
+  .whenFar,
+  .whenNear,
+  .soc,
+  .gen,
+  .pkt {
+    animation: none;
+  }
+
+  .row,
+  .pkt {
+    opacity: 1;
+  }
+
+  .whenNear,
+  .gen {
+    opacity: 0;
+  }
+}

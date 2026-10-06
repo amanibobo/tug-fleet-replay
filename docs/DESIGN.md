@@ -228,3 +228,116 @@ headline, one video, one paragraph. Nothing else.
   #7a7a7a 13px with the independence sentence and the data dates.
 - No footer, no borders, no diagrams, no mono labels, no icons. 120px of black at the bottom.
 - Mobile: headline 40px, frame full width with 16px gutters, no horizontal scroll.
+
+---
+
+# v7: one dark system (console, landing, docs)
+
+The landing's black page becomes the whole product's base. Reference feel: Linear and Vercel
+dashboards for the console (flat, dense, hairlines, no tiles), isoquant.ai for schematic
+line-art. Pro, modern, quiet. No decorative icons; functional icons as 1.5px strokes only.
+
+## Tokens (`:root`, prefix `--d-`; the console migrates to these and the light tokens go away)
+
+```css
+--d-bg: #0a0a0a;            /* console page */
+--d-bg-landing: #000000;    /* landing and docs page */
+--d-rail: #0f0f10;          /* sidebar / rail */
+--d-surface: #141415;       /* panels, popovers */
+--d-surface-2: #1b1b1d;     /* hover rows, segmented track */
+--d-line: rgba(255,255,255,0.08);
+--d-line-2: rgba(255,255,255,0.16);
+--d-fg: #f2f2f2;
+--d-fg-2: #a3a3a8;
+--d-fg-3: #6e6e75;
+--d-green: #43ce95;  --d-blue: #78b1f5;  --d-amber: #efba53;  --d-red: #f07878;  --d-orange: #f59a55;
+--d-act-transit: var(--d-blue); --d-act-assist: var(--d-orange); --d-act-idle: #5c5c63; --d-act-charging: var(--d-green);
+--d-radius: 8px; --d-radius-sm: 4px; --d-radius-pill: 9999px;
+--d-shadow: 0 12px 40px rgba(0,0,0,0.5);
+--d-ease: cubic-bezier(.2,.8,.2,1); --d-t: 160ms;
+```
+
+Type: Geist 400/500/600, Geist Mono 400. Console body 13px (dense), labels 12px `--d-fg-3`,
+headings 14px/600, headline number 56px/600 -0.03em. Sentence case. Tabular numbers.
+
+## Console (`/app`)
+
+Layout: a left **rail** 340px, `--d-rail`, 1px right hairline, full height under a 48px top bar;
+the map fills the rest with no margin and no radius (edge to edge), dark basemap
+`https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json` with its labels dimmed.
+Top bar (replaces the nav on `/app`): 48px, `--d-bg`, bottom hairline; left: wordmark
+"tugboard" 14px/500 and a breadcrumb "Fleet"; center: nothing; right: "docs", "github" as
+13px `--d-fg-2` links, a "Get started 2/4" ghost pill with a 24px progress bar, and a 28px
+"Feedback" ghost link.
+
+Rail, top to bottom, sections separated by hairlines (no tiles, no gray cards):
+1. **Transport row** (56px): play/pause as a 28px square button with `--d-surface` fill; the
+   clock "Mon, Dec 2 · 01:13:53 UTC" in mono 13px; speed as a compact segmented control
+   (60 / 120 / 300, 11px) on the right. Below it a 2px week scrubber spanning the rail width
+   with day ticks as 11px labels; the played part is `--d-fg`.
+2. **Headline block** (padding 20px): label "Electric share this week"; the number "71%" at
+   56px with the percent in `--d-fg-3`; one line "of 154 tug-days ran without the generator";
+   the battery slider (2px track, 12px thumb, played part `--d-fg`) with the label row
+   "Battery" left and "6,000 kWh" right in mono; a 2x2 **stat grid** with hairline dividers:
+   Generator hours, Charged kWh, Charging cost at arrival, Charging cost scheduled, each
+   value 16px/500 with label 11px above; one footnote line.
+3. **Fleet table**: header row "Fleet · 22 tugs" with a tiny filter segmented control
+   (All / Working / Charging / Generator); rows 36px: name 13px, status as a 6px dot plus
+   12px text, battery as a 48x3 bar plus percent in mono. Hover `--d-surface-2`; selected
+   row `--d-surface` with a 2px left bar in the activity color. The selected tug's detail
+   expands inline as a dense definition grid (Speed, Heading, Power, Generator, Position,
+   Job) in mono values, with a "Open day" primary button (white fill, black text, 28px) and
+   the MMSI.
+4. Footer line 11px `--d-fg-3` with the independence sentence.
+
+Map: markers keep the boat silhouette, activity colors, a 1px dark stroke instead of white;
+selected gets a white ring; labels are `--d-surface` chips with a hairline. Trails as before.
+Getting started checklist: `--d-surface`, hairline, `--d-shadow`, same behavior. Tour
+popovers: `--d-surface`, hairline, white "Next" button.
+
+Tug day (`/app/tugs/[id]`): same dark tokens; panels are hairline-bordered sections on
+`--d-bg` (no fills), headings 14px/600, charts recolored: SOC line `--d-fg` over a 6% white
+area, thresholds dashed `--d-line-2`, activity band colors as above, charging/generator spans
+green/red, tariff bands as 4%/8% white tints. Rerun inspector: `--d-surface`, `theme="dark"`.
+
+## Landing (`/`), additions below the fine print
+
+Keep the black centered page exactly as it is above the fold. After the fine print, add a
+section titled "how it works" (lowercase, 28px/600, centered) with a **2x2 grid of cells**
+(1px `--d-line`, radius 4px, `#0b0b0b` fill, 28px padding) in the isoquant manner: each cell
+has a mono index label (Geist Mono 12px, uppercase, 0.08em: "01 / TRACKS"), a schematic
+line-art SVG 100% wide and 180px tall drawn in `--d-fg-2` 1px strokes inside a dotted frame
+with 12px corner brackets, a title (20px/500), one line (`--d-fg-2`), and two bordered chips.
+The four diagrams and copy:
+- 01 / TRACKS. Harbor plan: three channel lines converging into a basin, a dock rectangle, a
+  tug square advancing along the route in 12 discrete steps leaving a dotted trail. "Real
+  tracks." "NOAA AIS positions for 22 harbor tugs, one week, resampled to one minute." Chips:
+  San Pedro Bay, Dec 2–8 2024.
+- 02 / LABELS. A 24x6 grid of 5px squares; most at 20%, runs lit in `--d-fg` for assist and
+  `--d-blue` for transit; one row's run slides slowly. "Labeled minutes." "Transit, assist
+  beside a real ship, idle, charging at a detected dock." Chips: Speed, Ship proximity.
+- 03 / BATTERY. A stepped state-of-charge line with two dashed thresholds and a bracketed
+  span where it dips under the lower one; a small square rides the line. "Battery
+  simulation." "Power per activity, a generator that cuts in at 15%, shore charging at the
+  dock." Chips: 6,000 kWh, config.yaml.
+- 04 / REPLAY. Six small boxes on a rail (Replayer, IoT, Lambda, DB, Socket, Console) with a
+  packet square hopping box to box, each lighting briefly. "Live replay." "Published like a
+  real boat would, into AWS IoT Core or a local socket, into the console." Chips: MQTT, WebSocket.
+One slow CSS loop per diagram (3–6 s), static under reduced motion. Below the grid a
+centered secondary link "read how I built it" to `/docs`. Then 120px of black.
+
+## Docs page (`/docs`, "How I built it")
+
+Black page, two columns from 1024px: a sticky left table of contents (220px, 13px links,
+active in `--d-fg`) and a 720px article column. Title "How I built Tugboard" 44px/600, a
+one-line dek, then sections from `docs/BUILD_LOG.md` (the source of truth for the text; render
+its sections in order, in the first person, do not change facts or numbers). Each section has
+an **Excalidraw-style diagram**: hand-drawn look via `roughjs` (MIT) rendering into inline SVG
+on the client, strokes in `--d-fg-2`, fills with rough hachure in the status colors at low
+opacity, labels in the Excalifont face (fetch the woff2 from the `@excalidraw/excalidraw`
+package on unpkg at build time into public/fonts; if unavailable, use Google's "Caveat");
+static, no animation. Plus, where BUILD_LOG marks `[svg-anim: ...]`, a small animated inline
+SVG of your own (CSS loop, reduced-motion static) illustrating that mechanism. Code and
+numbers in mono. Pull quotes for the two or three decisions that mattered. A "what I would
+do next" section at the end. The nav on `/docs` is the landing nav (black) with the "docs"
+link active.

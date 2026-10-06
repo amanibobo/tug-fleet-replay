@@ -165,7 +165,7 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
         <line x1={PAD_L} x2={PAD_L + plotW} y1={y(WARN_SOC)} y2={y(WARN_SOC)} className={styles.thresh} />
         <line x1={PAD_L} x2={PAD_L + plotW} y1={y(BAD_SOC)} y2={y(BAD_SOC)} className={styles.thresh} />
 
-        {/* SOC curve: ink line over a 10% blue area */}
+        {/* SOC curve: fg line over a 6% white area */}
         {day && curvePath.line ? (
           <g clipPath="url(#clipPlot)">
             <path d={curvePath.area} className={styles.area} />
@@ -201,7 +201,7 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
               const a = minuteOf(c.start, dayStart);
               const b = minuteOf(c.end, dayStart);
               const w = Math.max(SPAN_H, x(b) - x(a));
-              return <rect key={`c${i}`} x={x(a)} y={chargeY} width={w} height={SPAN_H} rx={SPAN_H / 2} fill="var(--green)" />;
+              return <rect key={`c${i}`} x={x(a)} y={chargeY} width={w} height={SPAN_H} rx={SPAN_H / 2} fill="var(--d-green)" />;
             })
           : null}
         {day
@@ -209,7 +209,7 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
               const a = minuteOf(g.start, dayStart);
               const b = minuteOf(g.end, dayStart);
               const w = Math.max(SPAN_H, x(b) - x(a));
-              return <rect key={`g${i}`} x={x(a)} y={genY} width={w} height={SPAN_H} rx={SPAN_H / 2} fill="var(--red)" />;
+              return <rect key={`g${i}`} x={x(a)} y={genY} width={w} height={SPAN_H} rx={SPAN_H / 2} fill="var(--d-red)" />;
             })
           : null}
         <text x={PAD_L - 8} y={chargeY + SPAN_H / 2 + 4} className={styles.yLabel} textAnchor="end">
@@ -247,7 +247,7 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
           </g>
         ) : null}
 
-        {!day ? <rect x={PAD_L} y={CURVE_TOP} width={plotW} height={CURVE_H} rx={12} className={styles.skeleton} /> : null}
+        {!day ? <rect x={PAD_L} y={CURVE_TOP} width={plotW} height={CURVE_H} rx={4} className={styles.skeleton} /> : null}
       </svg>
 
       {probeSample ? (

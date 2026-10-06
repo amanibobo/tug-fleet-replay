@@ -1,17 +1,17 @@
 .list {
   list-style: none;
   margin: 0;
-  padding: 0 8px 8px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   max-height: 420px;
   scrollbar-width: thin;
-  scrollbar-color: var(--tile-2) transparent;
+  scrollbar-color: var(--d-line-2) transparent;
 }
 
 .list li {
-  border-bottom: 1px solid var(--divider);
+  border-bottom: 1px solid var(--d-line);
 }
 
 .list li:last-child {
@@ -21,20 +21,21 @@
 .row {
   width: 100%;
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) auto;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   min-height: 44px;
-  padding: 10px 12px;
+  padding: 9px 16px;
   border: none;
-  border-radius: var(--r-card);
+  border-radius: 0;
   background: transparent;
   text-align: left;
-  transition: background var(--t) var(--ease);
+  color: var(--d-fg);
+  transition: background var(--d-t) var(--d-ease);
 }
 
 .row:hover {
-  background: #ffffff;
+  background: var(--d-surface-2);
 }
 
 .row:focus-visible {
@@ -42,27 +43,27 @@
 }
 
 .idx {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--d-fg-3);
 }
 
 .main {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   min-width: 0;
 }
 
 .time {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--d-fg);
 }
 
 .sub {
-  font-size: 13px;
-  color: var(--ink-3);
+  font-size: 12px;
+  color: var(--d-fg-3);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -72,35 +73,34 @@
   display: inline-flex;
   align-items: baseline;
   gap: 4px;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 500;
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: var(--d-fg);
   white-space: nowrap;
 }
 
 .unit {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
-  color: var(--ink-3);
+  color: var(--d-fg-3);
   letter-spacing: 0;
 }
 
 .empty {
   padding: 36px 16px;
   text-align: center;
-  color: var(--ink-2);
+  color: var(--d-fg-2);
 }
 
 .skeleton {
-  height: 56px;
-  margin: 0 8px;
-  border-bottom: 1px solid var(--divider);
-  animation: pulse 1.6s var(--ease) infinite;
+  height: 52px;
+  border-bottom: 1px solid var(--d-line);
+  animation: pulse 1.6s var(--d-ease) infinite;
 }
 
 @keyframes pulse {
   50% {
-    background: var(--tile-2);
+    background: var(--d-surface);
   }
 }

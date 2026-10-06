@@ -18,8 +18,12 @@ const AXIS_H = 24;
 const HEIGHT = PRICE_H + ROW_H + ROW_GAP + ROW_H + AXIS_GAP + AXIS_H;
 const MIN_PER_DAY = 1440;
 
-/** Band fill per tariff tier on the white strip: off-peak none, mid-peak tile gray, on-peak amber soft. */
-const TIER_FILL: Record<TariffTier, string | null> = { off_peak: null, mid_peak: "var(--tile)", on_peak: "var(--amber-soft)" };
+/** Band tint per tariff tier: off-peak none, mid-peak 4% white, on-peak 8% white. */
+const TIER_FILL: Record<TariffTier, string | null> = {
+  off_peak: null,
+  mid_peak: "rgba(255, 255, 255, 0.04)",
+  on_peak: "rgba(255, 255, 255, 0.08)",
+};
 
 interface Bar {
   /** Minutes from midnight UTC. */
@@ -136,7 +140,7 @@ export default function ChargingSchedule({ day }: Props) {
                       y={stripTop}
                       width={Math.max(0, x(b.z) - x(b.a))}
                       height={stripBottom - stripTop}
-                      rx={6}
+                      rx={3}
                       fill={TIER_FILL[b.tier] ?? undefined}
                     />
                   ) : null}
@@ -192,8 +196,8 @@ export default function ChargingSchedule({ day }: Props) {
         </div>
 
         <div className={styles.readout}>
-          <Stat value={fmtUsd(costArrival)} unit="at arrival" />
-          <Stat value={fmtUsd(costScheduled)} unit="scheduled" hint={saving != null ? `${saving}% lower` : undefined} />
+          <Stat size="lg" label="At arrival" value={fmtUsd(costArrival)} />
+          <Stat size="lg" label="Scheduled" value={fmtUsd(costScheduled)} hint={saving != null ? `${saving}% lower` : undefined} />
         </div>
       </div>
 

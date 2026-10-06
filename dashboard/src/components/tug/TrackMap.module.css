@@ -1,5 +1,5 @@
 .map {
   position: absolute;
   inset: 0;
-  background: var(--tile-2);
+  background: var(--d-bg);
 }

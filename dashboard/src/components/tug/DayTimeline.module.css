@@ -1,7 +1,7 @@
 .wrap {
   position: relative;
   width: 100%;
-  padding: 8px 12px 10px;
+  padding: 12px 12px 10px;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -14,59 +14,59 @@
 }
 
 .grid {
-  stroke: #ffffff;
+  stroke: var(--d-line);
   stroke-width: 1;
 }
 
 .thresh {
-  stroke: var(--ink-3);
+  stroke: var(--d-line-2);
   stroke-width: 1;
-  stroke-dasharray: 2 5;
-  opacity: 0.6;
+  stroke-dasharray: 3 4;
 }
 
 .yLabel,
 .xLabel {
   font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  fill: var(--ink-3);
+  font-size: 11px;
+  font-weight: 400;
+  fill: var(--d-fg-3);
   font-variant-numeric: tabular-nums;
 }
 
+/* SOC curve: fg line over a 6% white area. */
 .area {
-  fill: var(--blue);
-  fill-opacity: 0.1;
+  fill: #ffffff;
+  fill-opacity: 0.06;
 }
 
 .line {
   fill: none;
-  stroke: var(--ink);
-  stroke-width: 1.75;
+  stroke: var(--d-fg);
+  stroke-width: 1.5;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
 
 .bandTrack {
-  fill: #ffffff;
+  fill: var(--d-surface-2);
 }
 
 .cursor {
-  stroke: var(--ink);
+  stroke: var(--d-fg);
   stroke-width: 1;
   stroke-dasharray: 3 3;
 }
 
 .crosshair {
-  stroke: var(--ink);
+  stroke: var(--d-fg);
   stroke-width: 1;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .probeDot {
-  fill: #ffffff;
-  stroke: var(--ink);
-  stroke-width: 2;
+  fill: var(--d-bg);
+  stroke: var(--d-fg);
+  stroke-width: 1.5;
 }
 
 .probe {
@@ -75,13 +75,13 @@
 
 .skeleton {
   fill: #ffffff;
-  fill-opacity: 0.4;
-  animation: pulse 1.6s var(--ease) infinite;
+  fill-opacity: 0.03;
+  animation: pulse 1.6s var(--d-ease) infinite;
 }
 
 @keyframes pulse {
   50% {
-    fill-opacity: 0.9;
+    fill-opacity: 0.07;
   }
 }
 
@@ -90,32 +90,33 @@
   top: 14px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-width: 160px;
-  padding: 12px 14px;
-  background: #ffffff;
-  border-radius: var(--r-card);
-  box-shadow: var(--shadow-float);
+  gap: 5px;
+  min-width: 150px;
+  padding: 10px 12px;
+  background: var(--d-surface);
+  border: 1px solid var(--d-line-2);
+  border-radius: var(--d-radius);
+  box-shadow: var(--d-shadow);
   pointer-events: none;
   z-index: 2;
 }
 
 .tipTime {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink-3);
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--divider);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--d-fg-3);
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--d-line);
 }
 
 .tipTime .mono {
-  color: var(--ink);
+  color: var(--d-fg);
 }
 
 .tipVal {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--d-fg);
 }
 
 .tipRow {
@@ -126,7 +127,7 @@
 }
 
 .tipGen {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--red);
+  color: var(--d-red);
 }

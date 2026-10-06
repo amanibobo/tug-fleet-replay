@@ -5,61 +5,38 @@
   bottom: 0;
   left: 0;
   display: flex;
-  background: #ffffff;
+  background: var(--d-bg);
 }
 
+/* The rail: flat, sections separated by hairlines, a hairline on its right edge. */
 .rail {
   flex: none;
   width: var(--rail-w);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 4px 0 20px 12px;
   overflow-y: auto;
   overflow-x: hidden;
-  background: #ffffff;
+  background: var(--d-rail);
+  border-right: 1px solid var(--d-line);
   scrollbar-width: thin;
-  scrollbar-color: var(--tile-2) transparent;
+  scrollbar-color: var(--d-line-2) transparent;
 }
 
-.railHead {
-  padding: 8px 8px 4px;
-}
-
-.titleRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.h1 {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.sub {
-  margin-top: 4px;
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--ink-3);
+.rail > * + * {
+  border-top: 1px solid var(--d-line);
 }
 
 .mapWrap {
   position: relative;
   flex: 1;
   min-width: 0;
-  margin: 4px 12px 12px;
-  border-radius: var(--r-tile);
-  overflow: hidden;
-  background: var(--tile);
+  background: var(--d-bg);
 }
 
 .mapLoading {
   position: absolute;
   inset: 0;
-  background: var(--tile);
+  background: var(--d-bg);
 }
 
 .mapError {
@@ -67,17 +44,18 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  padding: 12px 18px;
-  background: #ffffff;
-  border-radius: var(--r-card);
-  box-shadow: var(--shadow-float);
-  color: var(--red);
-  font-size: 13px;
+  padding: 10px 14px;
+  background: var(--d-surface);
+  border: 1px solid var(--d-line-2);
+  border-radius: var(--d-radius);
+  box-shadow: var(--d-shadow);
+  color: var(--d-red);
+  font-size: 12px;
 }
 
 .footer {
   margin-top: auto;
-  padding: 12px 8px 0;
+  padding: 12px 16px;
 }
 
 /* Stacked layout: the map on top, the rail content in flow. */
@@ -93,12 +71,17 @@
   .mapWrap {
     height: 44vh;
     min-height: 260px;
-    margin: 4px 12px 0;
+    border-bottom: 1px solid var(--d-line);
   }
 
   .rail {
     width: auto;
     overflow: visible;
-    padding: 12px 12px 88px;
+    border-right: none;
+    padding-bottom: 72px;
+  }
+
+  .footer {
+    margin-top: 0;
   }
 }

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import maplibregl, { type Map as MlMap, type GeoJSONSource, type LngLatBoundsLike } from "maplibre-gl";
 import type { Feature, FeatureCollection, LineString, Point } from "geojson";
-import { MAP_STYLE } from "@/components/fleet/FleetMap";
+import { MAP_STYLE, dimLabels } from "@/components/fleet/FleetMap";
 import { ACTIVITY_HEX } from "@/lib/format";
 import type { Activity, TugDay } from "@/lib/types";
 import styles from "./TrackMap.module.css";
@@ -78,20 +78,21 @@ export default function TrackMap({ day, cursor }: Props) {
     });
     mapRef.current = map;
     map.on("load", () => {
+      dimLabels(map);
       map.addSource("track", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       map.addLayer({
         id: "track",
         type: "line",
         source: "track",
         layout: { "line-cap": "round", "line-join": "round" },
-        paint: { "line-color": ["get", "color"], "line-width": 3, "line-opacity": 0.85 },
+        paint: { "line-color": ["get", "color"], "line-width": 2.5, "line-opacity": 0.9 },
       });
       map.addSource("cursor", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       map.addLayer({
         id: "cursor",
         type: "circle",
         source: "cursor",
-        paint: { "circle-radius": 5, "circle-color": "#0a0a0b", "circle-stroke-color": "#ffffff", "circle-stroke-width": 2 },
+        paint: { "circle-radius": 4.5, "circle-color": "#f2f2f2", "circle-stroke-color": "#0a0a0a", "circle-stroke-width": 2 },
       });
       loaded.current = true;
       pending.current?.();

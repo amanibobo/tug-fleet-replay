@@ -10,33 +10,36 @@ export function statusOf(t: Pick<Telemetry, "generator_on" | "activity">): Statu
 }
 
 export const STATUS_COLOR: Record<Status, string> = {
-  electric: "var(--green)",
-  generator: "var(--red)",
-  charging: "var(--blue)",
-  idle: "var(--act-idle)",
+  electric: "var(--d-green)",
+  generator: "var(--d-red)",
+  charging: "var(--d-blue)",
+  idle: "var(--d-act-idle)",
 };
 
 export const ACTIVITY_COLOR: Record<Activity, string> = {
-  transit: "var(--act-transit)",
-  assist: "var(--act-assist)",
-  idle: "var(--act-idle)",
-  charging: "var(--act-charging)",
+  transit: "var(--d-act-transit)",
+  assist: "var(--d-act-assist)",
+  idle: "var(--d-act-idle)",
+  charging: "var(--d-act-charging)",
 };
 
-/** Hex versions for MapLibre, which cannot read CSS variables. */
+/** Hex versions of the --d-* tokens for MapLibre, which cannot read CSS variables. */
 export const ACTIVITY_HEX: Record<Activity, string> = {
-  transit: "#3b82f6",
-  assist: "#f97316",
-  idle: "#a1a1aa",
-  charging: "#22c55e",
+  transit: "#78b1f5",
+  assist: "#f59a55",
+  idle: "#5c5c63",
+  charging: "#43ce95",
 };
 
 export const STATUS_HEX: Record<Status, string> = {
-  electric: "#22c55e",
-  generator: "#ef4444",
-  charging: "#3b82f6",
-  idle: "#a1a1aa",
+  electric: "#43ce95",
+  generator: "#f07878",
+  charging: "#78b1f5",
+  idle: "#5c5c63",
 };
+
+/** Generator trail and span color, the --d-red token. */
+export const GENERATOR_HEX = "#f07878";
 
 export const ACTIVITY_LABEL: Record<Activity, string> = {
   transit: "Transit",
@@ -47,9 +50,9 @@ export const ACTIVITY_LABEL: Record<Activity, string> = {
 
 /** Battery fill: green when healthy, amber under 35%, red under 15%. */
 export function socColor(soc: number): string {
-  if (soc < 0.15) return "var(--red)";
-  if (soc < 0.35) return "var(--amber)";
-  return "var(--green)";
+  if (soc < 0.15) return "var(--d-red)";
+  if (soc < 0.35) return "var(--d-amber)";
+  return "var(--d-green)";
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");

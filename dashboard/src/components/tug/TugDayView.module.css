@@ -10,56 +10,56 @@
   align-items: flex-end;
   gap: 24px;
   flex-wrap: wrap;
-  padding: 4px 0 12px;
+  padding: 0 0 8px;
 }
 
 .titleBlock {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 6px;
 }
 
 .back {
-  margin-left: -10px;
-  padding-left: 8px;
+  margin-left: -8px;
+  padding-left: 6px;
 }
 
 .meta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .mmsi {
-  color: var(--ink-3);
+  color: var(--d-fg-3);
 }
 
 .datePicker {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .dateLabel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  min-width: 140px;
-  font-size: 14px;
+  gap: 4px;
+  min-width: 132px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0;
 }
 
 .dateIso {
-  color: var(--ink-3);
+  color: var(--d-fg-3);
 }
 
 .totals {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .totalsHead {
@@ -77,11 +77,22 @@
   flex-wrap: wrap;
 }
 
+/* Five stats separated by hairlines. */
 .statRow {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 20px 24px;
-  align-items: end;
+  border-top: 1px solid var(--d-line);
+  border-bottom: 1px solid var(--d-line);
+}
+
+.statCell {
+  padding: 12px 16px 13px;
+  border-left: 1px solid var(--d-line);
+}
+
+.statCell:first-child {
+  padding-left: 0;
+  border-left: none;
 }
 
 .timelinePanel,
@@ -103,21 +114,21 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--d-fg-2);
 }
 
 .swatch {
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
 }
 
 .empty {
   padding: 48px 16px;
   text-align: center;
-  color: var(--ink-2);
+  color: var(--d-fg-2);
 }
 
 .lower {
@@ -135,15 +146,12 @@
   position: relative;
   flex: 1;
   min-height: 320px;
-  margin: 0 8px 8px;
-  border-radius: var(--r-card);
-  overflow: hidden;
 }
 
 .mapSkeleton {
   position: absolute;
   inset: 0;
-  background: var(--tile-2);
+  background: var(--d-surface);
 }
 
 .footer {
@@ -153,6 +161,15 @@
 @media (max-width: 1023px) {
   .statRow {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .statCell:nth-child(3n + 1) {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .statCell:nth-child(n + 4) {
+    border-top: 1px solid var(--d-line);
   }
 
   .lower {
@@ -173,6 +190,22 @@
 @media (max-width: 480px) {
   .statRow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statCell,
+  .statCell:nth-child(3n + 1) {
+    padding-left: 16px;
+    border-left: 1px solid var(--d-line);
+    border-top: none;
+  }
+
+  .statCell:nth-child(odd) {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .statCell:nth-child(n + 3) {
+    border-top: 1px solid var(--d-line);
   }
 
   .legend {

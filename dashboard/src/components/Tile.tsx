@@ -6,24 +6,18 @@ interface Props {
   className?: string;
   style?: CSSProperties;
   padding?: "none" | "sm" | "md";
-  /** Title row: tile title and a note on the right. */
+  /** Title row: section title and a note on the right. */
   title?: ReactNode;
   note?: ReactNode;
-  /** White tile for nesting inside gray ones. */
-  tone?: "gray" | "white";
   id?: string;
   "data-tour"?: string;
   "aria-label"?: string;
 }
 
-/** A soft gray rounded surface with no border. Separation comes from whitespace, never lines. */
-export default function Tile({ children, className, style, padding = "md", title, note, tone = "gray", ...rest }: Props) {
+/** A hairline-bordered section on the page background. No fill; separation comes from lines, not tiles. */
+export default function Tile({ children, className, style, padding = "md", title, note, ...rest }: Props) {
   return (
-    <section
-      className={["tb-tile", styles.tile, styles[`pad_${padding}`], tone === "white" ? styles.white : "", className ?? ""].join(" ")}
-      style={style}
-      {...rest}
-    >
+    <section className={["tb-tile", styles.tile, styles[`pad_${padding}`], className ?? ""].join(" ")} style={style} {...rest}>
       {title != null ? (
         <div className={styles.head}>
           <h2 className="heading">{title}</h2>

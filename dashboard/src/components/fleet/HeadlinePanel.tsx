@@ -4,7 +4,6 @@ import { memo, useState } from "react";
 import Footnote from "@/components/Footnote";
 import Slider from "@/components/Slider";
 import Stat from "@/components/Stat";
-import Tile from "@/components/Tile";
 import { fmtHours, fmtInt, fmtUsd } from "@/lib/format";
 import type { SummaryState } from "@/lib/useSummary";
 import { useAnimatedNumber, useDebounced } from "@/lib/useAnimatedNumber";
@@ -16,6 +15,7 @@ interface Props {
   onSlide?: () => void;
 }
 
+/** Headline block: label, the 56px share, one line, the battery slider, a 2x2 stat grid, a footnote. */
 function HeadlinePanel({ summary, onSlide }: Props) {
   const { bounds, defaultKwh, pick, status } = summary;
   const [picked, setKwh] = useState<number | null>(null);
@@ -32,8 +32,8 @@ function HeadlinePanel({ summary, onSlide }: Props) {
       : null;
 
   return (
-    <Tile className={styles.panel} aria-label="Week summary" data-tour="headline">
-      <span className={styles.kicker}>Electric share this week</span>
+    <section className={styles.panel} aria-label="Week summary" data-tour="headline">
+      <span className={`label ${styles.kicker}`}>Electric share this week</span>
       <div className={`headline ${styles.headline}`} aria-live="polite">
         {status === "ready" && row ? (
           <>
@@ -47,7 +47,8 @@ function HeadlinePanel({ summary, onSlide }: Props) {
       <p className={styles.caption}>of {tugDays ? fmtInt(tugDays) : ""} tug-days ran without the generator</p>
 
       <Slider
-        label={`Battery ${fmtInt(kwh)} kWh`}
+        label="Battery"
+        trailing={`${fmtInt(kwh)} kWh`}
         min={bounds?.min ?? 1000}
         max={bounds?.max ?? 8000}
         step={bounds?.step ?? 250}
@@ -61,30 +62,16 @@ function HeadlinePanel({ summary, onSlide }: Props) {
       />
 
       <div className={styles.stats}>
-        <Stat label="Generator hours" value={row ? fmtHours(row.generator_hours) : "0"} />
-        <Stat label="Charged" value={row ? fmtInt(row.charged_kwh) : "0"} unit="kWh" />
-        <Stat
-          className={styles.costStat}
-          label="Charging cost"
-          value={
-            row ? (
-              <span className={styles.cost}>
-                <span>{fmtUsd(row.charge_cost_usd_arrival)}</span>
-                <span className={styles.costNote}>at arrival</span>
-                <span className={styles.vs}>vs</span>
-                <span>{fmtUsd(row.charge_cost_usd_scheduled)}</span>
-                <span className={styles.costNote}>scheduled</span>
-              </span>
-            ) : (
-              "0"
-            )
-          }
-          hint={saving != null ? `${saving}% lower when scheduled` : undefined}
-        />
+        <Stat className={styles.cell} label="Generator hours" value={row ? fmtHours(row.generator_hours) : "0"} />
+        <Stat className={styles.cell} label="Charged" value={row ? fmtInt(row.charged_kwh) : "0"} unit="kWh" />
+        <Stat className={styles.cell} label="Charging cost at arrival" value={row ? fmtUsd(row.charge_cost_usd_arrival) : "$0"} />
+        <Stat className={styles.cell} label="Charging cost scheduled" value={row ? fmtUsd(row.charge_cost_usd_scheduled) : "$0"} />
       </div>
 
-      <Footnote className={styles.footnote} />
-    </Tile>
+      <Footnote className={styles.footnote}>
+        {saving != null ? `Scheduled charging costs ${saving}% less. ` : ""}Estimates. Parameters in config.yaml.
+      </Footnote>
+    </section>
   );
 }
 

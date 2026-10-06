@@ -8,17 +8,14 @@ interface Props {
   height?: number;
   className?: string;
   title?: string;
-  /** Track color: white on gray tiles (default), tile gray on white. */
-  track?: "white" | "tile";
 }
 
-/** 6px pill bar; fill green, amber under 35%, red under 15%. */
-export default function BatteryBar({ soc, width = "100%", height = 6, className, title, track = "white" }: Props) {
+/** 3px bar on a faint track; fill green, amber under 35%, red under 15%. */
+export default function BatteryBar({ soc, width = "100%", height = 3, className, title }: Props) {
   const pct = Math.max(0, Math.min(1, soc)) * 100;
   return (
     <div
       className={`${styles.track} ${className ?? ""}`}
-      data-track={track}
       style={{ width, height }}
       role="meter"
       aria-valuemin={0}

@@ -1,7 +1,7 @@
 .map {
   position: absolute;
   inset: 0;
-  background: var(--tile);
+  background: var(--d-bg);
 }
 
 .map :global(.maplibregl-canvas-container) {
@@ -15,27 +15,27 @@
   height: 0;
   cursor: pointer;
   outline: none;
-  --activity: var(--act-idle);
+  --activity: var(--d-act-idle);
 }
 
 .boat[data-activity="transit"] {
-  --activity: var(--act-transit);
+  --activity: var(--d-act-transit);
 }
 
 .boat[data-activity="assist"] {
-  --activity: var(--act-assist);
+  --activity: var(--d-act-assist);
 }
 
 .boat[data-activity="idle"] {
-  --activity: var(--act-idle);
+  --activity: var(--d-act-idle);
 }
 
 .boat[data-activity="charging"] {
-  --activity: var(--act-charging);
+  --activity: var(--d-act-charging);
 }
 
 .boat[data-activity="generator"] {
-  --activity: var(--status-generator);
+  --activity: var(--d-red);
 }
 
 .boat svg {
@@ -46,7 +46,7 @@
   height: 17px;
   overflow: visible;
   transform-origin: 50% 50%;
-  transition: transform var(--t) var(--ease);
+  transition: transform var(--d-t) var(--d-ease);
 }
 
 .boat[data-selected="true"] svg {
@@ -54,44 +54,45 @@
 }
 
 .boat :global(.tug-shadow) {
-  fill: rgba(10, 10, 11, 0.12);
+  fill: rgba(0, 0, 0, 0.45);
   transform: translate(0.8px, 1.2px);
 }
 
 .boat :global(.tug-hull) {
   fill: var(--activity);
-  stroke: #ffffff;
-  stroke-width: 1.5;
+  stroke: #0a0a0a;
+  stroke-width: 1;
   stroke-linejoin: round;
-  transition: fill var(--t) var(--ease);
+  transition: fill var(--d-t) var(--d-ease);
 }
 
 .boat :global(.tug-house) {
-  fill: rgba(0, 0, 0, 0.28);
+  fill: rgba(0, 0, 0, 0.35);
 }
 
 .boat :global(.tug-stack) {
-  fill: rgba(255, 255, 255, 0.9);
+  fill: rgba(255, 255, 255, 0.85);
 }
 
+/* Focus and selection outline around the hull. */
 .boat :global(.tug-outline) {
   fill: none;
-  stroke: var(--ink);
-  stroke-width: 3.6;
+  stroke: #ffffff;
+  stroke-width: 3;
   stroke-linejoin: round;
   opacity: 0;
-  transition: opacity var(--t) var(--ease);
+  transition: opacity var(--d-t) var(--d-ease);
 }
 
 .boat[data-selected="true"] :global(.tug-outline) {
-  opacity: 1;
+  opacity: 0.9;
 }
 
 .boat:focus-visible :global(.tug-outline) {
-  opacity: 1;
+  opacity: 0.9;
 }
 
-/* Selection ring scales in. */
+/* White selection ring scales in. */
 .ring {
   position: absolute;
   left: -19px;
@@ -99,14 +100,14 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1.5px solid var(--ink);
+  border: 1px solid #ffffff;
   opacity: 0;
   transform: scale(0.5);
   pointer-events: none;
 }
 
 .boat[data-selected="true"] .ring {
-  animation: ringIn 320ms var(--ease) forwards;
+  animation: ringIn 320ms var(--d-ease) forwards;
 }
 
 @keyframes ringIn {
@@ -115,12 +116,12 @@
     transform: scale(0.5);
   }
   to {
-    opacity: 0.35;
+    opacity: 0.6;
     transform: scale(1);
   }
 }
 
-/* ---- tag: battery pill under the model and the name label ---- */
+/* ---- tag: battery bar under the model and the name chip ---- */
 .tag {
   position: relative;
   width: 0;
@@ -133,10 +134,9 @@
   left: -10px;
   top: 10px;
   width: 20px;
-  height: 3px;
-  border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.08);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
 
@@ -146,41 +146,42 @@
 
 .fill {
   height: 100%;
-  border-radius: var(--r-pill);
-  background: var(--green);
+  background: var(--d-green);
   transition:
-    width var(--t) var(--ease),
-    background var(--t) var(--ease);
+    width var(--d-t) var(--d-ease),
+    background var(--d-t) var(--d-ease);
 }
 
 .fill[data-level="warn"] {
-  background: var(--amber);
+  background: var(--d-amber);
 }
 
 .fill[data-level="bad"] {
-  background: var(--red);
+  background: var(--d-red);
 }
 
+/* Name chip: surface fill with a hairline. */
 .label {
   position: absolute;
   left: 50%;
   top: 18px;
   transform: translate(-50%, -4px);
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0;
+  line-height: 1;
   white-space: nowrap;
-  color: var(--ink);
-  background: #ffffff;
-  border-radius: var(--r-pill);
-  box-shadow: var(--shadow-float);
-  padding: 4px 9px;
+  color: var(--d-fg);
+  background: var(--d-surface);
+  border: 1px solid var(--d-line-2);
+  border-radius: var(--d-radius-sm);
+  padding: 4px 6px;
   opacity: 0;
   pointer-events: none;
   transition:
-    opacity var(--t) var(--ease),
-    transform var(--t) var(--ease);
+    opacity var(--d-t) var(--d-ease),
+    transform var(--d-t) var(--d-ease);
 }
 
 .tag[data-selected="true"] .label {
