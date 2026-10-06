@@ -1,0 +1,18 @@
+.panel {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  color: var(--ink);
+}
+
+.pad_none {
+  padding: 0;
+}
+
+.pad_sm {
+  padding: 12px 16px;
+}
+
+.pad_md {
+  padding: 16px;
+}

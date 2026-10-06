@@ -1,0 +1,101 @@
+.root {
+  position: fixed;
+  top: var(--nav-h);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  background: var(--bg);
+}
+
+.rail {
+  flex: none;
+  width: var(--rail-w);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg-raised);
+  border-right: 1px solid var(--line);
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.mapWrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.mapLoading {
+  position: absolute;
+  inset: 0;
+  background: var(--sea);
+}
+
+.mapError {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  color: var(--bad);
+  font-size: 13px;
+}
+
+.section {
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.listSection {
+  border-bottom: 1px solid var(--line);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  font-size: 24px;
+}
+
+.sub {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.footer {
+  margin-top: auto;
+  padding: 16px;
+}
+
+/* Stacked layout: the map on top, the rail content in flow. */
+@media (max-width: 1023px) {
+  .root {
+    position: static;
+    display: block;
+    padding-top: var(--nav-h);
+    min-height: 100dvh;
+  }
+
+  .mapWrap {
+    height: 44vh;
+    min-height: 260px;
+  }
+
+  .rail {
+    width: auto;
+    overflow: visible;
+    border-right: none;
+    border-top: 1px solid var(--line);
+  }
+}

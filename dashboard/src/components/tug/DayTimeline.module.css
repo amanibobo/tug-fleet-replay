@@ -1,0 +1,139 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  padding: 12px 6px 6px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.svg {
+  display: block;
+  cursor: crosshair;
+  touch-action: pan-y;
+  overflow: visible;
+}
+
+.grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.threshWarn {
+  stroke: var(--warn);
+  stroke-opacity: 0.35;
+  stroke-dasharray: 2 4;
+}
+
+.threshBad {
+  stroke: var(--bad);
+  stroke-opacity: 0.4;
+  stroke-dasharray: 2 4;
+}
+
+.yLabel,
+.xLabel {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  fill: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.lineOk,
+.lineWarn,
+.lineBad {
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.lineOk {
+  stroke: var(--ok);
+}
+
+.lineWarn {
+  stroke: var(--warn);
+}
+
+.lineBad {
+  stroke: var(--bad);
+}
+
+.bandTrack {
+  fill: rgba(255, 255, 255, 0.04);
+}
+
+.cursor {
+  stroke: var(--accent);
+  stroke-width: 1.25;
+}
+
+.crosshair {
+  stroke: var(--ink);
+  stroke-opacity: 0.35;
+  stroke-width: 1;
+}
+
+.probeDot {
+  fill: var(--bg);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.probe {
+  pointer-events: none;
+}
+
+.skeleton {
+  fill: rgba(255, 255, 255, 0.03);
+  animation: pulse 1.6s var(--ease) infinite;
+}
+
+@keyframes pulse {
+  50% {
+    fill: rgba(255, 255, 255, 0.07);
+  }
+}
+
+.tip {
+  position: absolute;
+  top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 150px;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  background: var(--bg-raised);
+  border: 1px solid var(--line-strong);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tipTime {
+  font-size: 12px;
+  color: var(--ink-2);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tipTime .mono {
+  color: var(--ink);
+}
+
+.tipVal {
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.tipRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.tipGen {
+  font-size: 13px;
+  color: var(--bad);
+}

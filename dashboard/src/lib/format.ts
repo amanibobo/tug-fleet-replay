@@ -1,0 +1,126 @@
+import type { Activity, Status, Telemetry } from "./types";
+
+export const DAY_MS = 86_400_000;
+
+export function statusOf(t: Pick<Telemetry, "generator_on" | "activity">): Status {
+  if (t.generator_on) return "generator";
+  if (t.activity === "charging") return "charging";
+  if (t.activity === "idle") return "idle";
+  return "electric";
+}
+
+export const STATUS_COLOR: Record<Status, string> = {
+  electric: "var(--ok)",
+  generator: "var(--bad)",
+  charging: "var(--info)",
+  idle: "var(--ink-3)",
+};
+
+export const ACTIVITY_COLOR: Record<Activity, string> = {
+  transit: "var(--act-transit)",
+  assist: "var(--act-assist)",
+  idle: "var(--act-idle)",
+  charging: "var(--act-charging)",
+};
+
+/** Hex versions for MapLibre, which cannot read CSS variables. */
+export const ACTIVITY_HEX: Record<Activity, string> = {
+  transit: "#3391ff",
+  assist: "#ff6123",
+  idle: "#6b7280",
+  charging: "#34d399",
+};
+
+export const STATUS_HEX: Record<Status, string> = {
+  electric: "#34d399",
+  generator: "#f87171",
+  charging: "#3391ff",
+  idle: "#6b7280",
+};
+
+export function socColor(soc: number): string {
+  if (soc < 0.15) return "var(--bad)";
+  if (soc < 0.35) return "var(--warn)";
+  return "var(--ok)";
+}
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/** YYYY-MM-DD in UTC. */
+export function isoDate(d: Date | number): string {
+  const x = new Date(d);
+  return `${x.getUTCFullYear()}-${pad(x.getUTCMonth() + 1)}-${pad(x.getUTCDate())}`;
+}
+
+/** HH:MM in UTC. Accepts a Date, ms, or ISO string. */
+export function hhmm(d: Date | number | string): string {
+  const x = new Date(d);
+  return `${pad(x.getUTCHours())}:${pad(x.getUTCMinutes())}`;
+}
+
+/** HH:MM:SS in UTC. */
+export function hhmmss(d: Date | number | string): string {
+  const x = new Date(d);
+  return `${hhmm(x)}:${pad(x.getUTCSeconds())}`;
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+/** "Mon, Dec 2" from a Date or YYYY-MM-DD string, in UTC. */
+export function prettyDate(d: Date | number | string, withWeekday = true): string {
+  const x = typeof d === "string" ? new Date(`${d}T00:00:00Z`) : new Date(d);
+  const core = `${MONTHS[x.getUTCMonth()]} ${x.getUTCDate()}`;
+  return withWeekday ? `${WEEKDAYS[x.getUTCDay()]}, ${core}` : core;
+}
+
+/** "Dec 2–8, 2024" */
+export function dateRange(start: string, end: string): string {
+  const a = new Date(`${start}T00:00:00Z`);
+  const b = new Date(`${end}T00:00:00Z`);
+  const sameMonth = a.getUTCMonth() === b.getUTCMonth();
+  const left = `${MONTHS[a.getUTCMonth()]} ${a.getUTCDate()}`;
+  const right = sameMonth ? `${b.getUTCDate()}` : `${MONTHS[b.getUTCMonth()]} ${b.getUTCDate()}`;
+  return `${left}–${right}, ${b.getUTCFullYear()}`;
+}
+
+export function shiftDate(date: string, days: number): string {
+  return isoDate(new Date(`${date}T00:00:00Z`).getTime() + days * DAY_MS);
+}
+
+export function fmtInt(n: number): string {
+  return Math.round(n).toLocaleString("en-US");
+}
+
+export function fmtNum(n: number, digits = 1): string {
+  return n.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+}
+
+export function fmtPct(x: number, digits = 0): string {
+  return `${(x * 100).toFixed(digits)}%`;
+}
+
+export function fmtUsd(n: number): string {
+  return `$${fmtInt(n)}`;
+}
+
+/** "1 h 32 min" from minutes. */
+export function fmtDuration(min: number): string {
+  const m = Math.round(min);
+  const h = Math.floor(m / 60);
+  const r = m % 60;
+  if (h === 0) return `${r} min`;
+  return r === 0 ? `${h} h` : `${h} h ${r} min`;
+}
+
+export function fmtHours(h: number): string {
+  return h >= 10 ? `${fmtInt(h)} h` : `${fmtNum(h, 1)} h`;
+}
+
+export function minutesBetween(a: string, b: string): number {
+  return (Date.parse(b) - Date.parse(a)) / 60_000;
+}
+
+export function clamp(v: number, lo: number, hi: number): number {
+  return Math.min(hi, Math.max(lo, v));
+}

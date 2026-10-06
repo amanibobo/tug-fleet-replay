@@ -1,0 +1,41 @@
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gutter);
+  z-index: 40;
+  background: var(--bg);
+}
+
+.wordmark {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-2);
+  transition: color var(--t-fast) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--ink);
+}
+
+.link[data-active] {
+  color: var(--ink);
+}

@@ -1,0 +1,623 @@
+{
+ "dataset": {
+  "start": "2024-12-02",
+  "end": "2024-12-08",
+  "days": 7,
+  "source": "NOAA MarineCadastre AIS",
+  "tugs": 22,
+  "tug_days": 154
+ },
+ "default_battery_kwh": 6000.0,
+ "slider": {
+  "min_kwh": 1000,
+  "max_kwh": 8000,
+  "step_kwh": 250
+ },
+ "sweep": [
+  {
+   "battery_kwh": 1000.0,
+   "electric_share": 0.1299,
+   "electric_days": 20,
+   "tug_days": 154,
+   "generator_kwh": 344090,
+   "generator_hours": 573.5,
+   "charged_kwh": 272054,
+   "deficit_kwh": 99782,
+   "charge_cost_usd_arrival": 67482,
+   "charge_cost_usd_scheduled": 52952
+  },
+  {
+   "battery_kwh": 1250.0,
+   "electric_share": 0.1688,
+   "electric_days": 26,
+   "tug_days": 154,
+   "generator_kwh": 322140,
+   "generator_hours": 536.9,
+   "charged_kwh": 311617,
+   "deficit_kwh": 81588,
+   "charge_cost_usd_arrival": 77503,
+   "charge_cost_usd_scheduled": 61338
+  },
+  {
+   "battery_kwh": 1500.0,
+   "electric_share": 0.2143,
+   "electric_days": 33,
+   "tug_days": 154,
+   "generator_kwh": 300330,
+   "generator_hours": 500.6,
+   "charged_kwh": 346782,
+   "deficit_kwh": 67486,
+   "charge_cost_usd_arrival": 86452,
+   "charge_cost_usd_scheduled": 68879
+  },
+  {
+   "battery_kwh": 1750.0,
+   "electric_share": 0.2468,
+   "electric_days": 38,
+   "tug_days": 154,
+   "generator_kwh": 280440,
+   "generator_hours": 467.4,
+   "charged_kwh": 378902,
+   "deficit_kwh": 55027,
+   "charge_cost_usd_arrival": 94389,
+   "charge_cost_usd_scheduled": 75691
+  },
+  {
+   "battery_kwh": 2000.0,
+   "electric_share": 0.2857,
+   "electric_days": 44,
+   "tug_days": 154,
+   "generator_kwh": 259190,
+   "generator_hours": 432.0,
+   "charged_kwh": 407233,
+   "deficit_kwh": 47815,
+   "charge_cost_usd_arrival": 101571,
+   "charge_cost_usd_scheduled": 81744
+  },
+  {
+   "battery_kwh": 2250.0,
+   "electric_share": 0.3117,
+   "electric_days": 48,
+   "tug_days": 154,
+   "generator_kwh": 239110,
+   "generator_hours": 398.5,
+   "charged_kwh": 434715,
+   "deficit_kwh": 40114,
+   "charge_cost_usd_arrival": 108315,
+   "charge_cost_usd_scheduled": 87588
+  },
+  {
+   "battery_kwh": 2500.0,
+   "electric_share": 0.3636,
+   "electric_days": 56,
+   "tug_days": 154,
+   "generator_kwh": 220480,
+   "generator_hours": 367.5,
+   "charged_kwh": 460386,
+   "deficit_kwh": 32973,
+   "charge_cost_usd_arrival": 114591,
+   "charge_cost_usd_scheduled": 93210
+  },
+  {
+   "battery_kwh": 2750.0,
+   "electric_share": 0.4091,
+   "electric_days": 63,
+   "tug_days": 154,
+   "generator_kwh": 204810,
+   "generator_hours": 341.4,
+   "charged_kwh": 480902,
+   "deficit_kwh": 28137,
+   "charge_cost_usd_arrival": 119593,
+   "charge_cost_usd_scheduled": 97469
+  },
+  {
+   "battery_kwh": 3000.0,
+   "electric_share": 0.4351,
+   "electric_days": 67,
+   "tug_days": 154,
+   "generator_kwh": 191280,
+   "generator_hours": 318.8,
+   "charged_kwh": 498728,
+   "deficit_kwh": 23281,
+   "charge_cost_usd_arrival": 123842,
+   "charge_cost_usd_scheduled": 101097
+  },
+  {
+   "battery_kwh": 3250.0,
+   "electric_share": 0.4481,
+   "electric_days": 69,
+   "tug_days": 154,
+   "generator_kwh": 179170,
+   "generator_hours": 298.6,
+   "charged_kwh": 515055,
+   "deficit_kwh": 19133,
+   "charge_cost_usd_arrival": 127487,
+   "charge_cost_usd_scheduled": 104338
+  },
+  {
+   "battery_kwh": 3500.0,
+   "electric_share": 0.4935,
+   "electric_days": 76,
+   "tug_days": 154,
+   "generator_kwh": 165620,
+   "generator_hours": 276.0,
+   "charged_kwh": 531748,
+   "deficit_kwh": 15851,
+   "charge_cost_usd_arrival": 131143,
+   "charge_cost_usd_scheduled": 107622
+  },
+  {
+   "battery_kwh": 3750.0,
+   "electric_share": 0.513,
+   "electric_days": 79,
+   "tug_days": 154,
+   "generator_kwh": 152640,
+   "generator_hours": 254.4,
+   "charged_kwh": 545819,
+   "deficit_kwh": 14660,
+   "charge_cost_usd_arrival": 134424,
+   "charge_cost_usd_scheduled": 110296
+  },
+  {
+   "battery_kwh": 4000.0,
+   "electric_share": 0.5519,
+   "electric_days": 85,
+   "tug_days": 154,
+   "generator_kwh": 141450,
+   "generator_hours": 235.8,
+   "charged_kwh": 559707,
+   "deficit_kwh": 11931,
+   "charge_cost_usd_arrival": 137930,
+   "charge_cost_usd_scheduled": 113196
+  },
+  {
+   "battery_kwh": 4250.0,
+   "electric_share": 0.5909,
+   "electric_days": 91,
+   "tug_days": 154,
+   "generator_kwh": 131190,
+   "generator_hours": 218.7,
+   "charged_kwh": 570034,
+   "deficit_kwh": 11075,
+   "charge_cost_usd_arrival": 140305,
+   "charge_cost_usd_scheduled": 115325
+  },
+  {
+   "battery_kwh": 4500.0,
+   "electric_share": 0.6169,
+   "electric_days": 95,
+   "tug_days": 154,
+   "generator_kwh": 121790,
+   "generator_hours": 203.0,
+   "charged_kwh": 581858,
+   "deficit_kwh": 9001,
+   "charge_cost_usd_arrival": 143193,
+   "charge_cost_usd_scheduled": 117791
+  },
+  {
+   "battery_kwh": 4750.0,
+   "electric_share": 0.6299,
+   "electric_days": 97,
+   "tug_days": 154,
+   "generator_kwh": 113670,
+   "generator_hours": 189.4,
+   "charged_kwh": 591127,
+   "deficit_kwh": 7792,
+   "charge_cost_usd_arrival": 145324,
+   "charge_cost_usd_scheduled": 119740
+  },
+  {
+   "battery_kwh": 5000.0,
+   "electric_share": 0.6364,
+   "electric_days": 98,
+   "tug_days": 154,
+   "generator_kwh": 104520,
+   "generator_hours": 174.2,
+   "charged_kwh": 601235,
+   "deficit_kwh": 6194,
+   "charge_cost_usd_arrival": 147807,
+   "charge_cost_usd_scheduled": 121922
+  },
+  {
+   "battery_kwh": 5250.0,
+   "electric_share": 0.6558,
+   "electric_days": 101,
+   "tug_days": 154,
+   "generator_kwh": 98930,
+   "generator_hours": 164.9,
+   "charged_kwh": 607742,
+   "deficit_kwh": 5166,
+   "charge_cost_usd_arrival": 149425,
+   "charge_cost_usd_scheduled": 123316
+  },
+  {
+   "battery_kwh": 5500.0,
+   "electric_share": 0.6753,
+   "electric_days": 104,
+   "tug_days": 154,
+   "generator_kwh": 92850,
+   "generator_hours": 154.8,
+   "charged_kwh": 613771,
+   "deficit_kwh": 5128,
+   "charge_cost_usd_arrival": 150740,
+   "charge_cost_usd_scheduled": 124432
+  },
+  {
+   "battery_kwh": 5750.0,
+   "electric_share": 0.6818,
+   "electric_days": 105,
+   "tug_days": 154,
+   "generator_kwh": 86430,
+   "generator_hours": 144.1,
+   "charged_kwh": 620951,
+   "deficit_kwh": 4278,
+   "charge_cost_usd_arrival": 152492,
+   "charge_cost_usd_scheduled": 126018
+  },
+  {
+   "battery_kwh": 6000.0,
+   "electric_share": 0.7078,
+   "electric_days": 109,
+   "tug_days": 154,
+   "generator_kwh": 81600,
+   "generator_hours": 136.0,
+   "charged_kwh": 626934,
+   "deficit_kwh": 3374,
+   "charge_cost_usd_arrival": 153816,
+   "charge_cost_usd_scheduled": 127208
+  },
+  {
+   "battery_kwh": 6250.0,
+   "electric_share": 0.7403,
+   "electric_days": 114,
+   "tug_days": 154,
+   "generator_kwh": 75570,
+   "generator_hours": 126.0,
+   "charged_kwh": 633429,
+   "deficit_kwh": 2629,
+   "charge_cost_usd_arrival": 155399,
+   "charge_cost_usd_scheduled": 128459
+  },
+  {
+   "battery_kwh": 6500.0,
+   "electric_share": 0.7468,
+   "electric_days": 115,
+   "tug_days": 154,
+   "generator_kwh": 69710,
+   "generator_hours": 116.2,
+   "charged_kwh": 639493,
+   "deficit_kwh": 2305,
+   "charge_cost_usd_arrival": 156799,
+   "charge_cost_usd_scheduled": 129605
+  },
+  {
+   "battery_kwh": 6750.0,
+   "electric_share": 0.7662,
+   "electric_days": 118,
+   "tug_days": 154,
+   "generator_kwh": 65320,
+   "generator_hours": 108.9,
+   "charged_kwh": 643303,
+   "deficit_kwh": 1905,
+   "charge_cost_usd_arrival": 157664,
+   "charge_cost_usd_scheduled": 130312
+  },
+  {
+   "battery_kwh": 7000.0,
+   "electric_share": 0.7727,
+   "electric_days": 119,
+   "tug_days": 154,
+   "generator_kwh": 62210,
+   "generator_hours": 103.7,
+   "charged_kwh": 646873,
+   "deficit_kwh": 1395,
+   "charge_cost_usd_arrival": 158594,
+   "charge_cost_usd_scheduled": 130942
+  },
+  {
+   "battery_kwh": 7250.0,
+   "electric_share": 0.7922,
+   "electric_days": 122,
+   "tug_days": 154,
+   "generator_kwh": 59120,
+   "generator_hours": 98.5,
+   "charged_kwh": 651039,
+   "deficit_kwh": 950,
+   "charge_cost_usd_arrival": 159650,
+   "charge_cost_usd_scheduled": 131736
+  },
+  {
+   "battery_kwh": 7500.0,
+   "electric_share": 0.8052,
+   "electric_days": 124,
+   "tug_days": 154,
+   "generator_kwh": 56160,
+   "generator_hours": 93.6,
+   "charged_kwh": 654206,
+   "deficit_kwh": 633,
+   "charge_cost_usd_arrival": 160338,
+   "charge_cost_usd_scheduled": 132330
+  },
+  {
+   "battery_kwh": 7750.0,
+   "electric_share": 0.8312,
+   "electric_days": 128,
+   "tug_days": 154,
+   "generator_kwh": 52200,
+   "generator_hours": 87.0,
+   "charged_kwh": 658212,
+   "deficit_kwh": 497,
+   "charge_cost_usd_arrival": 161093,
+   "charge_cost_usd_scheduled": 133057
+  },
+  {
+   "battery_kwh": 8000.0,
+   "electric_share": 0.8377,
+   "electric_days": 129,
+   "tug_days": 154,
+   "generator_kwh": 48960,
+   "generator_hours": 81.6,
+   "charged_kwh": 660286,
+   "deficit_kwh": 393,
+   "charge_cost_usd_arrival": 161433,
+   "charge_cost_usd_scheduled": 133387
+  }
+ ],
+ "tugs": [
+  {
+   "tug_id": "368133450",
+   "name": "Darell Hiatt",
+   "days": 7,
+   "energy_kwh_per_day": 3811
+  },
+  {
+   "tug_id": "367569830",
+   "name": "Barbara J Mulholland",
+   "days": 7,
+   "energy_kwh_per_day": 9103
+  },
+  {
+   "tug_id": "366755010",
+   "name": "Master",
+   "days": 7,
+   "energy_kwh_per_day": 7612
+  },
+  {
+   "tug_id": "303466000",
+   "name": "Sarah Avrick",
+   "days": 7,
+   "energy_kwh_per_day": 9024
+  },
+  {
+   "tug_id": "367004260",
+   "name": "Cabrillo",
+   "days": 7,
+   "energy_kwh_per_day": 4201
+  },
+  {
+   "tug_id": "368136950",
+   "name": "Hercules",
+   "days": 7,
+   "energy_kwh_per_day": 6863
+  },
+  {
+   "tug_id": "367330510",
+   "name": "Patricia Ann",
+   "days": 7,
+   "energy_kwh_per_day": 5938
+  },
+  {
+   "tug_id": "366998840",
+   "name": "Millennium Maverick",
+   "days": 7,
+   "energy_kwh_per_day": 4757
+  },
+  {
+   "tug_id": "338602000",
+   "name": "Baltimore",
+   "days": 7,
+   "energy_kwh_per_day": 2218
+  },
+  {
+   "tug_id": "368084540",
+   "name": "Delta Teresa",
+   "days": 7,
+   "energy_kwh_per_day": 6857
+  },
+  {
+   "tug_id": "367625810",
+   "name": "Delta Audrey",
+   "days": 7,
+   "energy_kwh_per_day": 5752
+  },
+  {
+   "tug_id": "367401030",
+   "name": "Delta Billie",
+   "days": 7,
+   "energy_kwh_per_day": 5453
+  },
+  {
+   "tug_id": "366892000",
+   "name": "Jamie Ann",
+   "days": 7,
+   "energy_kwh_per_day": 9141
+  },
+  {
+   "tug_id": "368171390",
+   "name": "Brooks M Hamilton",
+   "days": 7,
+   "energy_kwh_per_day": 3904
+  },
+  {
+   "tug_id": "367175860",
+   "name": "Independence",
+   "days": 7,
+   "energy_kwh_per_day": 4817
+  },
+  {
+   "tug_id": "368171260",
+   "name": "Madeline B Hamilton",
+   "days": 7,
+   "energy_kwh_per_day": 3787
+  },
+  {
+   "tug_id": "367006770",
+   "name": "Robyn J",
+   "days": 7,
+   "energy_kwh_per_day": 1954
+  },
+  {
+   "tug_id": "368000890",
+   "name": "Elizabeth C",
+   "days": 7,
+   "energy_kwh_per_day": 1524
+  },
+  {
+   "tug_id": "366978690",
+   "name": "Eagle",
+   "days": 7,
+   "energy_kwh_per_day": 1554
+  },
+  {
+   "tug_id": "368351000",
+   "name": "Iver Foss",
+   "days": 7,
+   "energy_kwh_per_day": 1659
+  },
+  {
+   "tug_id": "368012340",
+   "name": "Apache",
+   "days": 7,
+   "energy_kwh_per_day": 1535
+  },
+  {
+   "tug_id": "367424810",
+   "name": "Cub",
+   "days": 7,
+   "energy_kwh_per_day": 1269
+  }
+ ],
+ "docks": [
+  {
+   "lat": 33.73114,
+   "lon": -118.26104,
+   "radius_m": 250,
+   "idle_minutes": 26998,
+   "tugs": 4,
+   "name": "Dock A"
+  },
+  {
+   "lat": 33.7398,
+   "lon": -118.27813,
+   "radius_m": 250,
+   "idle_minutes": 11146,
+   "tugs": 3,
+   "name": "Dock B"
+  },
+  {
+   "lat": 33.76393,
+   "lon": -118.25683,
+   "radius_m": 250,
+   "idle_minutes": 9996,
+   "tugs": 4,
+   "name": "Dock C"
+  },
+  {
+   "lat": 33.75334,
+   "lon": -118.22392,
+   "radius_m": 250,
+   "idle_minutes": 5910,
+   "tugs": 2,
+   "name": "Dock D"
+  },
+  {
+   "lat": 33.72946,
+   "lon": -118.27592,
+   "radius_m": 250,
+   "idle_minutes": 5727,
+   "tugs": 3,
+   "name": "Dock E"
+  },
+  {
+   "lat": 33.74403,
+   "lon": -118.20456,
+   "radius_m": 250,
+   "idle_minutes": 5693,
+   "tugs": 1,
+   "name": "Dock F"
+  },
+  {
+   "lat": 33.77064,
+   "lon": -118.21265,
+   "radius_m": 250,
+   "idle_minutes": 5685,
+   "tugs": 2,
+   "name": "Dock G"
+  },
+  {
+   "lat": 33.77634,
+   "lon": -118.21084,
+   "radius_m": 250,
+   "idle_minutes": 2172,
+   "tugs": 3,
+   "name": "Dock H"
+  }
+ ],
+ "assumptions": [
+  {
+   "key": "battery_kwh",
+   "value": 6000,
+   "unit": "kWh",
+   "note": "Arc/Curtin tugs carry 6 MWh batteries (Marine Log, Sept 2025). Cited, not estimated."
+  },
+  {
+   "key": "usable_fraction",
+   "value": 0.9,
+   "unit": "",
+   "note": "Share of the pack the sim allows to cycle."
+  },
+  {
+   "key": "assist_power_kw",
+   "value": 1400,
+   "unit": "kW",
+   "note": "Weakest estimate. AIS reports speed, not pushing force."
+  },
+  {
+   "key": "transit_power_kw_at_8kn",
+   "value": 900,
+   "unit": "kW",
+   "note": "Scaled by the cube of speed."
+  },
+  {
+   "key": "idle_power_kw",
+   "value": 45,
+   "unit": "kW",
+   "note": "Hotel load while waiting."
+  },
+  {
+   "key": "generator_power_kw",
+   "value": 600,
+   "unit": "kW",
+   "note": "Cuts in below 15% charge, out above 35%."
+  },
+  {
+   "key": "charger_power_kw",
+   "value": 2000,
+   "unit": "kW",
+   "note": "Shore power while idle at a known dock for 20 min or more."
+  },
+  {
+   "key": "assist_speed_band_kn",
+   "value": "0.5\u20134.0",
+   "unit": "kn",
+   "note": "Slow and away from the dock counts as assist."
+  },
+  {
+   "key": "tariff",
+   "value": "0.14/0.22/0.45",
+   "unit": "$/kWh",
+   "note": "Off/mid/on-peak shape modeled on SCE TOU-8. Confirm before quoting."
+  }
+ ],
+ "generated_by": "tug_replay pipeline; parameters in config.yaml"
+}

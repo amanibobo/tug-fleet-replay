@@ -1,0 +1,32 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 4px 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.stageTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.stageSub {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+@media (max-width: 480px) {
+  .stage {
+    grid-template-columns: 1fr;
+  }
+}

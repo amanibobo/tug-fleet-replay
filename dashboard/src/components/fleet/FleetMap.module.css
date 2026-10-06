@@ -1,0 +1,174 @@
+.map {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+}
+
+.map :global(.maplibregl-canvas-container) {
+  cursor: default;
+}
+
+/* Marker root is a zero-size anchor; children hang off it. */
+.marker {
+  position: relative;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+  outline: none;
+  --status: var(--ink-3);
+}
+
+.marker[data-status="electric"] {
+  --status: var(--ok);
+}
+
+.marker[data-status="generator"] {
+  --status: var(--bad);
+}
+
+.marker[data-status="charging"] {
+  --status: var(--info);
+}
+
+.marker[data-status="idle"] {
+  --status: var(--ink-3);
+}
+
+.dot {
+  position: absolute;
+  left: -4.5px;
+  top: -4.5px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--status);
+  border: 1.5px solid #fff;
+  box-sizing: border-box;
+  transition:
+    width var(--t) var(--ease-out),
+    height var(--t) var(--ease-out),
+    left var(--t) var(--ease-out),
+    top var(--t) var(--ease-out),
+    background var(--t) var(--ease-out);
+}
+
+.marker[data-selected="true"] .dot {
+  width: 13px;
+  height: 13px;
+  left: -6.5px;
+  top: -6.5px;
+}
+
+.ring {
+  position: absolute;
+  left: -10.5px;
+  top: -10.5px;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--t) var(--ease-out),
+    transform var(--t) var(--ease-out);
+  pointer-events: none;
+}
+
+.marker[data-selected="true"] .ring {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Heading tick: rotates around the marker centre. */
+.tick {
+  position: absolute;
+  left: -1px;
+  top: -13px;
+  width: 2px;
+  height: 26px;
+  transform-origin: 1px 13px;
+  transition: transform var(--t) var(--ease-out);
+  pointer-events: none;
+}
+
+.tick::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 7px;
+  border-radius: 1px;
+  background: #fff;
+}
+
+.bar {
+  position: absolute;
+  left: -11px;
+  top: 9px;
+  width: 22px;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+  transition: top var(--t) var(--ease-out);
+}
+
+.marker[data-selected="true"] .bar {
+  top: 13px;
+}
+
+.fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--ok);
+  transition:
+    width var(--t) var(--ease-out),
+    background var(--t) var(--ease-out);
+}
+
+.fill[data-level="warn"] {
+  background: var(--warn);
+}
+
+.fill[data-level="bad"] {
+  background: var(--bad);
+}
+
+.label {
+  position: absolute;
+  left: 50%;
+  top: 17px;
+  transform: translate(-50%, -4px);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--ink);
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--t) var(--ease-out),
+    transform var(--t) var(--ease-out);
+}
+
+.marker:hover .label,
+.marker:focus-visible .label,
+.marker[data-selected="true"] .label {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.marker[data-selected="true"] .label {
+  top: 21px;
+}
+
+.marker:focus-visible .dot {
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}

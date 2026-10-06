@@ -1,0 +1,136 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.clock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.date {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.timeRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.time {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.tz {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.live {
+  margin-left: auto;
+  color: var(--ok);
+}
+
+.scrub {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.range:disabled {
+  cursor: default;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(to right, var(--ink) 0 var(--pct), var(--line-strong) var(--pct) 100%);
+}
+
+.range::-moz-range-track {
+  height: 2px;
+  background: var(--line-strong);
+}
+
+.range::-moz-range-progress {
+  height: 2px;
+  background: var(--ink);
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: box-shadow var(--t-fast) var(--ease-out);
+}
+
+.range::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: none;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.range:focus-visible {
+  outline: none;
+}
+
+.range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.ticks {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tick {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-3);
+  transition: color var(--t-fast) var(--ease-out);
+}
+
+.tick:last-child {
+  text-align: right;
+}
+
+.tick:hover:not(:disabled) {
+  color: var(--ink-2);
+}
+
+.tick[data-active] {
+  color: var(--ink);
+}
