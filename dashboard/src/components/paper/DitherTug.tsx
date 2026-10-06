@@ -39,7 +39,7 @@ export default function DitherTug({ ink, mode }: Props) {
     let timer = 0;
     let lum: Float32Array | null = null;
     let rgb: Uint8ClampedArray | null = null;
-    const TINT = 0.5; // how far each dash leans from ink toward the source color
+    const TINT = 0; // pure ink; raise toward 1 to let the drawing's paint through // how far each dash leans from ink toward the source color
     let gw = 0;
     let gh = 0;
     let cw = 0;
