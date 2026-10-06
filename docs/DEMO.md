@@ -31,5 +31,5 @@
 - Upload the mp4 (UploadThing hosts the current one) and set `DEMO_SRC` in
   `dashboard/src/components/paper/DemoModal.tsx` to its URL. The landing's "Demo video" link and the
   tug on the landing both open it in the modal.
-- Rebuild and deploy: `npx vercel deploy --prod --yes` from `dashboard/`.
+- Commit and push to `main`; Vercel deploys it.
 - Optional: export the frame at 12 s as a new `public/poster.png`.

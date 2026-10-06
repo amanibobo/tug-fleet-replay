@@ -56,13 +56,14 @@ make replay-rerun                # or: watch the harbor move in a native Rerun v
 
 ## Deploy the dashboard (Vercel)
 
-The dashboard is linked to the Vercel project `tug-fleet-replay` (settings live in `dashboard/.vercel`, gitignored). From `dashboard/`:
+The dashboard is the Vercel project `tug-fleet-replay`, connected to this GitHub repo with Root Directory set to `dashboard`. Every push to `main` deploys to production. To deploy by hand, run the CLI from the repo root (not `dashboard/`, since the root directory setting is applied on top of where you run it):
 
 ```bash
+npx vercel link --project tug-fleet-replay --yes   # once
 npx vercel deploy --prod --yes
 ```
 
-Vercel builds the Next.js app and serves the committed data and recordings from `public/`. No environment variables are needed in static mode. The repo-root `.vercelignore` keeps the Python side out of the upload; deploy from `dashboard/`, not the repo root.
+Vercel builds the Next.js app and serves the committed data and recordings from `public/`. No environment variables are needed in static mode. The repo-root `.vercelignore` keeps the Python side out of a CLI upload; its patterns are anchored with a leading `/` so they do not also match `dashboard/src/app/docs` or `dashboard/public/data`.
 
 ## Deploy to AWS
 
