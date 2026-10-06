@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import rough from "roughjs";
 import type { Options } from "roughjs/bin/core";
 import styles from "./Docs.module.css";
+import { LOGOS } from "./logos";
 
 /**
  * A tiny scene DSL over roughjs' generator. Everything is drawn with a fixed per-shape seed, so the
@@ -93,6 +94,25 @@ export class Scene {
       >
         {s}
       </text>,
+    );
+    return this;
+  }
+
+  /** A technology mark, drawn crisp (not rough) inside a size x size box whose top-left is x, y. */
+  logo(x: number, y: number, size: number, name: keyof typeof LOGOS) {
+    const l = LOGOS[name];
+    if (!l) return this;
+    this.n += 1;
+    const scale = size / Math.max(l.w, l.h);
+    const dx = (size - l.w * scale) / 2;
+    const dy = (size - l.h * scale) / 2;
+    this.nodes.push(
+      <g
+        key={`l${this.n}`}
+        transform={`translate(${x + dx} ${y + dy}) scale(${scale})`}
+        className={l.mono ? styles.logoMono : undefined}
+        dangerouslySetInnerHTML={{ __html: l.body }}
+      />,
     );
     return this;
   }

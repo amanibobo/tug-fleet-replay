@@ -442,11 +442,13 @@ export const FIGURES: Record<string, FigureDef> = {
       s.text(70, 28, "sources", { size: 13, tone: "muted" });
       s.file(20, 44, 100, 56, { label: "NOAA AIS", size: 11 });
       s.file(20, 118, 100, 56, { label: "live AIS", size: 11, fill: "green" });
+      s.logo(24, 150, 16, "mqtt");
       s.mono(70, 196, "same schema", { size: 9 });
       s.arrow(125, 72, 160, 100);
       s.arrow(125, 146, 160, 118);
       // pipeline
-      s.text(300, 28, "pipeline (python)", { size: 13, tone: "muted" });
+      s.text(300, 28, "pipeline", { size: 13, tone: "muted" });
+      s.logo(336, 14, 18, "python");
       s.box(165, 44, 270, 150, { dashed: true, faint: true });
       s.box(180, 60, 70, 38, { label: "fetch", size: 11 });
       s.arrow(252, 79, 272, 79);
@@ -469,14 +471,18 @@ export const FIGURES: Record<string, FigureDef> = {
       s.arrow(437, 128, 595, 118);
       // static path
       s.text(190, 250, "static path", { size: 13, tone: "muted" });
+      s.logo(248, 236, 18, "nextjs");
+      s.logo(272, 236, 18, "vercel");
       s.box(20, 266, 330, 110, { dashed: true, faint: true });
       s.box(36, 300, 92, 44, { label: "landing", size: 11 });
       s.box(140, 300, 92, 44, { label: "console", size: 11, fill: "blue" });
+      s.logo(214, 282, 14, "maplibre");
       s.box(244, 300, 92, 44, { label: "docs", size: 11 });
       s.mono(185, 364, "Vercel · shipped with the site · no backend", { size: 9 });
       s.bend(517, 196, 517, 240, 186, 262, { dashed: true });
       // live path
       s.text(540, 250, "live path (AWS, one CDK stack)", { size: 13, tone: "muted" });
+      s.logo(686, 232, 22, "aws");
       s.box(380, 266, 330, 180, { dashed: true, faint: true });
       s.box(392, 288, 70, 36, { label: "replayer", size: 10 });
       s.mono(427, 338, "MQTT · 120x", { size: 9 });
@@ -484,18 +490,24 @@ export const FIGURES: Record<string, FigureDef> = {
       s.box(488, 288, 64, 36, { label: "IoT Core", size: 10 });
       s.arrow(554, 306, 576, 306);
       s.box(578, 288, 60, 36, { label: "Lambda", size: 10, fill: "amber" });
+      s.logo(620, 270, 18, "lambda");
       s.db(600, 348, 60, 44, { label: "Dynamo", size: 9 });
+      s.logo(652, 338, 18, "dynamodb");
       s.db(528, 348, 60, 44, { label: "S3", size: 10 });
+      s.logo(506, 338, 18, "s3");
       s.bend(608, 326, 620, 340, 628, 346);
       s.bend(590, 326, 570, 340, 560, 346);
       s.arrow(640, 306, 660, 306);
       s.box(662, 280, 42, 52, { label: "WS\nAPI", size: 9 });
-      s.mono(545, 418, "CloudFront serves tug-days, summary, recordings", { size: 9 });
+      s.logo(676, 254, 18, "apigateway");
+      s.logo(392, 404, 18, "cloudfront");
+      s.mono(418, 418, "CloudFront serves tug-days, summary, recordings", { size: 9, anchor: "start" });
       s.bend(560, 196, 560, 240, 420, 284, { dashed: true });
       // live back to the console
       s.bend(683, 334, 683, 470, 186, 470);
       s.arrow(186, 470, 186, 350);
-      s.mono(430, 488, "snapshot + telemetry over the socket", { size: 9 });
+      s.logo(392, 478, 18, "websocket");
+      s.mono(418, 491, "snapshot + telemetry over the socket", { size: 9, anchor: "start" });
       // inspector
       s.bend(650, 142, 712, 200, 700, 516);
       s.mono(560, 536, "recordings open in the Rerun inspector", { size: 9 });
