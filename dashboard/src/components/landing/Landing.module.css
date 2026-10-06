@@ -1,0 +1,435 @@
+.main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 40px) var(--gutter) 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+}
+
+/* ---- hero ---- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 48px;
+  align-items: center;
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.heroSub {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 44ch;
+}
+
+.heroActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.demoWrap {
+  position: relative;
+}
+
+.demo {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-tile);
+  background: var(--tile);
+  overflow: hidden;
+}
+
+.poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: var(--shadow-float);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 3px;
+  transition: transform var(--t) var(--ease);
+}
+
+.play:hover {
+  transform: scale(1.04);
+}
+
+.play:active {
+  transform: scale(0.96);
+}
+
+.demoChip {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  background: #ffffff;
+  color: var(--ink-2);
+  box-shadow: var(--shadow-float);
+}
+
+.heroWaves {
+  position: absolute;
+  left: 4%;
+  bottom: -24px;
+  width: 92%;
+  height: 40px;
+  z-index: 0;
+  overflow: visible;
+}
+
+.heroWaveA {
+  animation: waveA 9s linear infinite;
+}
+
+.heroWaveB {
+  animation: waveB 13s linear infinite;
+}
+
+@keyframes waveA {
+  to {
+    transform: translateX(-80px);
+  }
+}
+
+@keyframes waveB {
+  to {
+    transform: translateX(80px);
+  }
+}
+
+/* ---- numbers strip ---- */
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.numberTile {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: var(--tile);
+  border-radius: var(--r-tile);
+}
+
+.numberBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.numberValue {
+  font-size: 28px;
+}
+
+.numberPlaceholder {
+  color: var(--ink-3);
+}
+
+.numberLabel {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+
+/* ---- sections ---- */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sectionLede {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 72ch;
+}
+
+.sectionNote {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-3);
+  max-width: 80ch;
+}
+
+.caption {
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+/* ---- steps ---- */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: var(--tile);
+  border-radius: var(--r-tile);
+}
+
+.stepNum {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.stepTitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.stepLine {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.pathStrip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0 0;
+}
+
+/* ---- tools ---- */
+.tools {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tool {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: var(--tile);
+  border-radius: var(--r-tile);
+  color: var(--ink);
+  transition:
+    background var(--t) var(--ease),
+    transform var(--t) var(--ease);
+}
+
+.tool:hover {
+  background: var(--tile-2);
+  transform: translateY(-1px);
+}
+
+.toolTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.toolTitle {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.toolLine {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  flex: 1;
+}
+
+.toolCta {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+/* ---- get started ---- */
+.start {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.startTile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  background: var(--tile);
+  border-radius: var(--r-tile);
+}
+
+.startTile .toolTitle {
+  margin-top: 0;
+}
+
+.startBtn {
+  margin-top: 8px;
+}
+
+/* ---- data ---- */
+.dataTile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--tile);
+  border-radius: var(--r-tile);
+}
+
+.dataHead {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dataRows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dataRow {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) minmax(90px, auto) minmax(0, 2fr);
+  gap: 16px;
+  align-items: baseline;
+  min-height: 44px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--divider);
+}
+
+.dataRow:last-child {
+  border-bottom: none;
+}
+
+.dataRowHead {
+  min-height: 32px;
+  padding-top: 0;
+}
+
+.dataKey {
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.dataValue {
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.dataNote {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.dataSkeleton {
+  animation: pulse 1.6s var(--ease) infinite;
+}
+
+@keyframes pulse {
+  50% {
+    background: var(--tile-2);
+  }
+}
+
+/* ---- responsive ---- */
+@media (max-width: 1023px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .numbers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tools {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .start {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding-top: calc(var(--nav-h) + 24px);
+    gap: 56px;
+  }
+
+  .tools {
+    grid-template-columns: 1fr;
+  }
+
+  .dataRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 12px;
+  }
+
+  .dataNote {
+    grid-column: 1 / -1;
+  }
+
+  .dataRowHead .dataNote,
+  .dataRowHead > :last-child {
+    display: none;
+  }
+
+  .heroSub {
+    font-size: 16px;
+  }
+}

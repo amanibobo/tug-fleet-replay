@@ -1,7 +1,7 @@
 .wrap {
   position: relative;
   width: 100%;
-  padding: 12px 6px 6px;
+  padding: 8px 12px 10px;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -14,40 +14,41 @@
 }
 
 .grid {
-  stroke: var(--line);
+  stroke: #ffffff;
   stroke-width: 1;
 }
 
 .thresh {
-  stroke: var(--line-strong);
+  stroke: var(--ink-3);
   stroke-width: 1;
-  stroke-dasharray: 2 4;
+  stroke-dasharray: 2 5;
+  opacity: 0.6;
 }
 
 .yLabel,
 .xLabel {
   font-family: var(--font-sans);
   font-size: 12px;
+  font-weight: 500;
   fill: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
 
 .area {
-  fill: var(--ink);
-  fill-opacity: 0.06;
+  fill: var(--blue);
+  fill-opacity: 0.1;
 }
 
 .line {
   fill: none;
   stroke: var(--ink);
-  stroke-width: 1.5;
+  stroke-width: 1.75;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
 
 .bandTrack {
-  fill: var(--ink);
-  fill-opacity: 0.06;
+  fill: #ffffff;
 }
 
 .cursor {
@@ -59,12 +60,13 @@
 .crosshair {
   stroke: var(--ink);
   stroke-width: 1;
+  opacity: 0.5;
 }
 
 .probeDot {
-  fill: var(--paper-2);
+  fill: #ffffff;
   stroke: var(--ink);
-  stroke-width: 1.5;
+  stroke-width: 2;
 }
 
 .probe {
@@ -72,36 +74,38 @@
 }
 
 .skeleton {
-  fill: var(--ink);
-  fill-opacity: 0.03;
+  fill: #ffffff;
+  fill-opacity: 0.4;
   animation: pulse 1.6s var(--ease) infinite;
 }
 
 @keyframes pulse {
   50% {
-    fill-opacity: 0.07;
+    fill-opacity: 0.9;
   }
 }
 
 .tip {
   position: absolute;
-  top: 18px;
+  top: 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 150px;
-  padding: 10px 12px;
-  background: var(--paper-2);
-  border: 1px solid var(--line-strong);
+  min-width: 160px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-float);
   pointer-events: none;
   z-index: 2;
 }
 
 .tipTime {
   font-size: 12px;
-  color: var(--ink-2);
+  font-weight: 500;
+  color: var(--ink-3);
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--divider);
 }
 
 .tipTime .mono {
@@ -110,6 +114,7 @@
 
 .tipVal {
   font-size: 13px;
+  font-weight: 500;
   color: var(--ink);
 }
 
@@ -122,5 +127,6 @@
 
 .tipGen {
   font-size: 13px;
+  font-weight: 500;
   color: var(--red);
 }

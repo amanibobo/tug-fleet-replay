@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent, type TouchEvent } from "react";
-import { ACTIVITY_COLOR, clamp, fmtInt, fmtPct, hhmm } from "@/lib/format";
-import type { Activity, TugDay } from "@/lib/types";
+import { ACTIVITY_COLOR, ACTIVITY_LABEL, clamp, fmtInt, fmtPct, hhmm } from "@/lib/format";
+import type { TugDay } from "@/lib/types";
 import styles from "./DayTimeline.module.css";
 
 /** SOC thresholds, mirroring battery.generator_cut_out_soc / cut_in_soc in config.yaml. */
@@ -13,21 +13,14 @@ const PAD_L = 66;
 const PAD_R = 14;
 const CURVE_TOP = 16;
 const CURVE_H = 150;
-const BAND_GAP = 12;
-const BAND_H = 10;
-const SPAN_H = 4;
+const BAND_GAP = 14;
+const BAND_H = 12;
+const SPAN_H = 6;
 const AXIS_H = 26;
-const SPAN_GAP = 12;
+const SPAN_GAP = 10;
 const HEIGHT = CURVE_TOP + CURVE_H + BAND_GAP + BAND_H + 10 + SPAN_H + SPAN_GAP + SPAN_H + 8 + AXIS_H;
 
 const MIN_PER_DAY = 1440;
-
-const ACTIVITY_LABEL: Record<Activity, string> = {
-  transit: "Transit",
-  assist: "Assist",
-  idle: "Idle",
-  charging: "Charging",
-};
 
 interface Props {
   day: TugDay | null;
@@ -172,7 +165,7 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
         <line x1={PAD_L} x2={PAD_L + plotW} y1={y(WARN_SOC)} y2={y(WARN_SOC)} className={styles.thresh} />
         <line x1={PAD_L} x2={PAD_L + plotW} y1={y(BAD_SOC)} y2={y(BAD_SOC)} className={styles.thresh} />
 
-        {/* SOC curve: ink line over a 6% ink area */}
+        {/* SOC curve: ink line over a 10% blue area */}
         {day && curvePath.line ? (
           <g clipPath="url(#clipPlot)">
             <path d={curvePath.area} className={styles.area} />
@@ -180,22 +173,23 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
           </g>
         ) : null}
 
-        {/* activity band */}
-        <rect x={PAD_L} y={bandY} width={plotW} height={BAND_H} className={styles.bandTrack} />
+        {/* activity band: one rounded segment per span */}
+        <rect x={PAD_L} y={bandY} width={plotW} height={BAND_H} rx={BAND_H / 2} className={styles.bandTrack} />
         {day
           ? day.segments.map((s, i) => {
               const a = minuteOf(s.start, dayStart);
               const b = minuteOf(s.end, dayStart);
-              const w = Math.max(0.5, x(b) - x(a));
+              const w = Math.max(1.5, x(b) - x(a) - 1);
               return (
                 <rect
                   key={`${s.start}-${i}`}
-                  x={x(a)}
+                  x={x(a) + 0.5}
                   y={bandY}
                   width={w}
                   height={BAND_H}
+                  rx={Math.min(BAND_H / 2, w / 2)}
                   fill={ACTIVITY_COLOR[s.activity]}
-                  opacity={s.activity === "idle" ? 0.55 : 1}
+                  opacity={s.activity === "idle" ? 0.6 : 1}
                 />
               );
             })
@@ -206,14 +200,16 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
           ? day.charging.map((c, i) => {
               const a = minuteOf(c.start, dayStart);
               const b = minuteOf(c.end, dayStart);
-              return <rect key={`c${i}`} x={x(a)} y={chargeY} width={Math.max(1, x(b) - x(a))} height={SPAN_H} fill="var(--green)" />;
+              const w = Math.max(SPAN_H, x(b) - x(a));
+              return <rect key={`c${i}`} x={x(a)} y={chargeY} width={w} height={SPAN_H} rx={SPAN_H / 2} fill="var(--green)" />;
             })
           : null}
         {day
           ? day.generator.map((g, i) => {
               const a = minuteOf(g.start, dayStart);
               const b = minuteOf(g.end, dayStart);
-              return <rect key={`g${i}`} x={x(a)} y={genY} width={Math.max(1, x(b) - x(a))} height={SPAN_H} fill="var(--red)" />;
+              const w = Math.max(SPAN_H, x(b) - x(a));
+              return <rect key={`g${i}`} x={x(a)} y={genY} width={w} height={SPAN_H} rx={SPAN_H / 2} fill="var(--red)" />;
             })
           : null}
         <text x={PAD_L - 8} y={chargeY + SPAN_H / 2 + 4} className={styles.yLabel} textAnchor="end">
@@ -247,11 +243,11 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
         {probeSample ? (
           <g className={styles.probe}>
             <line x1={x(probeSample.min)} x2={x(probeSample.min)} y1={CURVE_TOP - 6} y2={axisY} className={styles.crosshair} />
-            <circle cx={x(probeSample.min)} cy={y(probeSample.soc)} r={4} className={styles.probeDot} />
+            <circle cx={x(probeSample.min)} cy={y(probeSample.soc)} r={5} className={styles.probeDot} />
           </g>
         ) : null}
 
-        {!day ? <rect x={PAD_L} y={CURVE_TOP} width={plotW} height={CURVE_H} className={styles.skeleton} /> : null}
+        {!day ? <rect x={PAD_L} y={CURVE_TOP} width={plotW} height={CURVE_H} rx={12} className={styles.skeleton} /> : null}
       </svg>
 
       {probeSample ? (

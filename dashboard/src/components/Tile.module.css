@@ -1,0 +1,50 @@
+.tile {
+  background: var(--tile);
+  border-radius: var(--r-tile);
+  color: var(--ink);
+  min-width: 0;
+}
+
+.white {
+  background: #ffffff;
+}
+
+.pad_none {
+  padding: 0;
+}
+
+.pad_sm {
+  padding: 14px 16px;
+}
+
+.pad_md {
+  padding: 20px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 24px;
+  margin-bottom: 14px;
+}
+
+.pad_none .head {
+  padding: 20px 20px 0;
+}
+
+.note {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+  .head {
+    flex-wrap: wrap;
+  }
+
+  .note {
+    text-align: left;
+  }
+}

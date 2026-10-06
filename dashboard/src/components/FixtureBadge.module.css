@@ -2,18 +2,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: var(--r-pill);
   font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0;
-  color: var(--amber);
+  font-weight: 500;
   line-height: 1;
+  color: var(--amber);
+  background: var(--amber-soft);
   white-space: nowrap;
-}
-
-.badge::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--amber);
 }

@@ -12,8 +12,8 @@ export function statusOf(t: Pick<Telemetry, "generator_on" | "activity">): Statu
 export const STATUS_COLOR: Record<Status, string> = {
   electric: "var(--green)",
   generator: "var(--red)",
-  charging: "var(--green)",
-  idle: "var(--gray)",
+  charging: "var(--blue)",
+  idle: "var(--act-idle)",
 };
 
 export const ACTIVITY_COLOR: Record<Activity, string> = {
@@ -25,17 +25,24 @@ export const ACTIVITY_COLOR: Record<Activity, string> = {
 
 /** Hex versions for MapLibre, which cannot read CSS variables. */
 export const ACTIVITY_HEX: Record<Activity, string> = {
-  transit: "#2f5d8a",
-  assist: "#b5471b",
-  idle: "#9a9ea6",
-  charging: "#1f6f4a",
+  transit: "#3b82f6",
+  assist: "#f97316",
+  idle: "#a1a1aa",
+  charging: "#22c55e",
 };
 
 export const STATUS_HEX: Record<Status, string> = {
-  electric: "#1f6f4a",
-  generator: "#8f2d2d",
-  charging: "#1f6f4a",
-  idle: "#9a9ea6",
+  electric: "#22c55e",
+  generator: "#ef4444",
+  charging: "#3b82f6",
+  idle: "#a1a1aa",
+};
+
+export const ACTIVITY_LABEL: Record<Activity, string> = {
+  transit: "Transit",
+  assist: "Assist",
+  idle: "Idle",
+  charging: "Charging",
 };
 
 /** Battery fill: green when healthy, amber under 35%, red under 15%. */

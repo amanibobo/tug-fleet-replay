@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Footnote from "@/components/Footnote";
-import Panel from "@/components/Panel";
+import Tile from "@/components/Tile";
 import Stat from "@/components/Stat";
 import { clamp, fmtInt, fmtUsd } from "@/lib/format";
 import type { Tariff, TariffTier, TugDay } from "@/lib/types";
@@ -18,8 +18,8 @@ const AXIS_H = 24;
 const HEIGHT = PRICE_H + ROW_H + ROW_GAP + ROW_H + AXIS_GAP + AXIS_H;
 const MIN_PER_DAY = 1440;
 
-/** Ink tint per tariff tier: off-peak none, mid-peak 5%, on-peak 10%. */
-const TIER_TINT: Record<TariffTier, number> = { off_peak: 0, mid_peak: 0.05, on_peak: 0.1 };
+/** Band fill per tariff tier on the white strip: off-peak none, mid-peak tile gray, on-peak amber soft. */
+const TIER_FILL: Record<TariffTier, string | null> = { off_peak: null, mid_peak: "var(--tile)", on_peak: "var(--amber-soft)" };
 
 interface Bar {
   /** Minutes from midnight UTC. */
@@ -110,7 +110,11 @@ export default function ChargingSchedule({ day }: Props) {
   const saving = costArrival > 0 ? Math.round((1 - costScheduled / costArrival) * 100) : null;
 
   return (
-    <Panel title="Charging schedule" note={`$/kWh by hour. Charger ${fmtInt(tariff.charger_kw)} kW`} className={styles.panel}>
+    <Tile
+      title="Charging schedule"
+      note={`$/kWh by hour. Charger ${fmtInt(tariff.charger_kw)} kW`}
+      className={styles.panel}
+    >
       <div className={styles.body}>
         <div ref={wrap} className={styles.strip}>
           <svg
@@ -126,14 +130,14 @@ export default function ChargingSchedule({ day }: Props) {
               const showPrice = pricedBand.get(b.tier) === i;
               return (
                 <g key={`${b.start}-${i}`}>
-                  {TIER_TINT[b.tier] > 0 ? (
+                  {TIER_FILL[b.tier] ? (
                     <rect
                       x={x(b.a)}
                       y={stripTop}
                       width={Math.max(0, x(b.z) - x(b.a))}
                       height={stripBottom - stripTop}
-                      className={styles.band}
-                      fillOpacity={TIER_TINT[b.tier]}
+                      rx={6}
+                      fill={TIER_FILL[b.tier] ?? undefined}
                     />
                   ) : null}
                   {showPrice ? (
@@ -153,14 +157,16 @@ export default function ChargingSchedule({ day }: Props) {
                 </text>
                 <line x1={PAD_L} x2={PAD_L + plotW} y1={row.top + ROW_H} y2={row.top + ROW_H} className={styles.baseline} />
                 {row.bars.map((bar, i) => {
-                  const h = Math.max(1, bar.level * ROW_H);
+                  const h = Math.max(3, bar.level * ROW_H);
+                  const w = Math.max(3, x(bar.b) - x(bar.a));
                   return (
                     <rect
                       key={i}
                       x={x(bar.a)}
                       y={row.top + ROW_H - h}
-                      width={Math.max(1, x(bar.b) - x(bar.a))}
+                      width={w}
                       height={h}
+                      rx={Math.min(3, w / 2)}
                       className={styles.bar}
                     />
                   );
@@ -195,6 +201,6 @@ export default function ChargingSchedule({ day }: Props) {
         Scheduled charging moves the same energy to the cheapest minutes of each stop. The stop&apos;s end time is used
         as the deadline. Estimates. Parameters in config.yaml.
       </Footnote>
-    </Panel>
+    </Tile>
   );
 }

@@ -1,0 +1,190 @@
+.root {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 30;
+}
+
+.pill {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-float);
+}
+
+.pillDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.card {
+  width: 320px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: var(--r-tile);
+  box-shadow: var(--shadow-float), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: rise var(--t-slow) var(--ease);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ring {
+  flex: none;
+  width: 36px;
+  height: 36px;
+}
+
+.ringFill {
+  transition: stroke-dashoffset var(--t-slow) var(--ease);
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.progress {
+  font-variant-numeric: tabular-nums;
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-3);
+  transition:
+    background var(--t) var(--ease),
+    color var(--t) var(--ease);
+}
+
+.close:hover {
+  background: var(--tile);
+  color: var(--ink);
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.step:last-child {
+  border-bottom: none;
+}
+
+.mark {
+  display: inline-flex;
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.stepText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.stepTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.step[data-done] .stepTitle {
+  color: var(--ink-3);
+  text-decoration: line-through;
+  text-decoration-color: var(--ink-3);
+}
+
+.stepLine {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.collapse {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .root {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .pill {
+    display: inline-flex;
+  }
+
+  .card {
+    display: none;
+    width: 100%;
+  }
+
+  .root[data-expanded] .pill {
+    display: none;
+  }
+
+  .root[data-expanded] .card {
+    display: flex;
+  }
+
+  .collapse {
+    display: inline-flex;
+  }
+}

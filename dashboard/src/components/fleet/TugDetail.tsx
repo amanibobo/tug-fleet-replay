@@ -3,7 +3,8 @@
 import Link from "next/link";
 import BatteryBar from "@/components/BatteryBar";
 import StatusChip from "@/components/StatusChip";
-import { fmtInt, fmtNum, isoDate, statusOf } from "@/lib/format";
+import { useOnboarding } from "@/components/onboarding/OnboardingProvider";
+import { ACTIVITY_LABEL, fmtInt, fmtNum, isoDate, statusOf } from "@/lib/format";
 import type { Telemetry } from "@/lib/types";
 import styles from "./TugDetail.module.css";
 
@@ -13,16 +14,10 @@ interface Props {
   onClose: () => void;
 }
 
-const ACTIVITY_LABEL: Record<Telemetry["activity"], string> = {
-  transit: "Transit",
-  assist: "Assist",
-  idle: "Idle",
-  charging: "Charging",
-};
-
-/** Inline expansion under the selected fleet row. */
+/** Inline expansion under the selected fleet row, inside its white card. */
 export default function TugDetail({ tug, clock, onClose }: Props) {
   const date = isoDate(clock ?? Date.parse(tug.t));
+  const onboarding = useOnboarding();
   return (
     <div className={styles.detail}>
       <div className={styles.statusRow}>
@@ -30,15 +25,15 @@ export default function TugDetail({ tug, clock, onClose }: Props) {
           <StatusChip status={statusOf(tug)} />
           <span className={styles.activity}>{ACTIVITY_LABEL[tug.activity]}</span>
         </span>
-        <button type="button" className="btn btnSecondary btnIcon" onClick={onClose} aria-label="Close detail">
+        <button type="button" className={`btn btnGhost btnIcon ${styles.close}`} onClick={onClose} aria-label="Close detail">
           <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
-            <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
           </svg>
         </button>
       </div>
 
       <div className={styles.battery}>
-        <BatteryBar soc={tug.soc} />
+        <BatteryBar soc={tug.soc} track="tile" />
         <span className={`num ${styles.socText}`}>
           {fmtInt(tug.soc * tug.battery_kwh)} of {fmtInt(tug.battery_kwh)} kWh
         </span>
@@ -54,7 +49,12 @@ export default function TugDetail({ tug, clock, onClose }: Props) {
       </dl>
 
       <div className={styles.actions}>
-        <Link href={`/tugs/${encodeURIComponent(tug.tug_id)}?date=${date}`} className="btn">
+        <Link
+          href={`/app/tugs/${encodeURIComponent(tug.tug_id)}?date=${date}`}
+          className="btn"
+          data-tour="open-day"
+          onClick={() => onboarding.complete("openDay")}
+        >
           Open day
         </Link>
         <span className={`mono ${styles.mmsi}`}>MMSI {tug.tug_id}</span>

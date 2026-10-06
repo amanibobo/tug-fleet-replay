@@ -9,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-/** Label above, value below; the unit sits after the value in 12px ink-3. */
+/** Label 13px ink-3 above, value 26px/600 below, unit 13px ink-3. */
 export default function Stat({ label, value, unit, hint, className }: Props) {
   return (
     <div className={`${styles.stat} ${className ?? ""}`}>

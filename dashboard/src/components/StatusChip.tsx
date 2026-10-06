@@ -1,6 +1,4 @@
-import { STATUS_COLOR } from "@/lib/format";
 import type { Status } from "@/lib/types";
-import styles from "./StatusChip.module.css";
 
 const LABEL: Record<Status, string> = {
   electric: "Electric",
@@ -9,16 +7,19 @@ const LABEL: Record<Status, string> = {
   idle: "Idle",
 };
 
+const CLASS: Record<Status, string> = {
+  electric: "chipGreen",
+  generator: "chipRed",
+  charging: "chipBlue",
+  idle: "",
+};
+
 interface Props {
   status: Status;
   className?: string;
 }
 
+/** Pill with a soft tint and the accent as text: Electric green, Charging blue, Idle gray, Generator red. */
 export default function StatusChip({ status, className }: Props) {
-  return (
-    <span className={`${styles.chip} ${className ?? ""}`} data-status={status}>
-      <span className={styles.dot} style={{ background: STATUS_COLOR[status] }} aria-hidden />
-      {LABEL[status]}
-    </span>
-  );
+  return <span className={`chip ${CLASS[status]} ${className ?? ""}`}>{LABEL[status]}</span>;
 }

@@ -10,11 +10,12 @@
 
 .label {
   font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
 }
 
 .trackWrap {
   position: relative;
-  height: 24px;
+  height: 28px;
 }
 
 .track,
@@ -22,14 +23,15 @@
   position: absolute;
   top: 50%;
   left: 0;
-  height: 1px;
-  margin-top: -0.5px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: var(--r-pill);
   pointer-events: none;
 }
 
 .track {
   right: 0;
-  background: var(--line-strong);
+  background: var(--tile-2);
 }
 
 .fill {
@@ -43,7 +45,7 @@
   position: relative;
   display: block;
   width: 100%;
-  height: 24px;
+  height: 28px;
   margin: 0;
   background: transparent;
   cursor: pointer;
@@ -55,35 +57,40 @@
 }
 
 .range::-webkit-slider-runnable-track {
-  height: 1px;
+  height: 4px;
   background: transparent;
 }
 
 .range::-moz-range-track {
-  height: 1px;
+  height: 4px;
   background: transparent;
 }
 
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 12px;
-  height: 12px;
-  margin-top: -5.5px;
-  border-radius: 0;
-  background: var(--ink);
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: #ffffff;
   border: none;
+  box-shadow: var(--shadow-float), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
 .range::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  border-radius: 0;
-  background: var(--ink);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
   border: none;
+  box-shadow: var(--shadow-float), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
 .range:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
+  outline: none;
+}
+
+.range:focus-visible::-webkit-slider-thumb {
+  box-shadow: var(--shadow-float), 0 0 0 2px var(--ink);
 }

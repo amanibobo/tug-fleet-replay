@@ -1,41 +1,45 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "maplibre-gl/dist/maplibre-gl.css";
+import "driver.js/dist/driver.css";
 import "./globals.css";
 import Nav from "@/components/Nav";
+import { OnboardingProvider } from "@/components/onboarding/OnboardingProvider";
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
+// Geist throughout; swap the family here.
+const sans = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const mono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Tug fleet replay",
-  description:
-    "Real Port of Los Angeles tug traffic replayed as hybrid-electric telemetry. Independent project.",
+  title: "Tugboard",
+  description: "Fleet replay for hybrid-electric tugs",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f3f1ec",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
-        <Nav />
-        {children}
+        <OnboardingProvider>
+          <Nav />
+          {children}
+        </OnboardingProvider>
       </body>
     </html>
   );

@@ -176,12 +176,23 @@ export interface SummaryDataset extends DatasetInfo {
   tugs: number;
 }
 
+/** Detected charging docks; present in the pipeline's summary, optional in the contract. */
+export interface SummaryDock {
+  name: string;
+  lat: number;
+  lon: number;
+  radius_m: number;
+  idle_minutes: number;
+  tugs: number;
+}
+
 export interface Summary {
   dataset: SummaryDataset;
   default_battery_kwh: number;
   sweep: SweepRow[];
   tugs: SummaryTug[];
   assumptions: Assumption[];
+  docks?: SummaryDock[];
   fixture?: boolean;
 }
 

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import maplibregl, { type Map as MlMap, type Marker, type GeoJSONSource } from "maplibre-gl";
 import type { Feature, FeatureCollection, LineString } from "geojson";
+import { tugMarkup } from "@/components/TugIcon";
 import { ACTIVITY_HEX } from "@/lib/format";
 import type { LngLat, Telemetry } from "@/lib/types";
 import { prefersReducedMotion } from "@/lib/useAnimatedNumber";
@@ -20,23 +21,58 @@ interface Props {
 }
 
 interface MarkerEntry {
-  marker: Marker;
-  el: HTMLDivElement;
-  square: HTMLDivElement;
+  /** The boat model, aligned to the map so it turns with it. */
+  boat: Marker;
+  boatEl: HTMLDivElement;
+  /** Battery pill and name label, aligned to the viewport so they stay readable. */
+  tag: Marker;
+  tagEl: HTMLDivElement;
   fill: HTMLDivElement;
   label: HTMLDivElement;
   angle: number;
+  prev: LngLat;
+}
+
+function bearing(a: LngLat, b: LngLat): number {
+  const toRad = Math.PI / 180;
+  const [lon1, lat1] = [a[0] * toRad, a[1] * toRad];
+  const [lon2, lat2] = [b[0] * toRad, b[1] * toRad];
+  const y = Math.sin(lon2 - lon1) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
+  return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
+}
+
+/** Heading, else course, else the bearing between consecutive fixes. */
+function headingOf(tug: Telemetry, prev: LngLat, fallback: number): number {
+  if (Number.isFinite(tug.heading)) return tug.heading;
+  if (Number.isFinite(tug.cog)) return tug.cog;
+  if (prev[0] !== tug.lon || prev[1] !== tug.lat) return bearing(prev, [tug.lon, tug.lat]);
+  return fallback;
 }
 
 function buildMarker(tug: Telemetry, onSelect: (id: string) => void): MarkerEntry {
-  const el = document.createElement("div");
-  el.className = styles.marker;
-  el.setAttribute("role", "button");
-  el.setAttribute("aria-label", tug.name);
-  el.tabIndex = 0;
+  const select = (e: Event) => {
+    e.stopPropagation();
+    onSelect(tug.tug_id);
+  };
+  const key = (e: KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelect(tug.tug_id);
+    }
+  };
 
-  const square = document.createElement("div");
-  square.className = styles.square;
+  const boatEl = document.createElement("div");
+  boatEl.className = styles.boat;
+  boatEl.setAttribute("role", "button");
+  boatEl.setAttribute("aria-label", tug.name);
+  boatEl.tabIndex = 0;
+  boatEl.innerHTML = `<span class="${styles.ring}"></span>${tugMarkup()}`;
+  boatEl.addEventListener("click", select);
+  boatEl.addEventListener("keydown", key);
+
+  const tagEl = document.createElement("div");
+  tagEl.className = styles.tag;
   const bar = document.createElement("div");
   bar.className = styles.bar;
   const fill = document.createElement("div");
@@ -45,24 +81,20 @@ function buildMarker(tug: Telemetry, onSelect: (id: string) => void): MarkerEntr
   const label = document.createElement("div");
   label.className = styles.label;
   label.textContent = tug.name;
+  tagEl.append(bar, label);
+  tagEl.addEventListener("click", select);
 
-  el.append(square, bar, label);
-  el.addEventListener("click", (e) => {
-    e.stopPropagation();
-    onSelect(tug.tug_id);
-  });
-  el.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      onSelect(tug.tug_id);
-    }
-  });
+  // Hovering the boat shows the label that lives on the tag marker.
+  boatEl.addEventListener("mouseenter", () => tagEl.setAttribute("data-hover", "true"));
+  boatEl.addEventListener("mouseleave", () => tagEl.removeAttribute("data-hover"));
 
-  const marker = new maplibregl.Marker({ element: el, anchor: "center" });
-  return { marker, el, square, fill, label, angle: tug.heading };
+  const boat = new maplibregl.Marker({ element: boatEl, anchor: "center", rotationAlignment: "map", pitchAlignment: "map" });
+  const tag = new maplibregl.Marker({ element: tagEl, anchor: "center" });
+  const pos: LngLat = [tug.lon, tug.lat];
+  return { boat, boatEl, tag, tagEl, fill, label, angle: headingOf(tug, pos, 0), prev: pos };
 }
 
-/** Shortest-path unwrap so the marker never spins the long way round. */
+/** Shortest-path unwrap so the model never spins the long way round. */
 function unwrap(prev: number, next: number): number {
   let d = ((next - prev) % 360 + 540) % 360 - 180;
   if (Math.abs(d) < 0.01) d = 0;
@@ -103,8 +135,8 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": ["get", "color"],
-          "line-opacity": 0.7,
-          "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1.2, 14, 2.5],
+          "line-opacity": 0.8,
+          "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1.4, 14, 3],
         },
       });
       ready.current = true;
@@ -117,7 +149,10 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
 
     return () => {
       ro.disconnect();
-      store.forEach((m) => m.marker.remove());
+      store.forEach((m) => {
+        m.boat.remove();
+        m.tag.remove();
+      });
       store.clear();
       map.remove();
       mapRef.current = null;
@@ -133,27 +168,34 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
     for (const tug of tugs) {
       seen.add(tug.tug_id);
       let entry = markers.current.get(tug.tug_id);
+      const pos: LngLat = [tug.lon, tug.lat];
       if (!entry) {
         entry = buildMarker(tug, (id) => onSelectRef.current(id));
-        entry.marker.setLngLat([tug.lon, tug.lat]).addTo(map);
+        entry.boat.setLngLat(pos).addTo(map);
+        entry.tag.setLngLat(pos).addTo(map);
         markers.current.set(tug.tug_id, entry);
       }
-      entry.marker.setLngLat([tug.lon, tug.lat]);
-      if (entry.el.dataset.activity !== tug.activity) entry.el.dataset.activity = tug.activity;
+      entry.boat.setLngLat(pos);
+      entry.tag.setLngLat(pos);
+      const activity = tug.generator_on ? "generator" : tug.activity;
+      if (entry.boatEl.dataset.activity !== activity) entry.boatEl.dataset.activity = activity;
       const selected = tug.tug_id === selectedId;
-      if ((entry.el.dataset.selected === "true") !== selected) {
-        entry.el.dataset.selected = selected ? "true" : "false";
+      if ((entry.boatEl.dataset.selected === "true") !== selected) {
+        entry.boatEl.dataset.selected = selected ? "true" : "false";
+        entry.tagEl.dataset.selected = selected ? "true" : "false";
       }
-      entry.angle = unwrap(entry.angle, tug.heading);
-      // The square sits at 45deg so a heading of 0 reads as a diamond pointing north.
-      entry.square.style.transform = `rotate(${entry.angle + 45}deg)`;
+      entry.angle = unwrap(entry.angle, headingOf(tug, entry.prev, entry.angle));
+      entry.prev = pos;
+      // The silhouette points east at rest, so north is a quarter turn back.
+      entry.boat.setRotation(entry.angle - 90);
       entry.fill.style.width = `${Math.round(tug.soc * 100)}%`;
       entry.fill.dataset.level = tug.soc < 0.15 ? "bad" : tug.soc < 0.35 ? "warn" : "ok";
       if (entry.label.textContent !== tug.name) entry.label.textContent = tug.name;
     }
     for (const [id, entry] of markers.current) {
       if (!seen.has(id)) {
-        entry.marker.remove();
+        entry.boat.remove();
+        entry.tag.remove();
         markers.current.delete(id);
       }
     }
@@ -167,7 +209,7 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
           if (!pts || pts.length < 2) continue;
           features.push({
             type: "Feature",
-            properties: { color: ACTIVITY_HEX[tug.activity], id: tug.tug_id },
+            properties: { color: tug.generator_on ? "#ef4444" : ACTIVITY_HEX[tug.activity], id: tug.tug_id },
             geometry: { type: "LineString", coordinates: pts },
           });
         }

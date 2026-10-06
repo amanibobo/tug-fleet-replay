@@ -1,12 +1,19 @@
 .track {
   position: relative;
-  background: var(--paper-3);
+  background: #ffffff;
+  border-radius: var(--r-pill);
   overflow: hidden;
+  flex: none;
+}
+
+.track[data-track="tile"] {
+  background: var(--tile);
 }
 
 .fill {
   position: absolute;
   inset: 0 auto 0 0;
+  border-radius: var(--r-pill);
   transition:
     width var(--t) var(--ease),
     background var(--t) var(--ease);

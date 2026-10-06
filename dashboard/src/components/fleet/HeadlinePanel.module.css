@@ -3,6 +3,14 @@
   flex-direction: column;
 }
 
+.kicker {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
 .headline {
   display: flex;
   align-items: baseline;
@@ -10,10 +18,10 @@
 }
 
 .pct {
-  font-size: 0.5em;
-  color: var(--ink-2);
-  margin-left: 2px;
-  letter-spacing: -1px;
+  font-size: 0.45em;
+  color: var(--ink-3);
+  margin-left: 4px;
+  letter-spacing: -0.02em;
 }
 
 .placeholder {
@@ -21,7 +29,7 @@
 }
 
 .caption {
-  margin-top: 8px;
+  margin-top: 6px;
   font-size: 14px;
   color: var(--ink-2);
 }
@@ -33,10 +41,8 @@
 .stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
+  gap: 18px 16px;
+  margin-top: 22px;
 }
 
 .costStat {
@@ -52,7 +58,8 @@
 
 .costNote,
 .vs {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 400;
   letter-spacing: 0;
   color: var(--ink-3);
 }

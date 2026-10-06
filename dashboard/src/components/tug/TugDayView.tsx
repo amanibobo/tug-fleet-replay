@@ -3,12 +3,13 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import FixtureBadge from "@/components/FixtureBadge";
 import Footer from "@/components/Footer";
 import Footnote from "@/components/Footnote";
-import Panel from "@/components/Panel";
 import Stat from "@/components/Stat";
+import Tile from "@/components/Tile";
+import { useOnboarding } from "@/components/onboarding/OnboardingProvider";
 import { fmtInt, fmtPct, prettyDate, shiftDate } from "@/lib/format";
 import { useSummary } from "@/lib/useSummary";
 import { useTugDay } from "@/lib/useTugDay";
@@ -30,6 +31,12 @@ export default function TugDayView({ id }: { id: string }) {
   const params = useSearchParams();
   const summary = useSummary();
   const dataset = summary.summary?.dataset;
+  const onboarding = useOnboarding();
+
+  // Arriving here is onboarding step 4, however the visitor got here.
+  useEffect(() => {
+    onboarding.complete("openDay");
+  }, [onboarding]);
 
   const requested = params.get("date");
   const date = requested && DATE_RE.test(requested) ? requested : dataset?.start ?? null;
@@ -43,7 +50,7 @@ export default function TugDayView({ id }: { id: string }) {
   const [inspectorOpen, setInspectorOpen] = useState(false);
 
   const setDate = useCallback(
-    (d: string) => router.replace(`/tugs/${encodeURIComponent(id)}?date=${d}`, { scroll: false }),
+    (d: string) => router.replace(`/app/tugs/${encodeURIComponent(id)}?date=${d}`, { scroll: false }),
     [router, id],
   );
 
@@ -60,7 +67,8 @@ export default function TugDayView({ id }: { id: string }) {
     <main className={`page ${styles.page}`}>
       <header className={styles.header}>
         <div className={styles.titleBlock}>
-          <Link href="/" className={styles.back}>
+          <Link href="/app" className={`btn btnGhost btnSmall ${styles.back}`}>
+            <ChevronIcon dir="left" />
             Fleet
           </Link>
           <h1 className="title">{name}</h1>
@@ -96,40 +104,37 @@ export default function TugDayView({ id }: { id: string }) {
         </div>
       </header>
 
-      <section className={styles.totals} aria-label="Day totals">
+      <Tile className={styles.totals} aria-label="Day totals">
+        <div className={styles.totalsHead}>
+          <div className={styles.totalsTitle}>
+            <span className="heading">Day totals</span>
+            {totals ? (
+              <span className={`chip ${electric ? "chipGreen" : "chipRed"}`}>{electric ? "Electric only" : "Generator ran"}</span>
+            ) : (
+              <span className="chip">Loading</span>
+            )}
+          </div>
+          <button
+            type="button"
+            className={`btn ${styles.rerunBtn}`}
+            onClick={() => setInspectorOpen(true)}
+            disabled={!day}
+            title="Scrub the full-fidelity recording in Rerun"
+          >
+            Open in Rerun inspector
+          </button>
+        </div>
         <div className={styles.statRow}>
           <Stat label="Energy" value={totals ? fmtInt(totals.energy_kwh) : "0"} unit="kWh" />
           <Stat label="Generator" value={totals ? fmtInt(totals.generator_kwh) : "0"} unit="kWh" />
           <Stat label="Charged" value={totals ? fmtInt(totals.charged_kwh) : "0"} unit="kWh" />
           <Stat label="Minimum charge" value={totals ? fmtPct(totals.min_soc) : "0%"} />
           <Stat label="Jobs" value={day ? fmtInt(day.jobs.length) : "0"} />
-          <div className={styles.dayStatus}>
-            <span className="label">Day</span>
-            {totals ? (
-              <span className={styles.chip} data-ok={electric || undefined}>
-                <span className={styles.chipDot} aria-hidden />
-                {electric ? "Electric only" : "Generator ran"}
-              </span>
-            ) : (
-              <span className={styles.chip}>Loading</span>
-            )}
-          </div>
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className="btn"
-              onClick={() => setInspectorOpen(true)}
-              disabled={!day}
-              title="Scrub the full-fidelity recording in Rerun"
-            >
-              Open in Rerun inspector
-            </button>
-          </div>
         </div>
         <Footnote />
-      </section>
+      </Tile>
 
-      <Panel
+      <Tile
         padding="none"
         className={styles.timelinePanel}
         title="Battery and activity"
@@ -150,25 +155,25 @@ export default function TugDayView({ id }: { id: string }) {
         ) : (
           <DayTimeline day={day} cursor={cursor} onCursor={setCursor} />
         )}
-      </Panel>
+      </Tile>
 
       <ChargingSchedule day={day} />
 
       <div className={styles.lower}>
-        <Panel
+        <Tile
           padding="none"
           className={styles.jobsPanel}
           title="Jobs"
           note={day ? `${day.jobs.length} ${day.jobs.length === 1 ? "job" : "jobs"}` : ""}
         >
           <JobsList day={day} onPick={setCursor} />
-        </Panel>
+        </Tile>
 
-        <Panel padding="none" className={styles.mapPanel} title="Track" note="Colored by activity">
+        <Tile padding="none" className={styles.mapPanel} title="Track" note="Colored by activity">
           <div className={styles.mapBox}>
             <TrackMap day={day} cursor={cursor} />
           </div>
-        </Panel>
+        </Tile>
       </div>
 
       <Footer className={styles.footer} dataset={dataset ?? null} />
@@ -195,7 +200,7 @@ function LegendItem({ color, label }: { color: string; label: string }) {
 function ChevronIcon({ dir }: { dir: "left" | "right" }) {
   return (
     <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden style={{ transform: dir === "left" ? "scaleX(-1)" : undefined }}>
-      <path d="M4 1.5L8.5 6 4 10.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
+      <path d="M4 1.5L8.5 6 4 10.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
     </svg>
   );
 }

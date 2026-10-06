@@ -1,35 +1,40 @@
 .list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 8px 8px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   max-height: 420px;
   scrollbar-width: thin;
-  scrollbar-color: var(--line-strong) transparent;
+  scrollbar-color: var(--tile-2) transparent;
+}
+
+.list li {
+  border-bottom: 1px solid var(--divider);
+}
+
+.list li:last-child {
+  border-bottom: none;
 }
 
 .row {
   width: 100%;
   display: grid;
-  grid-template-columns: 24px minmax(0, 1fr) auto;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
-  padding: 10px 16px;
+  min-height: 44px;
+  padding: 10px 12px;
   border: none;
-  border-bottom: 1px solid var(--line);
+  border-radius: var(--r-card);
   background: transparent;
   text-align: left;
-  transition: background var(--t-fast) var(--ease);
-}
-
-.list li:last-child .row {
-  border-bottom: none;
+  transition: background var(--t) var(--ease);
 }
 
 .row:hover {
-  background: var(--paper-3);
+  background: #ffffff;
 }
 
 .row:focus-visible {
@@ -37,24 +42,26 @@
 }
 
 .idx {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 500;
   color: var(--ink-3);
 }
 
 .main {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   min-width: 0;
 }
 
 .time {
   font-size: 14px;
+  font-weight: 500;
   color: var(--ink);
 }
 
 .sub {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-3);
   white-space: nowrap;
   overflow: hidden;
@@ -66,14 +73,15 @@
   align-items: baseline;
   gap: 4px;
   font-size: 18px;
-  font-weight: 400;
-  letter-spacing: -0.2px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--ink);
   white-space: nowrap;
 }
 
 .unit {
   font-size: 12px;
+  font-weight: 400;
   color: var(--ink-3);
   letter-spacing: 0;
 }
@@ -86,13 +94,13 @@
 
 .skeleton {
   height: 56px;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper-2);
+  margin: 0 8px;
+  border-bottom: 1px solid var(--divider);
   animation: pulse 1.6s var(--ease) infinite;
 }
 
 @keyframes pulse {
   50% {
-    background: var(--paper-3);
+    background: var(--tile-2);
   }
 }

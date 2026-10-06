@@ -84,14 +84,14 @@ export default function TrackMap({ day, cursor }: Props) {
         type: "line",
         source: "track",
         layout: { "line-cap": "round", "line-join": "round" },
-        paint: { "line-color": ["get", "color"], "line-width": 2.5, "line-opacity": 0.85 },
+        paint: { "line-color": ["get", "color"], "line-width": 3, "line-opacity": 0.85 },
       });
       map.addSource("cursor", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       map.addLayer({
         id: "cursor",
         type: "circle",
         source: "cursor",
-        paint: { "circle-radius": 5, "circle-color": "#15171a", "circle-stroke-color": "#faf9f6", "circle-stroke-width": 1.5 },
+        paint: { "circle-radius": 5, "circle-color": "#0a0a0b", "circle-stroke-color": "#ffffff", "circle-stroke-width": 2 },
       });
       loaded.current = true;
       pending.current?.();

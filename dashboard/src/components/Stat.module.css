@@ -1,7 +1,7 @@
 .stat {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -13,14 +13,14 @@
 }
 
 .unit {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 0;
   color: var(--ink-3);
 }
 
 .hint {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-3);
   line-height: 1.4;
 }

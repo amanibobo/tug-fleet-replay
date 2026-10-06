@@ -8,6 +8,7 @@ interface Props {
   dataset?: DatasetInfo | null;
 }
 
+/** One-line footer for the console and tug day pages. The landing has its own footer band. */
 export default function Footer({ className, dataset }: Props) {
   const dates = dataset ? dateRange(dataset.start, dataset.end, false) : "Dec 2–8 2024";
   const source = dataset?.source ?? "NOAA AIS";

@@ -16,7 +16,7 @@ interface Props {
   disabled?: boolean;
 }
 
-/** 1px track, filled part in ink, 12px square thumb. The filled part is a plain element behind the input. */
+/** 4px pill track, filled part in ink, 18px white thumb with the soft shadow. */
 export default function Slider({ value, min, max, step, onChange, label, ariaLabel, className, disabled }: Props) {
   const id = useId();
   const pct = max > min ? ((value - min) / (max - min)) * 100 : 0;

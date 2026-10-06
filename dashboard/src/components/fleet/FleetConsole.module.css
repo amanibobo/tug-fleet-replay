@@ -5,7 +5,7 @@
   bottom: 0;
   left: 0;
   display: flex;
-  background: var(--paper);
+  background: #ffffff;
 }
 
 .rail {
@@ -13,45 +13,17 @@
   width: var(--rail-w);
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  padding: 4px 0 20px 12px;
   overflow-y: auto;
   overflow-x: hidden;
-  background: var(--paper-2);
-  border-right: 1px solid var(--line);
+  background: #ffffff;
   scrollbar-width: thin;
-  scrollbar-color: var(--line-strong) transparent;
+  scrollbar-color: var(--tile-2) transparent;
 }
 
-.mapWrap {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-}
-
-.mapLoading {
-  position: absolute;
-  inset: 0;
-  background: var(--paper-3);
-}
-
-.mapError {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 12px 16px;
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  color: var(--red);
-  font-size: 13px;
-}
-
-.section {
-  padding: 16px;
-  border-bottom: 1px solid var(--line);
-}
-
-.listSection {
-  border-bottom: 1px solid var(--line);
+.railHead {
+  padding: 8px 8px 4px;
 }
 
 .titleRow {
@@ -61,23 +33,59 @@
   gap: 12px;
 }
 
+.h1 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
 .sub {
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 13px;
   line-height: 1.45;
-  color: var(--ink-2);
+  color: var(--ink-3);
+}
+
+.mapWrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  margin: 4px 12px 12px;
+  border-radius: var(--r-tile);
+  overflow: hidden;
+  background: var(--tile);
+}
+
+.mapLoading {
+  position: absolute;
+  inset: 0;
+  background: var(--tile);
+}
+
+.mapError {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 12px 18px;
+  background: #ffffff;
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-float);
+  color: var(--red);
+  font-size: 13px;
 }
 
 .footer {
   margin-top: auto;
-  padding: 16px;
+  padding: 12px 8px 0;
 }
 
 /* Stacked layout: the map on top, the rail content in flow. */
 @media (max-width: 1023px) {
   .root {
     position: static;
-    display: block;
+    display: flex;
+    flex-direction: column-reverse;
     padding-top: var(--nav-h);
     min-height: 100dvh;
   }
@@ -85,12 +93,12 @@
   .mapWrap {
     height: 44vh;
     min-height: 260px;
+    margin: 4px 12px 0;
   }
 
   .rail {
     width: auto;
     overflow: visible;
-    border-right: none;
-    border-top: 1px solid var(--line);
+    padding: 12px 12px 88px;
   }
 }

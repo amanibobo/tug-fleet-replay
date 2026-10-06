@@ -1,6 +1,8 @@
-# Tug fleet replay
+# Tugboard
 
-Real Port of Los Angeles tug traffic, replayed as if each tug were a hybrid-electric boat streaming live telemetry. The headline output is one number: the share of tug-days that run without the generator at a given battery size.
+Fleet replay for hybrid-electric tugs. Real Port of Los Angeles tug traffic, replayed as if each tug were a hybrid-electric boat streaming live telemetry. The headline output is one number: the share of tug-days that run without the generator at a given battery size.
+
+Live: https://tug-fleet-replay.vercel.app
 
 **Headline: 70.8% of 154 tug-days ran electric-only at 6,000 kWh** (22 harbor tugs, Dec 2–8 2024, 8 detected docks). Drag the slider on the dashboard to see how that moves with battery size.
 
@@ -14,7 +16,7 @@ Real Port of Los Angeles tug traffic, replayed as if each tug were a hybrid-elec
 4. **Sweep**: repeats the simulation for every battery size from 1,000 to 8,000 kWh and prices charging on a time-of-use tariff, charge-on-arrival vs scheduled.
 5. **Export**: writes `fleet.json`, one JSON per tug-day, `summary.json`, and one Rerun recording per tug-day.
 6. **Replay**: publishes each tug's telemetry on a sped-up clock to AWS IoT Core (or a local WebSocket stand-in, or a live Rerun viewer). Replayed data enters through the same path a real boat's would, so swapping in a live source changes one component.
-7. **Dashboard**: Next.js + MapLibre fleet view with battery bars on every tug, a tug-day page with a native timeline, a battery-size slider that moves the headline, and an embedded Rerun inspector for scrubbing any tug-day.
+7. **Product**: a landing page at `/` (demo placeholder, how it works, two animated diagrams, getting-started steps, data notes, an ASCII tug in the footer), the fleet console at `/app` (MapLibre map with boat-silhouette markers, battery bars, replay clock, battery-size slider, getting-started checklist and a guided tour), and tug-day pages at `/app/tugs/[id]` with a timeline, a charging schedule and an embedded Rerun inspector.
 
 ## Architecture
 

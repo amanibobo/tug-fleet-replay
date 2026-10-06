@@ -4,6 +4,7 @@ import { memo, useState } from "react";
 import Footnote from "@/components/Footnote";
 import Slider from "@/components/Slider";
 import Stat from "@/components/Stat";
+import Tile from "@/components/Tile";
 import { fmtHours, fmtInt, fmtUsd } from "@/lib/format";
 import type { SummaryState } from "@/lib/useSummary";
 import { useAnimatedNumber, useDebounced } from "@/lib/useAnimatedNumber";
@@ -11,10 +12,11 @@ import styles from "./HeadlinePanel.module.css";
 
 interface Props {
   summary: SummaryState;
-  className?: string;
+  /** Fired when the user moves the battery slider (onboarding step 3). */
+  onSlide?: () => void;
 }
 
-function HeadlinePanel({ summary, className }: Props) {
+function HeadlinePanel({ summary, onSlide }: Props) {
   const { bounds, defaultKwh, pick, status } = summary;
   const [picked, setKwh] = useState<number | null>(null);
   const kwh = picked ?? defaultKwh;
@@ -30,7 +32,8 @@ function HeadlinePanel({ summary, className }: Props) {
       : null;
 
   return (
-    <section className={`${styles.panel} ${className ?? ""}`} aria-label="Week summary">
+    <Tile className={styles.panel} aria-label="Week summary" data-tour="headline">
+      <span className={styles.kicker}>Electric share this week</span>
       <div className={`headline ${styles.headline}`} aria-live="polite">
         {status === "ready" && row ? (
           <>
@@ -49,7 +52,10 @@ function HeadlinePanel({ summary, className }: Props) {
         max={bounds?.max ?? 8000}
         step={bounds?.step ?? 250}
         value={kwh}
-        onChange={setKwh}
+        onChange={(v) => {
+          setKwh(v);
+          onSlide?.();
+        }}
         disabled={!bounds}
         className={styles.slider}
       />
@@ -78,7 +84,7 @@ function HeadlinePanel({ summary, className }: Props) {
       </div>
 
       <Footnote className={styles.footnote} />
-    </section>
+    </Tile>
   );
 }
 

@@ -1,0 +1,68 @@
+.wrap {
+  width: 100%;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chipText,
+.hudLabel,
+.hudValue {
+  font-family: var(--font-sans);
+}
+
+.chipText {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.hudLabel {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--ink-3);
+}
+
+.hudValue {
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.phaseChip {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.waveA {
+  animation: driftA 9s linear infinite;
+}
+
+.waveB {
+  animation: driftB 12s linear infinite;
+}
+
+.wrap[data-paused] .waveA,
+.wrap[data-paused] .waveB {
+  animation-play-state: paused;
+}
+
+@keyframes driftA {
+  to {
+    transform: translateX(60px);
+  }
+}
+
+@keyframes driftB {
+  from {
+    transform: translateX(60px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

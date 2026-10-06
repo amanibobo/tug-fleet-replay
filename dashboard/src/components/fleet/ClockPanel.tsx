@@ -2,15 +2,14 @@
 
 import { useMemo } from "react";
 import Slider from "@/components/Slider";
+import Tile from "@/components/Tile";
 import { DAY_MS, hhmmss, isoDate, prettyDate } from "@/lib/format";
 import { SPEEDS, type FleetState } from "@/lib/useFleet";
 import styles from "./ClockPanel.module.css";
 
-type Props = Pick<FleetState, "clock" | "playing" | "speed" | "setPlaying" | "setSpeed" | "seek" | "range" | "controllable" | "status"> & {
-  className?: string;
-};
+type Props = Pick<FleetState, "clock" | "playing" | "speed" | "setPlaying" | "setSpeed" | "seek" | "range" | "controllable" | "status">;
 
-export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed, seek, range, controllable, status, className }: Props) {
+export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed, seek, range, controllable, status }: Props) {
   const days = useMemo(() => {
     if (!range) return [];
     const out: { ms: number; label: string }[] = [];
@@ -21,19 +20,21 @@ export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed
   }, [range]);
 
   return (
-    <section className={`${styles.panel} ${className ?? ""}`} aria-label="Replay clock">
-      <div className={styles.clock} aria-live="off">
-        <span className={styles.date}>{clock != null ? prettyDate(clock) : "Waiting for data"}</span>
-        <span className={styles.timeRow}>
-          <span className={`mono ${styles.time}`}>{clock != null ? hhmmss(clock) : "--:--:--"}</span>
-          <span className={styles.tz}>UTC</span>
-        </span>
+    <Tile className={styles.panel} aria-label="Replay clock" data-tour="clock">
+      <div className={styles.top}>
+        <div className={styles.clock} aria-live="off">
+          <span className={styles.date}>{clock != null ? prettyDate(clock) : "Waiting for data"}</span>
+          <span className={styles.timeRow}>
+            <span className={`mono ${styles.time}`}>{clock != null ? hhmmss(clock) : "--:--:--"}</span>
+            <span className={styles.tz}>UTC</span>
+          </span>
+        </div>
       </div>
 
       <div className={styles.controls}>
         <button
           type="button"
-          className="btn btnSecondary btnIcon"
+          className="btn btnIcon"
           onClick={() => setPlaying(!playing)}
           disabled={!controllable || status !== "ready"}
           aria-label={playing ? "Pause replay" : "Play replay"}
@@ -47,7 +48,7 @@ export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed
             </button>
           ))}
         </div>
-        {!controllable ? <span className={`label ${styles.live}`}>Live from server</span> : null}
+        {!controllable ? <span className={`chip chipGreen ${styles.live}`}>Live from server</span> : null}
       </div>
 
       <div className={styles.scrub}>
@@ -76,13 +77,13 @@ export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed
           ))}
         </div>
       </div>
-    </section>
+    </Tile>
   );
 }
 
 function PlayIcon() {
   return (
-    <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden>
+    <svg width="12" height="14" viewBox="0 0 10 12" aria-hidden>
       <path d="M0 0l10 6-10 6z" fill="currentColor" />
     </svg>
   );
@@ -90,9 +91,9 @@ function PlayIcon() {
 
 function PauseIcon() {
   return (
-    <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden>
-      <rect x="0" y="0" width="3.5" height="12" fill="currentColor" />
-      <rect x="6.5" y="0" width="3.5" height="12" fill="currentColor" />
+    <svg width="12" height="14" viewBox="0 0 10 12" aria-hidden>
+      <rect x="0" y="0" width="3.5" height="12" rx="1" fill="currentColor" />
+      <rect x="6.5" y="0" width="3.5" height="12" rx="1" fill="currentColor" />
     </svg>
   );
 }

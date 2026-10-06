@@ -1,8 +1,9 @@
-# Tug fleet replay — dashboard
+# Tugboard — dashboard
 
-Next.js console that replays Port of Los Angeles tug traffic as hybrid-electric telemetry.
-Light paper, map-first, one headline number: the share of tug-days that ran without the generator
-at a given battery size. Independent project; not affiliated with Arc.
+Next.js app that replays Port of Los Angeles tug traffic as hybrid-electric telemetry. "Fleet replay
+for hybrid-electric tugs." A landing page at `/`, the fleet console at `/app`, one tug-day at
+`/app/tugs/[id]`. One headline number: the share of tug-days that ran without the generator at a
+given battery size. Independent project; not affiliated with Arc.
 
 ## Scripts
 
@@ -44,7 +45,7 @@ Shapes are in `../docs/CONTRACT.md`; TypeScript types in `src/lib/types.ts`.
 | Path | Contract section | Used by |
 | --- | --- | --- |
 | `public/data/fleet.json` | 5 | Fleet map replay |
-| `public/data/summary.json` | 4 | Headline, battery slider, About assumptions |
+| `public/data/summary.json` | 4 | Headline, battery slider, landing numbers strip and assumptions table |
 | `public/data/tugdays/{tug_id}/{date}.json` | 3 | Tug day page |
 | `public/recordings/{tug_id}/{date}.rrd` | 6 | Rerun inspector (`recording_url` in the tug day file) |
 
@@ -55,25 +56,64 @@ them to the same paths with the same shapes; nothing else in the dashboard chang
 
 Simulated figures are marked once per panel with the footnote "Estimates. Parameters in config.yaml." (`../config.yaml`).
 
+## Routes
+
+| Path | What it is |
+| --- | --- |
+| `/` | Landing: hero with the demo placeholder, numbers strip, how it works, the two diagrams, product tiles, get started, data and assumptions, footer band |
+| `/app` | Fleet console (map, clock, headline, fleet list, inline tug detail) |
+| `/app/tugs/[id]?date=YYYY-MM-DD` | One tug-day: totals, battery and activity, charging schedule, jobs, track, Rerun inspector |
+| `/tugs/[id]`, `/about` | Old paths; `next.config.ts` redirects them (308) to `/app/tugs/[id]` and `/#data` |
+
 ## Layout
 
 ```
-src/app/            routes: / (fleet), /tugs/[id] (tug day), /about
-src/components/     Nav, Panel, BatteryBar, StatusChip, Slider, Stat, Footnote, FixtureBadge, Footer
-src/components/fleet/   FleetConsole, FleetMap (MapLibre), ClockPanel, HeadlinePanel, FleetList, TugDetail
+src/app/                routes: / (landing), /app (console), /app/tugs/[id] (tug day)
+src/components/         Nav, Tile, TugIcon, BatteryBar, StatusChip, Slider, Stat, Footnote, FixtureBadge, Footer
+src/components/fleet/   FleetConsole, FleetMap (MapLibre, SVG boat markers), ClockPanel, HeadlinePanel, FleetList, TugDetail
 src/components/tug/     TugDayView, DayTimeline (SVG), ChargingSchedule (SVG), JobsList, TrackMap, RerunInspector
-src/components/about/   AboutContent, Architecture (vertical list)
-src/lib/            types, env, format, useFleet, useTugDay, useSummary, useAnimatedNumber
-scripts/            make-fixture.mjs
+src/components/landing/ Landing, NumbersStrip, CountUp, Reveal, DataPath, HarborDiagram, ProductTiles, DataSection, LandingFooter, AsciiTug
+src/components/onboarding/ OnboardingProvider, Checklist, Tour
+src/lib/                types, env, format, useFleet, useTugDay, useSummary, useAnimatedNumber, useInView
+scripts/                make-fixture.mjs
 ```
 
 Styling is plain CSS modules plus `src/app/globals.css`, which holds the tokens and type roles from
-`../docs/DESIGN.md` (v3, "paper instrument": warm paper background, dark ink, hairline surfaces,
-muted status colors, no shadows or gradients, light mode only). Fonts: IBM Plex Sans and IBM Plex
-Mono via `next/font/google`, exposed as `--font-plex-sans` and `--font-plex-mono`. Map style: CARTO
-Positron, untinted; markers are 8px squares rotated by heading in the activity color. The Rerun
-viewer (`@rerun-io/web-viewer-react@0.38.1`, matching the Python SDK) is imported with `next/dynamic`
-only when the inspector opens and runs with `theme="light"`.
+`../docs/DESIGN.md` (v4, "soft product": white canvas, soft gray rounded tiles with no borders,
+words only on tiles (no decorative icons), pill buttons, chips with soft tints, light mode only).
+Fonts via `next/font/google`: Geist (400, 500, 600) for all text as `--font-sans`, Geist Mono (400)
+for machine values as `--font-mono`; the family is set once in `src/app/layout.tsx`. Map style: CARTO Positron, untinted. Markers
+are one top-down tug silhouette (`src/components/TugIcon.tsx`) as a MapLibre marker with `rotationAlignment: "map"`, filled with the activity
+color (red while the generator runs), rotated by heading, with a 20x3 battery pill and a name label
+on a second viewport-aligned marker. The Rerun viewer (`@rerun-io/web-viewer-react@0.38.1`, matching
+the Python SDK) is imported with `next/dynamic` only when the inspector opens and runs with
+`theme="light"`.
+
+## Onboarding
+
+- **Getting started checklist** (`src/components/onboarding/Checklist.tsx`): a floating card on the
+  console with four steps that tick from real state: play/pause toggled, a tug selected, the battery
+  slider moved, a tug day opened. Dismiss with the x; reopen from the circular button in the nav. On
+  phones it collapses to a "Get started 2/4" pill.
+- **Tour** (`Tour.tsx`): five stops with [driver.js](https://driverjs.com) (clock, headline, fleet
+  list, map, "Open day"). It selects the first tug before the last stop. It starts once, automatically,
+  on the first visit after the fleet data loads, from "Take the tour" on the checklist, or from
+  `/app?tour=1`.
+- Progress persists in `localStorage` under `tugboard.onboarding` (read and written inside
+  try/catch). Clear that key to see the first-visit flow again.
+
+## Landing assets
+
+- `public/poster.png` is the demo video placeholder, a 1280x720 headless screenshot of `/app` with
+  the first tug selected. Retake it after visual changes to the console.
+- The footer band holds an ASCII tug towing a barge (`landing/AsciiTug.tsx`): 72 columns by 11 rows
+  in Geist Mono, redrawn at 6 frames per second with `requestAnimationFrame` (rotating water,
+  a one-row bob, three smoke puffs). It renders a static frame under `prefers-reduced-motion`, pauses
+  off-screen, and scales down with `transform: scale()` on narrow screens instead of wrapping.
+- Two anime.js (v4) diagrams: `HarborDiagram` (a tug-day as a looping ~14 s timeline on a motion
+  path, with the battery draining and refilling) and `DataPath` (packets travelling between the six
+  stages of the data path). Both pause off-screen and render their final state under reduced motion.
+  The numbers strip counts up on first view; step and product tiles stagger-fade in on scroll.
 
 The tug day page's Charging schedule panel reads `tariff.bands`, `charging[].scheduled_windows` and
 `totals.charge_cost_usd_*` from the tug-day file (contract section 3). The arrival profile is charger

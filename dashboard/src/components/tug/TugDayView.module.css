@@ -1,7 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .header {
@@ -10,22 +10,19 @@
   align-items: flex-end;
   gap: 24px;
   flex-wrap: wrap;
+  padding: 4px 0 12px;
 }
 
 .titleBlock {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
 }
 
 .back {
-  font-size: 13px;
-  color: var(--ink-2);
-  transition: color var(--t-fast) var(--ease);
-}
-
-.back:hover {
-  color: var(--ink);
+  margin-left: -10px;
+  padding-left: 8px;
 }
 
 .meta {
@@ -35,7 +32,7 @@
 }
 
 .mmsi {
-  color: var(--ink-2);
+  color: var(--ink-3);
 }
 
 .datePicker {
@@ -62,49 +59,29 @@
 .totals {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  gap: 20px;
+}
+
+.totalsHead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.totalsTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .statRow {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, auto)) auto 1fr;
-  gap: 20px 32px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px 24px;
   align-items: end;
-}
-
-.dayStatus {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  height: 22px;
-  font-size: 12px;
-  color: var(--ink-2);
-  white-space: nowrap;
-}
-
-.chipDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--red);
-}
-
-.chip[data-ok] .chipDot {
-  background: var(--green);
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .timelinePanel,
@@ -117,7 +94,7 @@
 
 .legend {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
@@ -127,12 +104,14 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
+  font-weight: 500;
   color: var(--ink-2);
 }
 
 .swatch {
   width: 10px;
   height: 10px;
+  border-radius: 50%;
 }
 
 .empty {
@@ -144,7 +123,7 @@
 .lower {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 420px;
-  gap: 20px;
+  gap: 12px;
   align-items: stretch;
 }
 
@@ -156,12 +135,15 @@
   position: relative;
   flex: 1;
   min-height: 320px;
+  margin: 0 8px 8px;
+  border-radius: var(--r-card);
+  overflow: hidden;
 }
 
 .mapSkeleton {
   position: absolute;
   inset: 0;
-  background: var(--paper-3);
+  background: var(--tile-2);
 }
 
 .footer {
@@ -173,13 +155,18 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .actions {
-    grid-column: 1 / -1;
-    justify-content: flex-start;
-  }
-
   .lower {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .totalsHead {
+    flex-wrap: wrap;
+  }
+
+  .rerunBtn {
+    width: 100%;
   }
 }
 

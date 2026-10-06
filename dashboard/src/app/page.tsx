@@ -1,5 +1,5 @@
-import FleetConsole from "@/components/fleet/FleetConsole";
+import Landing from "@/components/landing/Landing";
 
 export default function Home() {
-  return <FleetConsole />;
+  return <Landing />;
 }
