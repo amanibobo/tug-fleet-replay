@@ -131,13 +131,6 @@
   text-transform: lowercase;
 }
 
-.anim {
-  margin-top: 28px;
-  padding: 16px;
-  border: 1px solid var(--d-line);
-  border-radius: var(--d-radius-sm);
-  background: color-mix(in srgb, var(--d-fg) 3%, var(--d-bg-landing));
-}
 
 /* ---- end matter ---- */
 .end {

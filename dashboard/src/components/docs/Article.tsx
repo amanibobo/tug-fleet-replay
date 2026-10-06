@@ -5,7 +5,6 @@ import type { Doc } from "./parse";
 import { formatInline } from "./inline";
 import { Figure } from "./rough";
 import { FIGURES } from "./figures";
-import { ANIMS } from "./anims";
 import HeaderShip from "./HeaderShip";
 import Toc from "./Toc";
 import styles from "./Docs.module.css";
@@ -63,16 +62,8 @@ export default function Article({ doc }: { doc: Doc }) {
                   body.push(<Figure key={i} def={def} index={figureIndex} />);
                   figureIndex += 1;
                 }
-              } else {
-                const Anim = ANIMS[section.slug];
-                if (Anim) {
-                  body.push(
-                    <div key={i} className={styles.anim} aria-label={block.brief} role="img">
-                      <Anim />
-                    </div>,
-                  );
-                }
               }
+              // "anim" markers in the build log are ignored: the page keeps the drawn figures only
             });
             return (
               <section key={section.slug} id={section.slug} className={styles.section}>
