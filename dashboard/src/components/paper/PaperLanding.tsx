@@ -47,7 +47,6 @@ export default function PaperLanding() {
             every minute, and runs it on a battery instead. At 6,000 kWh, 71% of 154 tug-days never start the
             generator. The rest is a slider.
           </p>
-          <span className={styles.v}>Independent project. Tracks from NOAA AIS, Dec 2 to 8, 2024.</span>
         </div>
         <div className={styles.center}>
           <button type="button" className={styles.demoLink} onClick={() => setDemo(true)}>
