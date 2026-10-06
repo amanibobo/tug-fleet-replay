@@ -236,3 +236,133 @@
     transition: none;
   }
 }
+
+/* ---- demo link and modal ---- */
+.demoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-end;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--p-fg);
+  cursor: pointer;
+}
+
+.demoLink svg {
+  color: var(--p-muted);
+  transition: color 160ms var(--d-ease);
+}
+
+.demoLink:hover svg {
+  color: var(--p-fg);
+}
+
+.modal {
+  width: min(960px, calc(100vw - 32px));
+  max-width: none;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  background: #0e0e0e;
+  color: #f2f2f2;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(8px) scale(0.985);
+  transition: opacity 200ms var(--d-ease), transform 200ms var(--d-ease), overlay 200ms allow-discrete, display 200ms allow-discrete;
+}
+
+.modal[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .modal[open] {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+.modal::backdrop {
+  background: rgba(10, 10, 10, 0.72);
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  object-fit: cover;
+}
+
+.modalNote {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #3a3630;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.modalBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 10px 16px;
+}
+
+.modalTitle {
+  font-size: 13px;
+  color: #a3a3a8;
+}
+
+.modalClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  background: transparent;
+  color: #f2f2f2;
+  cursor: pointer;
+}
+
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 760px) {
+  .demoLink {
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    transition: none;
+  }
+}

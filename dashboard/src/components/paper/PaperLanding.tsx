@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 import { GITHUB_URL, PORTFOLIO_URL } from "@/components/Nav";
+import DemoModal, { YouTubeMark } from "./DemoModal";
 import DitherTug from "./DitherTug";
 import Grain from "./Grain";
 import styles from "./Paper.module.css";
@@ -14,6 +15,7 @@ const DEMO_VIDEO: string | null = null;
 /** An alternate landing: four corners of small type and one dithered tug. Hovering the tug shows the demo. */
 export default function PaperLanding() {
   const [hover, setHover] = useState(false);
+  const [demo, setDemo] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const stage = useRef<HTMLDivElement>(null);
 
@@ -44,13 +46,18 @@ export default function PaperLanding() {
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           onMouseMove={move}
-          onClick={() => setHover((h) => !h)}
+          onClick={() => setDemo(true)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setDemo(true);
+            }
+          }}
           onFocus={() => setHover(true)}
           onBlur={() => setHover(false)}
           tabIndex={0}
           role="button"
-          aria-label="Show the demo video"
-          aria-expanded={hover}
+          aria-label="Play the demo video"
         >
           <DitherTug ink={[38, 32, 24]} mode="dash" />
           <div
@@ -83,11 +90,10 @@ export default function PaperLanding() {
           </p>
           <span className={styles.v}>Independent project. Tracks from NOAA AIS, Dec 2 to 8, 2024.</span>
         </div>
-        <ul className={styles.list} aria-label="What is inside">
-          <li>Real tracks</li>
-          <li>Labeled minutes</li>
-          <li>Battery simulation</li>
-        </ul>
+        <button type="button" className={styles.demoLink} onClick={() => setDemo(true)}>
+          <YouTubeMark />
+          <span>Demo video</span>
+        </button>
         <nav className={styles.br} aria-label="Links">
           <Link href="/app" className={styles.link}>
             Open the console
@@ -103,6 +109,7 @@ export default function PaperLanding() {
           </Link>
         </nav>
       </footer>
+      <DemoModal open={demo} onClose={() => setDemo(false)} />
     </main>
   );
 }
