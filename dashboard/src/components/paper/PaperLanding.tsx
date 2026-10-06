@@ -1,17 +1,42 @@
+"use client";
+
 import Link from "next/link";
+import { useSyncExternalStore } from "react";
 import { GITHUB_URL, PORTFOLIO_URL } from "@/components/Nav";
 import DitherTug from "./DitherTug";
 import Grain from "./Grain";
 import styles from "./Paper.module.css";
+import { THEMES, themeStore } from "./themes";
 
-/** An alternate landing: paper, four corners of small type, one dithered tug. */
+/** An alternate landing: four corners of small type, one dithered tug, three color skins. */
 export default function PaperLanding() {
+  const id = useSyncExternalStore(themeStore.subscribe, themeStore.get, themeStore.getServer);
+  const index = Math.max(0, THEMES.findIndex((t) => t.id === id));
+  const theme = THEMES[index];
+  const next = THEMES[(index + 1) % THEMES.length];
+  const cycle = () => themeStore.set(next.id);
+
   return (
-    <main className={styles.page} data-paper>
-      <Grain />
+    <main
+      className={styles.page}
+      data-paper
+      data-theme={theme.id}
+      style={{ "--p-bg": theme.bg, "--p-fg": theme.fg, "--p-muted": theme.muted } as React.CSSProperties}
+    >
+      <Grain back={theme.grain.back} colors={theme.grain.colors} intensity={theme.grain.intensity} />
       <header className={styles.corners} aria-label="Page">
         <div className={styles.tl}>
-          <span className={styles.k}>Tugboard</span>
+          <span className={styles.brand}>
+            <span className={styles.k}>Tugboard</span>
+            <button
+              type="button"
+              className={styles.swatch}
+              style={{ background: theme.swatch }}
+              onClick={cycle}
+              aria-label={`Switch colors to ${next.label}`}
+              title={`Colors: ${theme.label}. Click for ${next.label}.`}
+            />
+          </span>
           <span className={styles.v}>Fleet replay for hybrid-electric tugs</span>
         </div>
         <div className={styles.tr}>
@@ -21,7 +46,7 @@ export default function PaperLanding() {
       </header>
 
       <section className={styles.stage} aria-label="A harbor tug, dithered">
-        <DitherTug />
+        <DitherTug ink={theme.ink} mode={theme.mode} />
       </section>
 
       <footer className={styles.corners}>

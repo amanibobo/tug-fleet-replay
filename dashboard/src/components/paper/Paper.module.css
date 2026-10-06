@@ -4,10 +4,36 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: 28px 32px;
-  background: #f3f1ea;
-  color: #1c1a16;
+  background: var(--p-bg, #f3f1ea);
+  color: var(--p-fg, #1c1a16);
   font-family: var(--font-sans);
   overflow: hidden;
+  transition: background 320ms var(--d-ease), color 320ms var(--d-ease);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--p-fg) 35%, transparent);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: transform 160ms var(--d-ease);
+}
+
+.swatch:hover {
+  transform: scale(1.15);
+}
+
+.swatch:focus-visible {
+  outline: 2px solid var(--p-fg);
+  outline-offset: 2px;
 }
 
 .grain {
@@ -43,12 +69,12 @@
 }
 
 .k {
-  color: #1c1a16;
+  color: var(--p-fg);
   font-weight: 500;
 }
 
 .v {
-  color: #6f6a60;
+  color: var(--p-muted);
 }
 
 .stage {
@@ -74,13 +100,13 @@
   flex-direction: column;
   gap: 2px;
   font-size: 13px;
-  color: #1c1a16;
+  color: var(--p-fg);
   align-self: flex-end;
 }
 
 .list li::before {
   content: "— ";
-  color: #6f6a60;
+  color: var(--p-muted);
 }
 
 .br {
@@ -92,16 +118,16 @@
 }
 
 .link {
-  color: #6f6a60;
+  color: var(--p-muted);
   transition: color 160ms var(--d-ease);
 }
 
 .link:hover {
-  color: #1c1a16;
+  color: var(--p-fg);
 }
 
 .link:first-child {
-  color: #1c1a16;
+  color: var(--p-fg);
   font-weight: 500;
 }
 
@@ -130,5 +156,12 @@
 
   .canvas {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page,
+  .swatch {
+    transition: none;
   }
 }

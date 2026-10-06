@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import styles from "./Paper.module.css";
+import type { DitherMode } from "./themes";
 
 const SRC = "/tug-side.svg";
 const SRC_W = 1200;
@@ -12,8 +13,21 @@ const SRC_H = 520;
  * way a plotter or a typewriter would shade it. The dash field is re-jittered a few times a
  * second so it breathes; under reduced motion it is drawn once.
  */
-export default function DitherTug() {
+interface Props {
+  ink: [number, number, number];
+  mode: DitherMode;
+}
+
+export default function DitherTug({ ink, mode }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const style = useRef({ ink, mode });
+  const redraw = useRef<() => void>(() => {});
+
+  // theme changes redraw immediately instead of waiting for the next tick
+  useEffect(() => {
+    style.current = { ink, mode };
+    redraw.current();
+  }, [ink, mode]);
 
   useEffect(() => {
     const canvas = ref.current;
@@ -46,8 +60,9 @@ export default function DitherTug() {
       canvas.height = ch;
       canvas.style.height = `${ch / dpr}px`;
       // grid in CSS pixels with a floor, so phones keep enough cells to read the hull
-      gw = Math.min(560, Math.max(300, Math.floor(box.width / 2)));
-      gh = Math.max(1, Math.round((gw * SRC_H) / SRC_W / 1.7));
+      const dots = style.current.mode === "dots";
+      gw = dots ? Math.min(150, Math.max(90, Math.floor(box.width / 7))) : Math.min(560, Math.max(300, Math.floor(box.width / 2)));
+      gh = Math.max(1, Math.round((gw * SRC_H) / SRC_W / (dots ? 1 : 1.7)));
       const off = document.createElement("canvas");
       off.width = gw;
       off.height = gh;
@@ -70,8 +85,30 @@ export default function DitherTug() {
       if (!lum) return;
       seed = (t * 7919) % 2147483647 || 1;
       ctx.clearRect(0, 0, cw, ch);
+      const [r, g, b] = style.current.ink;
       const cellW = cw / gw;
       const cellH = ch / gh;
+      if (style.current.mode === "dots") {
+        // cobalt: solid blocks where the source is dark, shrinking dots at the edges
+        for (let y = 0; y < gh; y++) {
+          for (let x = 0; x < gw; x++) {
+            const d = lum[y * gw + x] + (rand() - 0.5) * 0.08;
+            if (d < 0.14) continue;
+            const cx = x * cellW;
+            const cy = y * cellH;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${d > 0.6 ? 1 : Math.min(1, 0.55 + d)})`;
+            if (d > 0.74) {
+              ctx.fillRect(cx, cy, cellW + 0.5, cellH + 0.5);
+            } else {
+              const rad = Math.max(0.6, cellW * 0.5 * Math.pow(d, 0.9));
+              ctx.beginPath();
+              ctx.arc(cx + cellW / 2, cy + cellH / 2, rad, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+        return;
+      }
       const rowH = Math.max(1, cellH * 0.42);
       for (let y = 0; y < gh; y++) {
         const yy = y * cellH + cellH * 0.3;
@@ -88,12 +125,17 @@ export default function DitherTug() {
           for (let k = 0; k < len && x + k < gw; k++) sum += lum[y * gw + x + k];
           const mean = sum / len;
           const alpha = Math.min(0.95, 0.3 + mean * 0.7);
-          ctx.fillStyle = `rgba(38, 32, 24, ${alpha.toFixed(3)})`;
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
           const jitter = (rand() - 0.5) * cellW * 0.6;
           ctx.fillRect(x * cellW + jitter, yy, len * cellW - cellW * 0.45, rowH);
           x += len + 1 + Math.floor(rand() * 3);
         }
       }
+    };
+    redraw.current = () => {
+      if (!lum) return;
+      sample();
+      draw(3);
     };
 
     const img = new Image();
