@@ -114,17 +114,3 @@ dashboard/             Next.js 16, TypeScript, MapLibre, Rerun web viewer
 infra/                 AWS CDK (TypeScript) + Python Lambdas
 docs/                  CONTRACT.md (JSON shapes), DESIGN.md (design system history, v7 current), DEMO.md (video script), BUILD_LOG.md (the /docs article)
 ```
-
-## Status against the PRD
-
-| Feature | Status |
-| --- | --- |
-| Replayer publishes each tug's position on a sped-up clock | Done: `tug replay`, `tug serve`, IoT publisher |
-| Activity labels by rule | Done; hand-check tooling in place (`tug sample`, `tug score`), labels not yet scored |
-| Energy model and battery simulation | Done, unit tested |
-| Live map with battery bars | Done |
-| Tug detail page with a day timeline | Done, plus Rerun inspector |
-| Battery-size slider and fleet summary | Done (precomputed sweep, no reload) |
-| Charging schedule vs time-of-use prices | Done in the summary |
-| React Native screen | Not started |
-| Learned activity classifier | Not started |
