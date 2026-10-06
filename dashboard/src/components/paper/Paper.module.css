@@ -4,37 +4,18 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: 28px 32px;
-  background: var(--p-bg, #f3f1ea);
-  color: var(--p-fg, #1c1a16);
+  --p-bg: #f3f1ea;
+  --p-fg: #1c1a16;
+  --p-muted: #6f6a60;
+  background: var(--p-bg);
+  color: var(--p-fg);
   font-family: var(--font-sans);
   overflow: hidden;
-  transition: background 320ms var(--d-ease), color 320ms var(--d-ease);
 }
 
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
 
-.swatch {
-  width: 12px;
-  height: 12px;
-  padding: 0;
-  border: 1px solid color-mix(in srgb, var(--p-fg) 35%, transparent);
-  border-radius: 2px;
-  cursor: pointer;
-  transition: transform 160ms var(--d-ease);
-}
 
-.swatch:hover {
-  transform: scale(1.15);
-}
 
-.swatch:focus-visible {
-  outline: 2px solid var(--p-fg);
-  outline-offset: 2px;
-}
 
 .grain {
   position: absolute;
@@ -66,6 +47,14 @@
 .tr {
   text-align: right;
   align-items: flex-end;
+}
+
+.blurb {
+  max-width: 400px;
+  margin: 0 0 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--p-fg);
 }
 
 .k {
@@ -159,9 +148,91 @@
   }
 }
 
+
+/* ---- hover demo card ---- */
+.hoverZone {
+  position: relative;
+  display: block;
+  width: min(1100px, 82vw);
+  cursor: pointer;
+  outline: none;
+}
+
+.hoverZone .canvas {
+  width: 100%;
+}
+
+.demoCard {
+  position: absolute;
+  z-index: 2;
+  width: min(420px, 60vw);
+  aspect-ratio: 16 / 9;
+  transform: translate(18px, 18px) scale(0.96);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid rgba(28, 26, 22, 0.14);
+  box-shadow: 0 24px 60px rgba(28, 26, 22, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms var(--d-ease), transform 200ms var(--d-ease);
+}
+
+.demoCard[data-open] {
+  opacity: 1;
+  transform: translate(18px, 18px) scale(1);
+}
+
+.demoMedia {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.9);
+}
+
+.demoPlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #111;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 2px;
+}
+
+.demoCaption {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #3a3630;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+@media (hover: none) {
+  .demoCard {
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+
+  .demoCard[data-open] {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .page,
-  .swatch {
+  .demoCard {
     transition: none;
   }
 }

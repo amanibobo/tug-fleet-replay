@@ -7,22 +7,16 @@ const GrainGradient = dynamic(() => import("@paper-design/shaders-react").then((
   ssr: false,
 });
 
-interface Props {
-  back: string;
-  colors: string[];
-  intensity: number;
-}
-
 /** A slow, barely-there grain field behind the page, from Paper's shader library. */
-export default function Grain({ back, colors, intensity }: Props) {
+export default function Grain() {
   return (
     <div className={styles.grain} aria-hidden>
       <GrainGradient
         style={{ width: "100%", height: "100%" }}
-        colorBack={back}
-        colors={colors}
+        colorBack="#f3f1ea"
+        colors={["#ece9e0", "#f7f5ef", "#e9e6dd"]}
         softness={0.85}
-        intensity={intensity}
+        intensity={0.18}
         noise={0.55}
         speed={0.25}
         shape="wave"

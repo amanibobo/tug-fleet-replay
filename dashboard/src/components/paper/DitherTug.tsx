@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import styles from "./Paper.module.css";
-import type { DitherMode } from "./themes";
+export type DitherMode = "dash" | "dots";
 
 const SRC = "/tug-side.svg";
 const SRC_W = 1200;

@@ -1,42 +1,34 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useCallback, useRef, useState } from "react";
 import { GITHUB_URL, PORTFOLIO_URL } from "@/components/Nav";
 import DitherTug from "./DitherTug";
 import Grain from "./Grain";
 import styles from "./Paper.module.css";
-import { THEMES, themeStore } from "./themes";
 
-/** An alternate landing: four corners of small type, one dithered tug, three color skins. */
+/** Set this to a public video path (for example "/demo.mp4") once the demo exists; the card autoplays it muted. */
+const DEMO_VIDEO: string | null = null;
+
+/** An alternate landing: four corners of small type and one dithered tug. Hovering the tug shows the demo. */
 export default function PaperLanding() {
-  const id = useSyncExternalStore(themeStore.subscribe, themeStore.get, themeStore.getServer);
-  const index = Math.max(0, THEMES.findIndex((t) => t.id === id));
-  const theme = THEMES[index];
-  const next = THEMES[(index + 1) % THEMES.length];
-  const cycle = () => themeStore.set(next.id);
+  const [hover, setHover] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const stage = useRef<HTMLDivElement>(null);
+
+  const move = useCallback((e: React.MouseEvent) => {
+    const box = stage.current?.getBoundingClientRect();
+    if (!box) return;
+    setPos({ x: e.clientX - box.left, y: e.clientY - box.top });
+  }, []);
 
   return (
-    <main
-      className={styles.page}
-      data-paper
-      data-theme={theme.id}
-      style={{ "--p-bg": theme.bg, "--p-fg": theme.fg, "--p-muted": theme.muted } as React.CSSProperties}
-    >
-      <Grain back={theme.grain.back} colors={theme.grain.colors} intensity={theme.grain.intensity} />
+    <main className={styles.page} data-paper>
+      <Grain />
       <header className={styles.corners} aria-label="Page">
         <div className={styles.tl}>
-          <span className={styles.brand}>
-            <span className={styles.k}>Tugboard</span>
-            <button
-              type="button"
-              className={styles.swatch}
-              style={{ background: theme.swatch }}
-              onClick={cycle}
-              aria-label={`Switch colors to ${next.label}`}
-              title={`Colors: ${theme.label}. Click for ${next.label}.`}
-            />
-          </span>
+          <span className={styles.k}>Tugboard</span>
           <span className={styles.v}>Fleet replay for hybrid-electric tugs</span>
         </div>
         <div className={styles.tr}>
@@ -46,13 +38,50 @@ export default function PaperLanding() {
       </header>
 
       <section className={styles.stage} aria-label="A harbor tug, dithered">
-        <DitherTug ink={theme.ink} mode={theme.mode} />
+        <div
+          ref={stage}
+          className={styles.hoverZone}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          onMouseMove={move}
+          onClick={() => setHover((h) => !h)}
+          onFocus={() => setHover(true)}
+          onBlur={() => setHover(false)}
+          tabIndex={0}
+          role="button"
+          aria-label="Show the demo video"
+          aria-expanded={hover}
+        >
+          <DitherTug ink={[38, 32, 24]} mode="dash" />
+          <div
+            className={styles.demoCard}
+            data-open={hover || undefined}
+            style={{ left: pos.x, top: pos.y }}
+            aria-hidden={!hover}
+          >
+            {DEMO_VIDEO ? (
+              <video className={styles.demoMedia} src={DEMO_VIDEO} poster="/poster.png" muted loop autoPlay playsInline />
+            ) : (
+              <Image src="/poster.png" alt="" width={1280} height={720} className={styles.demoMedia} unoptimized />
+            )}
+            <span className={styles.demoPlay} aria-hidden>
+              <svg width="12" height="14" viewBox="0 0 10 12">
+                <path d="M0 0l10 6-10 6z" fill="currentColor" />
+              </svg>
+            </span>
+            <span className={styles.demoCaption}>{DEMO_VIDEO ? "Demo, 75 s" : "Demo video, coming soon"}</span>
+          </div>
+        </div>
       </section>
 
       <footer className={styles.corners}>
         <div className={styles.bl}>
-          <span className={styles.k}>Independent project</span>
-          <span className={styles.v}>Tracks from NOAA AIS, Dec 2 to 8, 2024</span>
+          <p className={styles.blurb}>
+            Tugs at the Port of Los Angeles burn diesel all day. Tugboard takes one real week of their traffic, labels
+            every minute, and runs it on a battery instead. At 6,000 kWh, 71% of 154 tug-days never start the
+            generator. The rest is a slider.
+          </p>
+          <span className={styles.v}>Independent project. Tracks from NOAA AIS, Dec 2 to 8, 2024.</span>
         </div>
         <ul className={styles.list} aria-label="What is inside">
           <li>Real tracks</li>
