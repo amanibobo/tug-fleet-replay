@@ -60,7 +60,7 @@ Simulated figures are marked once per panel with the footnote "Estimates. Parame
 
 | Path | What it is |
 | --- | --- |
-| `/` | Landing: title, portfolio and GitHub links, demo video placeholder, two paragraphs about the project |
+| `/` | Landing: title, portfolio and GitHub links, demo video modal, two paragraphs about the project |
 | `/app` | Fleet console (map, clock, headline, fleet list, inline tug detail) |
 | `/app/tugs/[id]?date=YYYY-MM-DD` | One tug-day: totals, battery and activity, charging schedule, jobs, track, Rerun inspector |
 | `/tugs/[id]`, `/about` | Old paths; `next.config.ts` redirects them (308) to `/app/tugs/[id]` and `/#data` |
@@ -105,5 +105,5 @@ the Python SDK) is imported with `next/dynamic` only when the inspector opens an
 ## Landing assets
 
 - `public/poster.png` is a 1280x720 screenshot of the console with a tug selected, used as the
-  demo video placeholder. Retake it after console changes (headless Chromium, `/app`, first row
+  demo video's poster frame. Retake it after console changes (headless Chromium, `/app`, first row
   selected, onboarding dismissed via the `tugboard.onboarding` localStorage key).

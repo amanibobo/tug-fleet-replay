@@ -28,8 +28,8 @@
 ## After recording
 
 - Trim to 75 s, export 1080p H.264.
-- Upload to YouTube as unlisted, copy the video ID (the part after `v=`), and set `YOUTUBE_ID`
-  in `dashboard/src/components/paper/DemoModal.tsx`. The landing's "Demo video" link and the
+- Upload the mp4 (UploadThing hosts the current one) and set `DEMO_SRC` in
+  `dashboard/src/components/paper/DemoModal.tsx` to its URL. The landing's "Demo video" link and the
   tug on the landing both open it in the modal.
 - Rebuild and deploy: `npx vercel deploy --prod --yes` from `dashboard/`.
 - Optional: export the frame at 12 s as a new `public/poster.png`.

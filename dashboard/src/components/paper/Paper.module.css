@@ -237,34 +237,18 @@
 
 .player {
   position: relative;
-  aspect-ratio: 16 / 9;
+  /* the recording is 1868x1080 */
+  aspect-ratio: 1868 / 1080;
   background: var(--d-bg);
   border-radius: 12px 12px 0 0;
   overflow: hidden;
 }
 
-.frame {
+.video {
   display: block;
   width: 100%;
   height: 100%;
-  border: none;
-  object-fit: cover;
-}
-
-.modalNote {
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: var(--d-surface);
-  border: 1px solid var(--d-line-2);
-  color: var(--d-fg);
-  box-shadow: var(--d-shadow);
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
+  object-fit: contain;
 }
 
 .modalBar {

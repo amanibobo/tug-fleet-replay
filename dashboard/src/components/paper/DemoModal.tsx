@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef } from "react";
 import styles from "./Paper.module.css";
 
-/** Fill in once the demo is on YouTube, e.g. "dQw4w9WgXcQ". Until then the modal shows the poster. */
-export const YOUTUBE_ID: string | null = null;
+/** The demo recording, an mp4 hosted on UploadThing. */
+export const DEMO_SRC = "https://e8lo91gxtp.ufs.sh/f/wTLW5tuvHS7NBpHjtsDHf3T29XVDcqjxLmQOR1thkPr8i40z";
 
 interface Props {
   open: boolean;
@@ -35,19 +34,16 @@ export default function DemoModal({ open, onClose }: Props) {
     >
       <div className={styles.modalBody}>
         <div className={styles.player}>
-          {open && YOUTUBE_ID ? (
-            <iframe
-              className={styles.frame}
-              src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&rel=0&modestbranding=1`}
+          {open && (
+            <video
+              className={styles.video}
+              src={DEMO_SRC}
+              poster="/poster.png"
               title="Tugboard demo"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
+              controls
+              autoPlay
+              playsInline
             />
-          ) : (
-            <>
-              <Image src="/poster.png" alt="" width={1280} height={720} className={styles.frame} unoptimized />
-              <span className={styles.modalNote}>Demo video coming soon</span>
-            </>
           )}
         </div>
         <div className={styles.modalBar}>
