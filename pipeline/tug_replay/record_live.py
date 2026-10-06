@@ -60,17 +60,17 @@ async def record(raw_dir: Path, bbox: dict, seconds: float | None = None, log=pr
     started = time.monotonic()
     n = 0
     backoff = 1.0
+    fh = None
+    day = None
     while True:
         try:
             async with websockets.connect(STREAM_URL, ping_interval=20, max_size=4 << 20) as ws:
                 await ws.send(json.dumps(subscription(key, bbox)))
                 backoff = 1.0
-                fh = None
-                day = None
                 async for msg in ws:
-                    d = datetime.now(UTC).strftime("%Y-%m-%d")
-                    if d != day:
-                        if fh:
+                    d = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+                    if d != day or fh is None or fh.closed:
+                        if fh and not fh.closed:
                             fh.close()
                         fh = open(raw_dir / f"{d}.jsonl", "a")  # noqa: ASYNC230, SIM115 (handle outlives the loop body)
                         day = d
@@ -84,8 +84,15 @@ async def record(raw_dir: Path, bbox: dict, seconds: float | None = None, log=pr
                     if seconds and time.monotonic() - started > seconds:
                         fh.close()
                         return n
-        except (TimeoutError, OSError) as e:
-            log(f"stream dropped ({e}); reconnecting in {backoff:.0f}s")
+        except (OSError, TimeoutError) as e:
+            # covers a dropped socket and a full disk; drop the handle so the next loop reopens it
+            log(f"stream or disk error ({e}); retrying in {backoff:.0f}s")
+            try:
+                if fh and not fh.closed:
+                    fh.close()
+            except OSError:
+                pass
+            fh = None
         except Exception as e:  # noqa: BLE001  websockets raises its own hierarchy; keep recording
             log(f"stream error ({type(e).__name__}: {e}); reconnecting in {backoff:.0f}s")
         if seconds and time.monotonic() - started > seconds:
