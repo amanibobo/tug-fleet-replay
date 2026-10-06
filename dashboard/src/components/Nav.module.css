@@ -7,28 +7,39 @@
   justify-content: space-between;
   padding: 0 var(--gutter);
   z-index: 40;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 1px 0 rgba(10, 10, 11, 0.05);
+}
+
+.nav[data-landing] {
+  background: transparent;
+  box-shadow: none;
 }
 
 .wordmark {
   display: inline-flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--ink);
+  transition: opacity var(--t) var(--ease);
+}
+
+.wordmark:hover {
+  opacity: 0.7;
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 2px;
 }
 
 .textLink {
   display: inline-flex;
   align-items: center;
-  height: 36px;
+  height: 34px;
   padding: 0 12px;
   border-radius: var(--r-pill);
   font-size: 14px;
@@ -44,45 +55,85 @@
   background: var(--tile);
 }
 
-.avatar {
-  position: relative;
+.cta {
+  margin-left: 8px;
+}
+
+.progress {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  margin-left: 4px;
-  border-radius: 50%;
+  gap: 10px;
+  height: 34px;
+  margin-left: 8px;
+  padding: 0 12px 0 10px;
   border: none;
+  border-radius: var(--r-pill);
+  background: var(--tile);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  transition:
+    background var(--t) var(--ease),
+    color var(--t) var(--ease),
+    transform var(--t) var(--ease);
+}
+
+.progress:hover {
+  background: var(--tile-2);
+}
+
+.progress:active {
+  transform: scale(0.98);
+}
+
+.progress[aria-pressed="true"] {
   background: var(--ink);
   color: #ffffff;
-  transition:
-    transform var(--t) var(--ease),
-    background var(--t) var(--ease);
 }
 
-.avatar:hover {
-  background: #27272a;
-  transform: translateY(-1px);
+.progressBar {
+  width: 36px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: rgba(10, 10, 11, 0.12);
+  overflow: hidden;
 }
 
-.avatar[aria-pressed="true"] {
-  background: var(--blue);
+.progress[aria-pressed="true"] .progressBar {
+  background: rgba(255, 255, 255, 0.25);
 }
 
-.dot {
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--orange);
-  border: 2px solid #ffffff;
+.progressFill {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--green);
+  transition: width 400ms var(--ease);
+}
+
+.progress[data-done] .progressFill {
+  background: var(--green);
 }
 
 @media (max-width: 640px) {
   .hideNarrow {
     display: none;
+  }
+
+  .progress span:last-child {
+    display: none;
+  }
+
+  .progress {
+    padding: 0 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .textLink,
+  .progress,
+  .progressFill,
+  .wordmark {
+    transition: none;
   }
 }

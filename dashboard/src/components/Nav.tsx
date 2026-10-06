@@ -6,6 +6,7 @@ import { useOnboarding } from "./onboarding/OnboardingProvider";
 import styles from "./Nav.module.css";
 
 export const GITHUB_URL = "https://github.com/amanibobo/tug-fleet-replay";
+export const PORTFOLIO_URL = "https://amanibobo.vercel.app";
 const FEEDBACK_URL = "mailto:amanibobo1@gmail.com?subject=Tugboard%20feedback";
 
 export default function Nav() {
@@ -23,42 +24,39 @@ export default function Nav() {
 
       {landing ? (
         <nav className={styles.links} aria-label="Primary">
-          <a href="#how" className={`${styles.textLink} ${styles.hideNarrow}`}>
-            How it works
+          <a href={PORTFOLIO_URL} className={styles.textLink} target="_blank" rel="noreferrer">
+            Portfolio
           </a>
-          <a href="#data" className={`${styles.textLink} ${styles.hideNarrow}`}>
-            Data
-          </a>
-          <a href={GITHUB_URL} className={`${styles.textLink} ${styles.hideNarrow}`} target="_blank" rel="noreferrer">
+          <a href={GITHUB_URL} className={styles.textLink} target="_blank" rel="noreferrer">
             GitHub
           </a>
-          <Link href="/app" className="btn">
+          <Link href="/app" className={`btn ${styles.cta}`}>
             Open the console
           </Link>
         </nav>
       ) : (
         <nav className={styles.links} aria-label="Primary">
           <Link href="/" className={`${styles.textLink} ${styles.hideNarrow}`}>
-            Landing
+            Home
           </Link>
-          <a href={GITHUB_URL} className={`btn btnSecondary ${styles.hideNarrow}`} target="_blank" rel="noreferrer" title="Source on GitHub">
-            Docs
+          <a href={GITHUB_URL} className={`${styles.textLink} ${styles.hideNarrow}`} target="_blank" rel="noreferrer">
+            GitHub
           </a>
-          <a href={FEEDBACK_URL} className={`btn btnSecondary ${styles.hideNarrow}`}>
+          <a href={FEEDBACK_URL} className={`${styles.textLink} ${styles.hideNarrow}`}>
             Feedback
           </a>
           <button
             type="button"
-            className={styles.avatar}
+            className={styles.progress}
             onClick={() => onboarding.setOpen(!onboarding.open)}
             aria-label={`Getting started, ${done} of ${total} done`}
             aria-pressed={onboarding.open}
-            title="Getting started"
+            data-done={done === total || undefined}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden>
-              <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {done < total ? <span className={styles.dot} aria-hidden /> : null}
+            <span className={styles.progressBar} aria-hidden>
+              <span className={styles.progressFill} style={{ width: `${total ? (done / total) * 100 : 0}%` }} />
+            </span>
+            <span>{done === total ? "All set" : `Get started ${done}/${total}`}</span>
           </button>
         </nav>
       )}

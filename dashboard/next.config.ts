@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/tugs/:id", destination: "/app/tugs/:id", permanent: true },
-      { source: "/about", destination: "/#data", permanent: true },
+      { source: "/about", destination: "/", permanent: true },
     ];
   },
 };

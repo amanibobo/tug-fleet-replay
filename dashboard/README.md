@@ -45,7 +45,7 @@ Shapes are in `../docs/CONTRACT.md`; TypeScript types in `src/lib/types.ts`.
 | Path | Contract section | Used by |
 | --- | --- | --- |
 | `public/data/fleet.json` | 5 | Fleet map replay |
-| `public/data/summary.json` | 4 | Headline, battery slider, landing numbers strip and assumptions table |
+| `public/data/summary.json` | 4 | Headline, battery slider, fleet stats |
 | `public/data/tugdays/{tug_id}/{date}.json` | 3 | Tug day page |
 | `public/recordings/{tug_id}/{date}.rrd` | 6 | Rerun inspector (`recording_url` in the tug day file) |
 
@@ -60,7 +60,7 @@ Simulated figures are marked once per panel with the footnote "Estimates. Parame
 
 | Path | What it is |
 | --- | --- |
-| `/` | Landing: hero with the demo placeholder, numbers strip, how it works, the two diagrams, product tiles, get started, data and assumptions, footer band |
+| `/` | Landing: title, portfolio and GitHub links, demo video placeholder, two paragraphs about the project |
 | `/app` | Fleet console (map, clock, headline, fleet list, inline tug detail) |
 | `/app/tugs/[id]?date=YYYY-MM-DD` | One tug-day: totals, battery and activity, charging schedule, jobs, track, Rerun inspector |
 | `/tugs/[id]`, `/about` | Old paths; `next.config.ts` redirects them (308) to `/app/tugs/[id]` and `/#data` |
@@ -72,7 +72,7 @@ src/app/                routes: / (landing), /app (console), /app/tugs/[id] (tug
 src/components/         Nav, Tile, TugIcon, BatteryBar, StatusChip, Slider, Stat, Footnote, FixtureBadge, Footer
 src/components/fleet/   FleetConsole, FleetMap (MapLibre, SVG boat markers), ClockPanel, HeadlinePanel, FleetList, TugDetail
 src/components/tug/     TugDayView, DayTimeline (SVG), ChargingSchedule (SVG), JobsList, TrackMap, RerunInspector
-src/components/landing/ Landing, NumbersStrip, CountUp, Reveal, DataPath, HarborDiagram, ProductTiles, DataSection, LandingFooter, AsciiTug
+src/components/landing/ Landing
 src/components/onboarding/ OnboardingProvider, Checklist, Tour
 src/lib/                types, env, format, useFleet, useTugDay, useSummary, useAnimatedNumber, useInView
 scripts/                make-fixture.mjs
@@ -104,18 +104,6 @@ the Python SDK) is imported with `next/dynamic` only when the inspector opens an
 
 ## Landing assets
 
-- `public/poster.png` is the demo video placeholder, a 1280x720 headless screenshot of `/app` with
-  the first tug selected. Retake it after visual changes to the console.
-- The footer band holds an ASCII tug towing a barge (`landing/AsciiTug.tsx`): 72 columns by 11 rows
-  in Geist Mono, redrawn at 6 frames per second with `requestAnimationFrame` (rotating water,
-  a one-row bob, three smoke puffs). It renders a static frame under `prefers-reduced-motion`, pauses
-  off-screen, and scales down with `transform: scale()` on narrow screens instead of wrapping.
-- Two anime.js (v4) diagrams: `HarborDiagram` (a tug-day as a looping ~14 s timeline on a motion
-  path, with the battery draining and refilling) and `DataPath` (packets travelling between the six
-  stages of the data path). Both pause off-screen and render their final state under reduced motion.
-  The numbers strip counts up on first view; step and product tiles stagger-fade in on scroll.
-
-The tug day page's Charging schedule panel reads `tariff.bands`, `charging[].scheduled_windows` and
-`totals.charge_cost_usd_*` from the tug-day file (contract section 3). The arrival profile is charger
-power from each stop's start until the stop's kWh is delivered at `tariff.charger_kw`; the scheduled
-profile is the pipeline's `scheduled_windows`. The panel is hidden when `tariff` is null.
+- `public/poster.png` is a 1280x720 screenshot of the console with a tug selected, used as the
+  demo video placeholder. Retake it after console changes (headless Chromium, `/app`, first row
+  selected, onboarding dismissed via the `tugboard.onboarding` localStorage key).
