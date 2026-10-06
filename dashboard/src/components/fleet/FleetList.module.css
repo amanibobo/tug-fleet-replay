@@ -5,11 +5,16 @@
 
 .head {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px 12px;
+}
+
+.headRow {
+  display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   gap: 12px;
-  min-height: 44px;
-  padding: 0 16px;
 }
 
 .title {
@@ -17,21 +22,60 @@
   align-items: center;
   gap: 8px;
   min-width: 0;
-  white-space: nowrap;
+  margin: 0;
+}
+
+.titleText {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--d-fg);
 }
 
 .count {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
-  color: var(--d-fg-3);
+  color: var(--d-fg-2);
+  font-variant-numeric: tabular-nums;
 }
 
 .badge {
   margin-left: 2px;
 }
 
+/* Filter pills: a quiet row, the active one filled in ink. */
 .filter {
-  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pill {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--d-line-2);
+  background: transparent;
+  color: var(--d-fg-2);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--d-t) var(--d-ease),
+    color var(--d-t) var(--d-ease),
+    border-color var(--d-t) var(--d-ease);
+}
+
+.pill:hover {
+  color: var(--d-fg);
+  border-color: var(--d-fg-3);
+}
+
+.pill[aria-checked="true"] {
+  background: var(--d-fg);
+  color: var(--d-bg);
+  border-color: var(--d-fg);
 }
 
 /* Column labels. */

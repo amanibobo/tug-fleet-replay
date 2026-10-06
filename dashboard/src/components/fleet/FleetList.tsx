@@ -58,14 +58,23 @@ export default function FleetList({ tugs, selectedId, onSelect, loading, error, 
   return (
     <section className={styles.panel} aria-label="Fleet" data-tour="fleet">
       <header className={styles.head}>
-        <h2 className={styles.title}>
-          <span className="heading">Fleet</span>
-          <span className={styles.count} title={`${fmtInt(tugs.length)} tugs`}> · {fmtInt(tugs.length)}</span>
-          {fixture ? <FixtureBadge className={styles.badge} /> : null}
-        </h2>
-        <div className={`segmented ${styles.filter}`} role="radiogroup" aria-label="Filter the fleet">
+        <div className={styles.headRow}>
+          <h2 className={styles.title}>
+            <span className={styles.titleText}>Fleet</span>
+            {fixture ? <FixtureBadge className={styles.badge} /> : null}
+          </h2>
+          <span className={styles.count}>{fmtInt(tugs.length)} tugs</span>
+        </div>
+        <div className={styles.filter} role="radiogroup" aria-label="Filter the fleet">
           {FILTERS.map((f) => (
-            <button key={f.id} type="button" role="radio" aria-checked={filter === f.id} onClick={() => setFilter(f.id)}>
+            <button
+              key={f.id}
+              type="button"
+              role="radio"
+              aria-checked={filter === f.id}
+              className={styles.pill}
+              onClick={() => setFilter(f.id)}
+            >
               {f.label}
             </button>
           ))}
