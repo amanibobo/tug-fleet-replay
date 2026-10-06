@@ -341,3 +341,56 @@ SVG of your own (CSS loop, reduced-motion static) illustrating that mechanism. C
 numbers in mono. Pull quotes for the two or three decisions that mattered. A "what I would
 do next" section at the end. The nav on `/docs` is the landing nav (black) with the "docs"
 link active.
+
+---
+
+# v8: paper is the product (light and dark)
+
+The paper landing (formerly `/paper`) becomes `/`. The console and docs adopt the same
+paper-and-ink scheme, light by default, with a dark mode that is the current v7 dark system.
+Everything keeps the v7 structure; only colors, the basemap and a few hard-coded hexes change.
+
+## Theme mechanism
+
+- `html[data-theme="light" | "dark"]`, default light. Persisted in `localStorage` key
+  `tugboard.theme` (try/catch). An inline script in the root layout applies the saved theme
+  before paint (no flash); `color-scheme` follows. A `useTheme()` hook exposes `{theme, toggle}`
+  via a small external store (`useSyncExternalStore`), and a `ThemeSquare` control: a 12px
+  square, 1px border in the current foreground at 35%, filled with the *other* theme's page
+  color, `aria-label="Switch to dark mode"` / `"Switch to light mode"`. It sits: on the landing
+  next to the wordmark; in the console top bar right of "github"; in the docs nav right of "docs".
+- Keep the `--d-*` token names. Define dark values under `html[data-theme="dark"]` (the v7 set,
+  unchanged) and light values under `:root` (default):
+
+```css
+--d-bg: #f5f4ef;          --d-bg-landing: #f3f1ea;    --d-rail: #faf9f6;
+--d-surface: #ffffff;     --d-surface-2: #edece7;
+--d-line: rgba(28,26,22,0.10);  --d-line-2: rgba(28,26,22,0.20);
+--d-fg: #1c1a16;  --d-fg-2: #5f5c55;  --d-fg-3: #8f8c84;
+--d-green: #1f8a5a;  --d-blue: #2f63c7;  --d-amber: #b07a12;  --d-red: #c2453a;  --d-orange: #d0661e;
+--d-act-idle: #a9a69d;
+--d-shadow: 0 12px 40px rgba(28,26,22,0.14);
+```
+
+- Map basemap follows the theme: CARTO Positron in light, dark-matter in dark; `dimLabels`
+  uses `--d-fg-3` either way; markers keep a 1px stroke in the page color (`--d-bg`) and a ring
+  in `--d-fg` when selected. Rerun inspector `theme` prop follows the theme. Tour overlay and
+  popovers, checklist, modal, chips, charts, docs figures and animations: replace every
+  hard-coded dark hex (#0a0a0a, #0e0e0e, #000, rgba(255,255,255,x), #f2f2f2 and friends) with
+  the tokens so both themes work. Primary buttons are `--d-fg` fill with `--d-bg` text in both.
+- Landing (`/`): the paper page as it is, but its colors come from the theme: light = paper
+  with ink dashes (current), dark = `#0b0b0b` page with light dashes `[236,234,228]` and the
+  dark grain colors `["#121212","#0e0e0e","#161616"]`. The modal follows the theme.
+- Routes: `/` renders the paper landing; `/paper` redirects to `/` (permanent); the old black
+  landing component tree (`components/landing/*`) is deleted. `/docs` nav: wordmark,
+  "portfolio", "github", "docs", the theme square, and "open the console" as the primary pill;
+  background `--d-bg-landing`, no border.
+- Poster: retake `public/poster.png` from the light console.
+
+## Acceptance
+
+- Light by default; toggle flips every page without reload or flash; the choice survives reload.
+- No hard-coded page or text colors left in `src/` outside the token block (grep `#0a0a0a`,
+  `#0e0e0e`, `#f2f2f2`, `rgba(255, 255, 255` in component CSS returns nothing).
+- Screenshots of `/`, `/app` (tug selected), `/app/tugs/368133450?date=2024-12-02` (with the
+  inspector open), and `/docs` in both themes at 1440, plus `/` and `/app` at 390.

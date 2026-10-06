@@ -5,6 +5,7 @@ import "driver.js/dist/driver.css";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import { OnboardingProvider } from "@/components/onboarding/OnboardingProvider";
+import { PAGE_COLOR, THEME_INIT_SCRIPT } from "@/components/theme/theme";
 
 // Geist throughout; swap the family here.
 const sans = Geist({
@@ -26,15 +27,20 @@ export const metadata: Metadata = {
   description: "Fleet replay for hybrid-electric tugs",
 };
 
+// Light by default; the theme store rewrites this meta tag when the theme switches.
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0a0a0a",
+  themeColor: PAGE_COLOR.light,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    // data-theme is rewritten by the inline script before paint, hence suppressHydrationWarning.
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} data-theme="light" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body>
         <OnboardingProvider>
           <Nav />

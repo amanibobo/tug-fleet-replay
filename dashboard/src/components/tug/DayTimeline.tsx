@@ -165,7 +165,7 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
         <line x1={PAD_L} x2={PAD_L + plotW} y1={y(WARN_SOC)} y2={y(WARN_SOC)} className={styles.thresh} />
         <line x1={PAD_L} x2={PAD_L + plotW} y1={y(BAD_SOC)} y2={y(BAD_SOC)} className={styles.thresh} />
 
-        {/* SOC curve: fg line over a 6% white area */}
+        {/* SOC curve: fg line over a 6% fg area */}
         {day && curvePath.line ? (
           <g clipPath="url(#clipPlot)">
             <path d={curvePath.area} className={styles.area} />

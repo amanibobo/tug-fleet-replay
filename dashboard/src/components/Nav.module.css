@@ -13,16 +13,16 @@
   color: var(--d-fg);
 }
 
-/* ---- landing variant: black page, centered lowercase wordmark, links left, one pill right ---- */
+/* ---- docs variant: landing color, centered lowercase wordmark, links and the theme square left, one pill right ---- */
 .landing {
   height: 72px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 0 24px;
-  background: #000000;
+  background: var(--d-bg-landing);
   border-bottom: none;
-  color: #ffffff;
+  color: var(--d-fg);
 }
 
 .landingLinks {
@@ -35,20 +35,20 @@
 .landingLink {
   font-size: 14px;
   font-weight: 400;
-  color: #a0a0a0;
+  color: var(--d-fg-2);
   transition: color 160ms ease;
 }
 
 .landingLink:hover,
 .landingLink[data-active] {
-  color: #ffffff;
+  color: var(--d-fg);
 }
 
 .landingWordmark {
   font-size: 15px;
   font-weight: 500;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  color: var(--d-fg);
   justify-self: center;
   transition: opacity 160ms ease;
 }
@@ -67,8 +67,8 @@
   height: 36px;
   padding: 0 16px;
   border-radius: var(--d-radius-pill);
-  background: #ffffff;
-  color: #000000;
+  background: var(--d-fg);
+  color: var(--d-bg);
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
@@ -76,11 +76,7 @@
 }
 
 .landingCta:hover {
-  background: #e4e4e4;
-}
-
-.landing :focus-visible {
-  outline-color: #ffffff;
+  background: color-mix(in srgb, var(--d-fg) 86%, var(--d-bg));
 }
 
 /* ---- console: wordmark and breadcrumb ---- */
@@ -158,6 +154,10 @@
   background: var(--d-surface-2);
 }
 
+.themeSquare {
+  margin: 0 6px 0 4px;
+}
+
 .progress {
   display: inline-flex;
   align-items: center;
@@ -226,16 +226,28 @@
 @media (max-width: 640px) {
   .landing {
     padding: 0 16px;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr auto auto;
   }
 
-  /* the links move under the fine print on phones (Landing.module.css .mobileLinks) */
+  /* wordmark first, then the active link and the theme square, then the pill */
   .landingLinks {
+    order: 2;
+    gap: 14px;
+    justify-self: end;
+    margin-right: 12px;
+  }
+
+  .landingLinks a:not([data-active]) {
     display: none;
   }
 
   .landingWordmark {
+    order: 1;
     justify-self: start;
+  }
+
+  .landingRight {
+    order: 3;
   }
 
   .landingCta {

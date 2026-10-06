@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { driver, type Driver } from "driver.js";
+import { token } from "@/components/theme/theme";
 import { useOnboarding } from "./OnboardingProvider";
 
 interface Props {
@@ -59,8 +60,9 @@ export default function Tour({ ready, selectFirst }: Props) {
         popoverClass: "tb-popover",
         stagePadding: 6,
         stageRadius: 6,
-        overlayColor: "#000000",
-        overlayOpacity: 0.6,
+        // the --d-overlay token carries its own alpha, so the opacity stays at 1
+        overlayColor: token("--d-overlay"),
+        overlayOpacity: 1,
         allowClose: true,
         smoothScroll: true,
         onDestroyed: () => setTourActive(false),

@@ -1,0 +1,24 @@
+/* A 12px square: 1px border in the foreground at 35%, filled with the other theme's page color. */
+.square {
+  flex: none;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--d-fg) 35%, transparent);
+  border-radius: 2px;
+  background: var(--d-bg-alt);
+  cursor: pointer;
+  transition:
+    border-color var(--d-t) var(--d-ease),
+    transform var(--d-t) var(--d-ease);
+}
+
+.square:hover {
+  border-color: var(--d-fg);
+}
+
+.square:active {
+  transform: scale(0.9);
+}

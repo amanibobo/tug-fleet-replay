@@ -33,9 +33,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* SOC curve: fg line over a 6% white area. */
+/* SOC curve: fg line over a 6% fg area. */
 .area {
-  fill: #ffffff;
+  fill: var(--d-fg);
   fill-opacity: 0.06;
 }
 
@@ -74,7 +74,7 @@
 }
 
 .skeleton {
-  fill: #ffffff;
+  fill: var(--d-fg);
   fill-opacity: 0.03;
   animation: pulse 1.6s var(--d-ease) infinite;
 }

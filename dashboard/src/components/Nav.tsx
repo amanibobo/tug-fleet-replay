@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useOnboarding } from "./onboarding/OnboardingProvider";
+import ThemeSquare from "./theme/ThemeSquare";
 import styles from "./Nav.module.css";
 
 export const GITHUB_URL = "https://github.com/amanibobo/tug-fleet-replay";
@@ -12,13 +13,12 @@ const FEEDBACK_URL = "mailto:amanibobo1@gmail.com?subject=Tugboard%20feedback";
 export default function Nav() {
   const path = usePathname();
   const docs = path === "/docs" || path.startsWith("/docs/");
-  const landing = path === "/" || docs;
   const onboarding = useOnboarding();
   const done = Object.values(onboarding.state.steps).filter(Boolean).length;
   const total = Object.keys(onboarding.state.steps).length;
-  if (path.startsWith("/paper")) return null; // the paper landing draws its own corners
+  if (path === "/") return null; // the paper landing draws its own corners
 
-  if (landing) {
+  if (docs) {
     return (
       <header className={`${styles.nav} ${styles.landing}`} data-landing>
         <nav className={styles.landingLinks} aria-label="Links">
@@ -31,6 +31,7 @@ export default function Nav() {
           <Link href="/docs" className={styles.landingLink} data-active={docs || undefined} aria-current={docs ? "page" : undefined}>
             docs
           </Link>
+          <ThemeSquare />
         </nav>
         <Link href="/" className={styles.landingWordmark} aria-label="Tugboard home">
           tugboard
@@ -83,6 +84,7 @@ export default function Nav() {
         <a href={GITHUB_URL} className={`${styles.textLink} ${styles.hideNarrow}`} target="_blank" rel="noreferrer">
           github
         </a>
+        <ThemeSquare className={styles.themeSquare} />
         <button
           type="button"
           className={styles.progress}

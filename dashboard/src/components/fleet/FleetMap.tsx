@@ -4,22 +4,29 @@ import { useEffect, useRef } from "react";
 import maplibregl, { type Map as MlMap, type Marker, type GeoJSONSource } from "maplibre-gl";
 import type { Feature, FeatureCollection, LineString } from "geojson";
 import { tugMarkup } from "@/components/TugIcon";
-import { ACTIVITY_HEX, GENERATOR_HEX } from "@/lib/format";
+import { token, type Theme } from "@/components/theme/theme";
+import { useTheme } from "@/components/theme/useTheme";
+import { activityColors, generatorColor } from "@/lib/format";
 import type { LngLat, Telemetry } from "@/lib/types";
 import { prefersReducedMotion } from "@/lib/useAnimatedNumber";
 import styles from "./FleetMap.module.css";
 
-/** CARTO Dark Matter, no key. Labels are dimmed in `dimLabels` once the style loads. */
-export const MAP_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+/** CARTO basemaps, no key: Positron in light, Dark Matter in dark. Labels are dimmed in `dimLabels` once a style loads. */
+export const MAP_STYLES: Record<Theme, string> = {
+  light: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  dark: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+};
 const CENTER: LngLat = [-118.232, 33.738];
 
 /** Quiet the basemap: labels in fg-3 with the page color as halo, sentence case, boundaries faded. */
 export function dimLabels(map: MlMap) {
+  const fg3 = token("--d-fg-3");
+  const bg = token("--d-bg");
   for (const layer of map.getStyle().layers ?? []) {
     if (layer.type === "symbol") {
       map.setLayoutProperty(layer.id, "text-transform", "none");
-      map.setPaintProperty(layer.id, "text-color", "#6e6e75");
-      map.setPaintProperty(layer.id, "text-halo-color", "#0a0a0a");
+      map.setPaintProperty(layer.id, "text-color", fg3);
+      map.setPaintProperty(layer.id, "text-halo-color", bg);
       map.setPaintProperty(layer.id, "text-halo-width", 1);
       map.setPaintProperty(layer.id, "text-opacity", 0.8);
     } else if (layer.type === "line" && /boundary|admin/.test(layer.id)) {
@@ -116,22 +123,29 @@ function unwrap(prev: number, next: number): number {
   return prev + d;
 }
 
+const EMPTY: FeatureCollection<LineString> = { type: "FeatureCollection", features: [] };
+
 export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) {
+  const { theme } = useTheme();
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MlMap | null>(null);
+  /** True while the current style has the trails layer; false between `setStyle` and the next `style.load`. */
   const ready = useRef(false);
+  const trailData = useRef<FeatureCollection<LineString>>(EMPTY);
   const markers = useRef(new Map<string, MarkerEntry>());
   const onSelectRef = useRef(onSelect);
+  const styleTheme = useRef<Theme>(theme);
   useEffect(() => {
     onSelectRef.current = onSelect;
   }, [onSelect]);
 
-  // Create the map once.
+  // Create the map once. Sources and layers are added on every `style.load`, which fires on the first
+  // style and again after each theme switch; markers are DOM and survive a style change.
   useEffect(() => {
     if (!container.current || mapRef.current) return;
     const map = new maplibregl.Map({
       container: container.current,
-      style: MAP_STYLE,
+      style: MAP_STYLES[styleTheme.current],
       center: CENTER,
       zoom: 12.4,
       minZoom: 9,
@@ -141,20 +155,24 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
     });
     mapRef.current = map;
 
-    map.on("load", () => {
+    map.on("style.load", () => {
       dimLabels(map);
-      map.addSource("trails", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-      map.addLayer({
-        id: "trails",
-        type: "line",
-        source: "trails",
-        layout: { "line-cap": "round", "line-join": "round" },
-        paint: {
-          "line-color": ["get", "color"],
-          "line-opacity": 0.75,
-          "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1.4, 14, 3],
-        },
-      });
+      if (!map.getSource("trails")) {
+        map.addSource("trails", { type: "geojson", data: trailData.current });
+      }
+      if (!map.getLayer("trails")) {
+        map.addLayer({
+          id: "trails",
+          type: "line",
+          source: "trails",
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: {
+            "line-color": ["get", "color"],
+            "line-opacity": 0.75,
+            "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1.4, 14, 3],
+          },
+        });
+      }
       ready.current = true;
     });
     map.on("click", () => onSelectRef.current(null));
@@ -176,7 +194,16 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
     };
   }, []);
 
-  // Sync markers and trails every frame.
+  // Swap the basemap when the theme changes; the style.load handler above re-adds the trails.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || styleTheme.current === theme) return;
+    styleTheme.current = theme;
+    ready.current = false;
+    map.setStyle(MAP_STYLES[theme]);
+  }, [theme]);
+
+  // Sync markers and trails every frame, and recolor them when the theme changes.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -216,24 +243,21 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
       }
     }
 
-    if (ready.current) {
-      const src = map.getSource<GeoJSONSource>("trails");
-      if (src) {
-        const features: Feature<LineString>[] = [];
-        for (const tug of tugs) {
-          const pts = trails[tug.tug_id];
-          if (!pts || pts.length < 2) continue;
-          features.push({
-            type: "Feature",
-            properties: { color: tug.generator_on ? GENERATOR_HEX : ACTIVITY_HEX[tug.activity], id: tug.tug_id },
-            geometry: { type: "LineString", coordinates: pts },
-          });
-        }
-        const fc: FeatureCollection<LineString> = { type: "FeatureCollection", features };
-        src.setData(fc);
-      }
+    const colors = activityColors();
+    const generator = generatorColor();
+    const features: Feature<LineString>[] = [];
+    for (const tug of tugs) {
+      const pts = trails[tug.tug_id];
+      if (!pts || pts.length < 2) continue;
+      features.push({
+        type: "Feature",
+        properties: { color: tug.generator_on ? generator : colors[tug.activity], id: tug.tug_id },
+        geometry: { type: "LineString", coordinates: pts },
+      });
     }
-  }, [tugs, trails, selectedId]);
+    trailData.current = { type: "FeatureCollection", features };
+    if (ready.current) map.getSource<GeoJSONSource>("trails")?.setData(trailData.current);
+  }, [tugs, trails, selectedId, theme]);
 
   // Ease to the selected tug.
   useEffect(() => {

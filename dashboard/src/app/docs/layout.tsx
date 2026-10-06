@@ -9,11 +9,11 @@ const excalifont = localFont({
   weight: "400",
 });
 
-// The docs page is black like the landing; the browser chrome should match it.
+// The docs page shares the landing color; the browser chrome matches it until the theme switches.
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#000000",
+  themeColor: "#f3f1ea",
 };
 
 export default function DocsLayout({ children }: LayoutProps<"/docs">) {

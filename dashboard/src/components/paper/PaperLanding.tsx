@@ -3,21 +3,28 @@
 import Link from "next/link";
 import { useState } from "react";
 import { GITHUB_URL, PORTFOLIO_URL } from "@/components/Nav";
+import ThemeSquare from "@/components/theme/ThemeSquare";
+import { useTheme } from "@/components/theme/useTheme";
 import DemoModal, { YouTubeMark } from "./DemoModal";
 import DitherTug from "./DitherTug";
 import Grain from "./Grain";
+import { PAPER } from "./palette";
 import styles from "./Paper.module.css";
 
-/** An alternate landing: four corners of small type and one dithered tug. Clicking the tug plays the demo. */
+/** The landing: four corners of small type and one dithered tug. Clicking the tug plays the demo. */
 export default function PaperLanding() {
   const [demo, setDemo] = useState(false);
+  const { theme } = useTheme();
 
   return (
     <main className={styles.page} data-paper>
       <Grain />
       <header className={styles.corners} aria-label="Page">
         <div className={styles.tl}>
-          <span className={styles.k}>Tugboard</span>
+          <span className={styles.kRow}>
+            <span className={styles.k}>Tugboard</span>
+            <ThemeSquare />
+          </span>
           <span className={styles.v}>Fleet replay for hybrid-electric tugs</span>
         </div>
       </header>
@@ -36,7 +43,7 @@ export default function PaperLanding() {
           role="button"
           aria-label="Play the demo video"
         >
-          <DitherTug ink={[38, 32, 24]} mode="dash" />
+          <DitherTug ink={PAPER[theme].ink} mode="dash" />
         </div>
       </section>
 
@@ -45,7 +52,7 @@ export default function PaperLanding() {
           <p className={styles.blurb}>
             Tugs at the Port of Los Angeles burn diesel all day. Tugboard takes one real week of their traffic, labels
             every minute, and runs it on a battery instead. At 6,000 kWh, 71% of 154 tug-days never start the
-            generator. The rest is a slider.
+            generator.
           </p>
         </div>
         <div className={styles.center}>

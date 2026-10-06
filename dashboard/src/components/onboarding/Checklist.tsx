@@ -80,7 +80,7 @@ export default function Checklist() {
                   {ok ? (
                     <svg width="16" height="16" viewBox="0 0 16 16">
                       <circle cx="8" cy="8" r="7.5" fill="var(--d-fg)" />
-                      <path d="M4.8 8.2l2.1 2.1 4.3-4.5" fill="none" stroke="#0a0a0a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M4.8 8.2l2.1 2.1 4.3-4.5" fill="none" stroke="var(--d-bg)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   ) : (
                     <svg width="16" height="16" viewBox="0 0 16 16">

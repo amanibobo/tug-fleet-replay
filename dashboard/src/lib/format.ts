@@ -1,3 +1,4 @@
+import { token } from "@/components/theme/theme";
 import type { Activity, Status, Telemetry } from "./types";
 
 export const DAY_MS = 86_400_000;
@@ -23,23 +24,27 @@ export const ACTIVITY_COLOR: Record<Activity, string> = {
   charging: "var(--d-act-charging)",
 };
 
-/** Hex versions of the --d-* tokens for MapLibre, which cannot read CSS variables. */
-export const ACTIVITY_HEX: Record<Activity, string> = {
-  transit: "#78b1f5",
-  assist: "#f59a55",
-  idle: "#5c5c63",
-  charging: "#43ce95",
+const ACTIVITY_TOKEN: Record<Activity, string> = {
+  transit: "--d-act-transit",
+  assist: "--d-act-assist",
+  idle: "--d-act-idle",
+  charging: "--d-act-charging",
 };
 
-export const STATUS_HEX: Record<Status, string> = {
-  electric: "#43ce95",
-  generator: "#f07878",
-  charging: "#78b1f5",
-  idle: "#5c5c63",
-};
+/** Resolved activity colors for MapLibre, which cannot read CSS variables. Read again after a theme switch. */
+export function activityColors(): Record<Activity, string> {
+  return {
+    transit: token(ACTIVITY_TOKEN.transit),
+    assist: token(ACTIVITY_TOKEN.assist),
+    idle: token(ACTIVITY_TOKEN.idle),
+    charging: token(ACTIVITY_TOKEN.charging),
+  };
+}
 
-/** Generator trail and span color, the --d-red token. */
-export const GENERATOR_HEX = "#f07878";
+/** Generator trail color, the --d-red token resolved. */
+export function generatorColor(): string {
+  return token("--d-red");
+}
 
 export const ACTIVITY_LABEL: Record<Activity, string> = {
   transit: "Transit",

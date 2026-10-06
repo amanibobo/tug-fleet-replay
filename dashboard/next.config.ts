@@ -8,11 +8,12 @@ const nextConfig: NextConfig = {
   // strict mode creates two devices for one canvas and logs wgpu validation errors, so the
   // dev server runs without strict mode. Production builds never double-mount.
   reactStrictMode: false,
-  // The console moved under /app and the About page became the landing's data section.
+  // The console moved under /app, the About page became the landing, and the paper page is the landing.
   async redirects() {
     return [
       { source: "/tugs/:id", destination: "/app/tugs/:id", permanent: true },
       { source: "/about", destination: "/", permanent: true },
+      { source: "/paper", destination: "/", permanent: true },
     ];
   },
 };

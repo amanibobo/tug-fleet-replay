@@ -54,30 +54,30 @@
 }
 
 .boat :global(.tug-shadow) {
-  fill: rgba(0, 0, 0, 0.45);
+  fill: color-mix(in srgb, var(--d-fg) 45%, transparent);
   transform: translate(0.8px, 1.2px);
 }
 
 .boat :global(.tug-hull) {
   fill: var(--activity);
-  stroke: #0a0a0a;
+  stroke: var(--d-bg);
   stroke-width: 1;
   stroke-linejoin: round;
   transition: fill var(--d-t) var(--d-ease);
 }
 
 .boat :global(.tug-house) {
-  fill: rgba(0, 0, 0, 0.35);
+  fill: color-mix(in srgb, var(--d-fg) 35%, transparent);
 }
 
 .boat :global(.tug-stack) {
-  fill: rgba(255, 255, 255, 0.85);
+  fill: color-mix(in srgb, var(--d-bg) 85%, transparent);
 }
 
 /* Focus and selection outline around the hull. */
 .boat :global(.tug-outline) {
   fill: none;
-  stroke: #ffffff;
+  stroke: var(--d-fg);
   stroke-width: 3;
   stroke-linejoin: round;
   opacity: 0;
@@ -92,7 +92,7 @@
   opacity: 0.9;
 }
 
-/* White selection ring scales in. */
+/* Foreground selection ring scales in. */
 .ring {
   position: absolute;
   left: -19px;
@@ -100,7 +100,7 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--d-fg);
   opacity: 0;
   transform: scale(0.5);
   pointer-events: none;
@@ -135,8 +135,8 @@
   top: 10px;
   width: 20px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  background: color-mix(in srgb, var(--d-fg) 20%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--d-bg) 60%, transparent);
   overflow: hidden;
 }
 

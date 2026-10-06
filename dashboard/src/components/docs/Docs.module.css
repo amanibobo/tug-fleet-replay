@@ -1,4 +1,4 @@
-/* /docs: black page, sticky table of contents from 1024px, a 720px article. */
+/* /docs: landing-colored page, sticky table of contents from 1024px, a 720px article. */
 .page {
   min-height: 100dvh;
   background: var(--d-bg-landing);
@@ -136,7 +136,7 @@
   padding: 16px;
   border: 1px solid var(--d-line);
   border-radius: var(--d-radius-sm);
-  background: #0b0b0b;
+  background: color-mix(in srgb, var(--d-fg) 3%, var(--d-bg-landing));
 }
 
 /* ---- end matter ---- */

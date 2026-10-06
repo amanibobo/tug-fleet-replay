@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useTheme } from "@/components/theme/useTheme";
 import { recordingUrl as resolveRecordingUrl } from "@/lib/env";
 import { useCallback, useEffect, useState } from "react";
 import styles from "./RerunInspector.module.css";
@@ -21,6 +22,7 @@ interface Props {
 type Availability = "checking" | "ok" | "missing";
 
 export default function RerunInspector({ open, onClose, recordingUrl, title }: Props) {
+  const { theme } = useTheme();
   // `ready` is reset whenever the panel closes (adjusting state on a prop change, during render).
   const [ready, setReady] = useState(false);
   const [prevOpen, setPrevOpen] = useState(open);
@@ -109,7 +111,7 @@ export default function RerunInspector({ open, onClose, recordingUrl, title }: P
                     width="100%"
                     height="100%"
                     hide_welcome_screen
-                    theme="dark"
+                    theme={theme}
                     onReady={() => setReady(true)}
                   />
                 </div>

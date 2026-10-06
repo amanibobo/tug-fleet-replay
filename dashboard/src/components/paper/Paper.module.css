@@ -4,9 +4,9 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: 28px 32px;
-  --p-bg: #f3f1ea;
-  --p-fg: #1c1a16;
-  --p-muted: #6f6a60;
+  --p-bg: var(--d-bg-paper);
+  --p-fg: var(--d-fg);
+  --p-muted: var(--d-fg-2);
   background: var(--p-bg);
   color: var(--p-fg);
   font-family: var(--font-sans);
@@ -50,6 +50,12 @@
   font-size: 13px;
   line-height: 1.5;
   color: var(--p-fg);
+}
+
+.kRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .k {
@@ -200,9 +206,9 @@
   padding: 0;
   border: none;
   border-radius: 12px;
-  background: #0e0e0e;
-  color: #f2f2f2;
-  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.5);
+  background: var(--d-surface);
+  color: var(--d-fg);
+  box-shadow: var(--d-shadow);
   opacity: 0;
   transform: translateY(8px) scale(0.985);
   transition: opacity 200ms var(--d-ease), transform 200ms var(--d-ease), overlay 200ms allow-discrete, display 200ms allow-discrete;
@@ -221,7 +227,7 @@
 }
 
 .modal::backdrop {
-  background: rgba(10, 10, 10, 0.72);
+  background: var(--d-overlay);
 }
 
 .modalBody {
@@ -232,7 +238,7 @@
 .player {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: #000;
+  background: var(--d-bg);
   border-radius: 12px 12px 0 0;
   overflow: hidden;
 }
@@ -252,8 +258,10 @@
   transform: translateX(-50%);
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #3a3630;
+  background: var(--d-surface);
+  border: 1px solid var(--d-line-2);
+  color: var(--d-fg);
+  box-shadow: var(--d-shadow);
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
@@ -268,7 +276,7 @@
 
 .modalTitle {
   font-size: 13px;
-  color: #a3a3a8;
+  color: var(--d-fg-2);
 }
 
 .modalClose {
@@ -277,15 +285,15 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--d-line-2);
   border-radius: 6px;
   background: transparent;
-  color: #f2f2f2;
+  color: var(--d-fg);
   cursor: pointer;
 }
 
 .modalClose:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--d-surface-2);
 }
 
 @media (max-width: 760px) {

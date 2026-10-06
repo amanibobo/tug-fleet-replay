@@ -1,7 +1,55 @@
 :root {
-  /* ---- v7 dark system (shared by console, landing, docs). See docs/DESIGN.md "v7". ---- */
+  /* ---- v8 paper system, light by default. Dark values below under html[data-theme="dark"]. See docs/DESIGN.md "v8". ---- */
+  --d-bg: #f5f4ef;
+  --d-bg-landing: #f3f1ea;
+  --d-bg-paper: var(--d-bg-landing);
+  --d-bg-alt: #0a0a0a; /* the other theme's page color, for the theme square */
+  --d-rail: #faf9f6;
+  --d-surface: #ffffff;
+  --d-surface-2: #edece7;
+  --d-line: rgba(28, 26, 22, 0.1);
+  --d-line-2: rgba(28, 26, 22, 0.2);
+  --d-fg: #1c1a16;
+  --d-fg-2: #5f5c55;
+  --d-fg-3: #8f8c84;
+  --d-green: #1f8a5a;
+  --d-blue: #2f63c7;
+  --d-amber: #b07a12;
+  --d-red: #c2453a;
+  --d-orange: #d0661e;
+  --d-act-transit: var(--d-blue);
+  --d-act-assist: var(--d-orange);
+  --d-act-idle: #a9a69d;
+  --d-act-charging: var(--d-green);
+  --d-overlay: rgba(28, 26, 22, 0.55);
+  --d-radius: 8px;
+  --d-radius-sm: 4px;
+  --d-radius-pill: 9999px;
+  --d-shadow: 0 12px 40px rgba(28, 26, 22, 0.14);
+  --d-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --d-t: 160ms;
+
+  /* Geist throughout; swap the family here. */
+  --font-sans: var(--font-geist), "Geist", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Motion aliases kept for the CSS modules. */
+  --ease: var(--d-ease);
+  --t: var(--d-t);
+  --t-slow: 400ms;
+
+  --rail-w: 340px;
+  --nav-h: 48px;
+  --gutter: 20px;
+  color-scheme: light;
+}
+
+/* ---- the v7 dark system, unchanged, as the dark theme ---- */
+html[data-theme="dark"] {
   --d-bg: #0a0a0a;
   --d-bg-landing: #000000;
+  --d-bg-paper: #0b0b0b;
+  --d-bg-alt: #f5f4ef;
   --d-rail: #0f0f10;
   --d-surface: #141415;
   --d-surface-2: #1b1b1d;
@@ -15,29 +63,9 @@
   --d-amber: #efba53;
   --d-red: #f07878;
   --d-orange: #f59a55;
-  --d-act-transit: var(--d-blue);
-  --d-act-assist: var(--d-orange);
   --d-act-idle: #5c5c63;
-  --d-act-charging: var(--d-green);
-  --d-radius: 8px;
-  --d-radius-sm: 4px;
-  --d-radius-pill: 9999px;
+  --d-overlay: rgba(0, 0, 0, 0.6);
   --d-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-  --d-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --d-t: 160ms;
-
-  /* Geist throughout; swap the family here. */
-  --font-sans: var(--font-geist), "Geist", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
-
-  /* Motion aliases kept for the landing and the CSS modules. */
-  --ease: var(--d-ease);
-  --t: var(--d-t);
-  --t-slow: 400ms;
-
-  --rail-w: 340px;
-  --nav-h: 48px;
-  --gutter: 20px;
   color-scheme: dark;
 }
 
@@ -70,14 +98,15 @@ body {
   background: var(--d-bg);
 }
 
-/* The landing and docs sit on pure black; paint the document behind them too so overscroll stays black. */
+/* The landing and docs sit on the landing color; paint the document behind them too so overscroll matches. */
 html:has(main[data-landing]),
 html:has(main[data-landing]) body {
   background: var(--d-bg-landing);
 }
 
-main[data-landing] :focus-visible {
-  outline-color: #ffffff;
+html:has(main[data-paper]),
+html:has(main[data-paper]) body {
+  background: var(--d-bg-paper);
 }
 
 a {
@@ -99,7 +128,7 @@ p {
 }
 
 ::selection {
-  background: rgba(255, 255, 255, 0.22);
+  background: color-mix(in srgb, var(--d-fg) 22%, transparent);
 }
 
 :focus-visible {
@@ -216,7 +245,7 @@ p {
   letter-spacing: 0;
   border: 1px solid var(--d-fg);
   background: var(--d-fg);
-  color: #0a0a0a;
+  color: var(--d-bg);
   white-space: nowrap;
   transition:
     background var(--d-t) var(--d-ease),
@@ -226,8 +255,8 @@ p {
 }
 
 .btn:hover {
-  background: #ffffff;
-  border-color: #ffffff;
+  background: color-mix(in srgb, var(--d-fg) 86%, var(--d-bg));
+  border-color: color-mix(in srgb, var(--d-fg) 86%, var(--d-bg));
 }
 
 .btn:disabled {
@@ -301,8 +330,14 @@ p {
 }
 
 .segmented > button[aria-checked="true"] {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--d-surface);
+  box-shadow: 0 0 0 1px var(--d-line);
   color: var(--d-fg);
+}
+
+html[data-theme="dark"] .segmented > button[aria-checked="true"] {
+  background: color-mix(in srgb, var(--d-fg) 14%, transparent);
+  box-shadow: none;
 }
 
 .segmented > button:disabled {
@@ -359,7 +394,7 @@ p {
 .chipInk {
   background: var(--d-fg);
   border-color: var(--d-fg);
-  color: #0a0a0a;
+  color: var(--d-bg);
 }
 
 /* ---- page scaffolding ---- */
@@ -397,6 +432,10 @@ p {
 
 .maplibregl-ctrl-attrib-button {
   border-radius: var(--d-radius-sm) !important;
+  filter: opacity(0.5);
+}
+
+html[data-theme="dark"] .maplibregl-ctrl-attrib-button {
   filter: invert(1) opacity(0.5);
 }
 
@@ -481,14 +520,14 @@ p {
 .tb-popover .driver-popover-next-btn {
   background: var(--d-fg);
   border-color: var(--d-fg);
-  color: #0a0a0a;
+  color: var(--d-bg);
 }
 
 .tb-popover .driver-popover-next-btn:hover,
 .tb-popover .driver-popover-next-btn:focus {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: #0a0a0a;
+  background: color-mix(in srgb, var(--d-fg) 86%, var(--d-bg));
+  border-color: color-mix(in srgb, var(--d-fg) 86%, var(--d-bg));
+  color: var(--d-bg);
 }
 
 .tb-popover .driver-popover-prev-btn:hover,

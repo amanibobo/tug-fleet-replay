@@ -18,11 +18,11 @@ const AXIS_H = 24;
 const HEIGHT = PRICE_H + ROW_H + ROW_GAP + ROW_H + AXIS_GAP + AXIS_H;
 const MIN_PER_DAY = 1440;
 
-/** Band tint per tariff tier: off-peak none, mid-peak 4% white, on-peak 8% white. */
+/** Band tint per tariff tier: off-peak none, mid-peak 4% fg, on-peak 8% fg. */
 const TIER_FILL: Record<TariffTier, string | null> = {
   off_peak: null,
-  mid_peak: "rgba(255, 255, 255, 0.04)",
-  on_peak: "rgba(255, 255, 255, 0.08)",
+  mid_peak: "color-mix(in srgb, var(--d-fg) 4%, transparent)",
+  on_peak: "color-mix(in srgb, var(--d-fg) 8%, transparent)",
 };
 
 interface Bar {
