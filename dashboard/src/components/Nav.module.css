@@ -11,9 +11,73 @@
   box-shadow: 0 1px 0 rgba(10, 10, 11, 0.05);
 }
 
-.nav[data-landing] {
+/* ---- landing variant: black page, centered lowercase wordmark, links left, one pill right ---- */
+.landing {
+  height: 72px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 24px;
   background: transparent;
   box-shadow: none;
+  color: #ffffff;
+}
+
+.landingLinks {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-self: start;
+}
+
+.landingLink {
+  font-size: 14px;
+  font-weight: 400;
+  color: #a0a0a0;
+  transition: color 160ms ease;
+}
+
+.landingLink:hover {
+  color: #ffffff;
+}
+
+.landingWordmark {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  justify-self: center;
+  transition: opacity 160ms ease;
+}
+
+.landingWordmark:hover {
+  opacity: 0.7;
+}
+
+.landingRight {
+  justify-self: end;
+}
+
+.landingCta {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  background: #ffffff;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 160ms ease;
+}
+
+.landingCta:hover {
+  background: #e4e4e4;
+}
+
+.landing :focus-visible {
+  outline-color: #ffffff;
 }
 
 .wordmark {
@@ -53,10 +117,6 @@
 .textLink:hover {
   color: var(--ink);
   background: var(--tile);
-}
-
-.cta {
-  margin-left: 8px;
 }
 
 .progress {
@@ -116,6 +176,24 @@
 }
 
 @media (max-width: 640px) {
+  .landing {
+    padding: 0 16px;
+    grid-template-columns: auto 1fr;
+  }
+
+  /* the links move under the fine print on phones (Landing.module.css .mobileLinks) */
+  .landingLinks {
+    display: none;
+  }
+
+  .landingWordmark {
+    justify-self: start;
+  }
+
+  .landingCta {
+    padding: 0 12px;
+  }
+
   .hideNarrow {
     display: none;
   }
@@ -133,7 +211,10 @@
   .textLink,
   .progress,
   .progressFill,
-  .wordmark {
+  .wordmark,
+  .landingLink,
+  .landingWordmark,
+  .landingCta {
     transition: none;
   }
 }

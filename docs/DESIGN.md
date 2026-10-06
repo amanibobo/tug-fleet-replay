@@ -209,3 +209,22 @@ Keep the characters ASCII except `·`. Overflow hidden; on narrow screens scale 
 
 Product voice: short, confident, plain. "Open the console", "Watch the demo", "Take the tour".
 No exclamation marks. The independence line is factual and stays in the footer of every page.
+
+---
+
+# Landing addendum (v6, "black and centered")
+
+Applies to `/` and the landing variant of the nav. The console keeps the v4 light system.
+Reference: a black single-column landing with a centered wordmark, one pill button, a two-line
+headline, one video, one paragraph. Nothing else.
+
+- Background #000000. Headline #ffffff, Geist 600, 56–76px, -0.045em, line-height 1.0, lowercase,
+  two lines, centered, max-width 820px.
+- Nav 72px, transparent: "portfolio" and "github" links left (#a0a0a0, hover white), wordmark
+  "tugboard" centered (15px/500), white pill "open the console" right.
+- Video frame centered, max-width 840px, 16:9, radius 16px, poster at 55% brightness, 56px white
+  play button, the word "demo soon" over it at 44px/600 white 70%.
+- Paragraph centered, max-width 660px, 18px/1.55, #c8c8c8, lowercase; one closing line; fine print
+  #7a7a7a 13px with the independence sentence and the data dates.
+- No footer, no borders, no diagrams, no mono labels, no icons. 120px of black at the bottom.
+- Mobile: headline 40px, frame full width with 16px gutters, no horizontal scroll.

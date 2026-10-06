@@ -78,6 +78,17 @@ body {
   background: var(--bg);
 }
 
+/* The landing is the one black page; paint the document behind it too so overscroll stays black. */
+html:has(main[data-landing]),
+html:has(main[data-landing]) body {
+  background: #000000;
+  color-scheme: dark;
+}
+
+main[data-landing] :focus-visible {
+  outline-color: #ffffff;
+}
+
 a {
   color: inherit;
   text-decoration: none;
