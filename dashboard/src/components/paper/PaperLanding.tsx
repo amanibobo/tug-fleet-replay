@@ -20,10 +20,6 @@ export default function PaperLanding() {
           <span className={styles.k}>Tugboard</span>
           <span className={styles.v}>Fleet replay for hybrid-electric tugs</span>
         </div>
-        <div className={styles.tr}>
-          <span className={styles.k}>Port of Los Angeles</span>
-          <span className={styles.v}>22 tugs, one week, every minute</span>
-        </div>
       </header>
 
       <section className={styles.stage} aria-label="A harbor tug, dithered">

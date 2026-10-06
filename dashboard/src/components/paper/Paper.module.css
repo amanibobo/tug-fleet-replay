@@ -35,7 +35,6 @@
 }
 
 .tl,
-.tr,
 .bl {
   display: flex;
   flex-direction: column;
@@ -44,10 +43,6 @@
   line-height: 1.4;
 }
 
-.tr {
-  text-align: right;
-  align-items: flex-end;
-}
 
 .blurb {
   max-width: 400px;
@@ -130,10 +125,6 @@
     align-items: stretch;
   }
 
-  .tr {
-    text-align: left;
-    align-items: flex-start;
-  }
 
   .br {
     align-items: flex-start;
@@ -167,17 +158,6 @@
 
 
 
-@media (hover: none) {
-  .demoCard {
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) scale(0.96);
-  }
-
-  .demoCard[data-open] {
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
 
 
 /* ---- demo link and modal ---- */
