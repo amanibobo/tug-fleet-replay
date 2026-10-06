@@ -35,7 +35,7 @@ export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed
         <span className={`mono ${styles.clock}`} aria-live="off">
           {clock != null ? (
             <>
-              {prettyDate(clock)}
+              {prettyDate(clock, false)}
               <span className={styles.dot}> · </span>
               {hhmmss(clock)}
               <span className={styles.tz}> UTC</span>

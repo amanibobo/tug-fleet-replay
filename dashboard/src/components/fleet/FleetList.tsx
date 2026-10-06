@@ -60,7 +60,7 @@ export default function FleetList({ tugs, selectedId, onSelect, loading, error, 
       <header className={styles.head}>
         <h2 className={styles.title}>
           <span className="heading">Fleet</span>
-          <span className={styles.count}> · {fmtInt(tugs.length)} tugs</span>
+          <span className={styles.count} title={`${fmtInt(tugs.length)} tugs`}> · {fmtInt(tugs.length)}</span>
           {fixture ? <FixtureBadge className={styles.badge} /> : null}
         </h2>
         <div className={`segmented ${styles.filter}`} role="radiogroup" aria-label="Filter the fleet">
