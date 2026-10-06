@@ -79,3 +79,18 @@ def test_tariff_prices_and_schedule_beats_arrival():
     assert arrival == pytest.approx(600 * 0.2)
     assert sched == pytest.approx(600 * 0.1)
     assert sched < arrival
+
+
+def test_scheduled_profile_moves_energy_not_amount():
+    from tug_replay.tariff import scheduled_profile, tier_bands
+    tariff = {"off_peak": 0.1, "mid_peak": 0.2, "on_peak": 0.5, "on_peak_hours": [17], "mid_peak_hours": [16]}
+    t = pd.date_range("2024-12-02T16:00", periods=180, freq="min", tz="America/Los_Angeles").tz_convert("UTC")
+    prices = price_per_kwh(t, tariff)
+    codes = np.full(180, CHARGING)
+    charge = np.zeros(180)
+    charge[:60] = 600.0
+    prof = scheduled_profile(charge, codes, prices, charger_kw=600)
+    assert prof.sum() == pytest.approx(charge.sum())          # same energy
+    assert prof[:120].sum() == 0 and (prof[120:] > 0).sum() == 60   # all moved into the off-peak hour
+    bands = tier_bands(t, tariff)
+    assert [b["tier"] for b in bands] == ["mid_peak", "on_peak", "off_peak"]

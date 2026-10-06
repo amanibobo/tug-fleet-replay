@@ -17,7 +17,7 @@ def cmd_fetch(a) -> int:
 
 def cmd_build(a) -> int:
     from .pipeline import run
-    r = run(out_dir=Path(a.out), recordings=not a.no_recordings)
+    r = run(processed_dir=Path(a.processed), out_dir=Path(a.out), recordings=not a.no_recordings)
     h = r["headline"]
     print(f"{h['electric_share']:.1%} of {h['tug_days']} tug-days electric-only at {h['battery_kwh']:.0f} kWh")
     return 0
@@ -123,7 +123,9 @@ def main(argv=None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("fetch", help="download and filter AIS days"); s.add_argument("rest", nargs="*"); s.set_defaults(f=cmd_fetch)
     s = sub.add_parser("build", help="label, simulate, export JSON and Rerun recordings")
-    s.add_argument("--out", default=str(SITE)); s.add_argument("--no-recordings", action="store_true"); s.set_defaults(f=cmd_build)
+    s.add_argument("--out", default=str(SITE)); s.add_argument("--no-recordings", action="store_true")
+    s.add_argument("--processed", default=str(ROOT / "data/processed"), help="parquet dir (data/live/processed for a recording)")
+    s.set_defaults(f=cmd_build)
     s = sub.add_parser("headline", help="print the headline number"); s.add_argument("--battery-kwh", type=float); s.set_defaults(f=cmd_headline)
     s = sub.add_parser("serve", help="local WebSocket + API stand-in for AWS")
     s.add_argument("--site", default=str(SITE)); s.add_argument("--ws-port", type=int, default=8765)
@@ -134,6 +136,12 @@ def main(argv=None) -> int:
     s.add_argument("--speedup", type=float); s.add_argument("--start", type=int, default=0); s.add_argument("--ticks", type=int)
     s.add_argument("--once", action="store_true"); s.set_defaults(f=cmd_replay)
     s = sub.add_parser("docks", help="detect dock candidates from idle clusters"); s.set_defaults(f=cmd_docks)
+    s = sub.add_parser("record", help="record live AIS from aisstream.io into data/live/raw")
+    s.add_argument("--raw-dir", default=str(ROOT / "data/live/raw")); s.add_argument("--seconds", type=float)
+    s.set_defaults(f=lambda a: __import__("tug_replay.record_live", fromlist=["x"]).main_record(a))
+    s = sub.add_parser("finalize", help="turn recorded AIS into tugs_/ships_ parquet files")
+    s.add_argument("--raw-dir", default=str(ROOT / "data/live/raw")); s.add_argument("--out-dir", default=str(ROOT / "data/live/processed"))
+    s.set_defaults(f=lambda a: __import__("tug_replay.record_live", fromlist=["x"]).main_finalize(a))
     s = sub.add_parser("sample", help="export segments for a hand check"); s.add_argument("--n", type=int, default=50)
     s.add_argument("--seed", type=int, default=7); s.add_argument("--out", default=str(ROOT / "data/labels/hand_sample.csv")); s.set_defaults(f=cmd_sample)
     s = sub.add_parser("score", help="score hand labels against the rules"); s.add_argument("--csv", default=str(ROOT / "data/labels/hand_sample.csv")); s.set_defaults(f=cmd_score)

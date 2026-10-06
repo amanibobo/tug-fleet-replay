@@ -9,6 +9,7 @@ import pandas as pd
 
 from .activity import CHARGING, IDLE, NAMES, runs
 from .pipeline import TugSeries, day_slices
+from .tariff import arrival_cost, price_per_kwh, scheduled_cost, scheduled_profile, tier_bands
 
 
 def _iso(ts: pd.Timestamp) -> str:
@@ -40,7 +41,8 @@ def telemetry_row(s: TugSeries, i: int, battery_kwh: float) -> dict:
     }
 
 
-def tug_day(s: TugSeries, day: pd.Timestamp, sl: slice, battery_kwh: float, docks: list[dict]) -> dict:
+def tug_day(s: TugSeries, day: pd.Timestamp, sl: slice, battery_kwh: float, docks: list[dict],
+            tariff: dict | None = None, charger_kw: float = 0.0) -> dict:
     r = s.sim
     tr = s.track.iloc[sl]
     t = s.t[sl]
@@ -64,13 +66,22 @@ def tug_day(s: TugSeries, day: pd.Timestamp, sl: slice, battery_kwh: float, dock
                          "energy_kwh": round(float(power[a:b].sum() / 60), 1),
                          "assist_min": int((c == 1).sum()), "transit_min": int((c == 2).sum()),
                          "max_sog": round(float(tr["sog"].iloc[a:b].max()), 1)})
+    charge_kw = r.charge_kw[sl]
+    prices = price_per_kwh(t, tariff) if tariff else np.zeros(len(t))
+    sched_kw = scheduled_profile(charge_kw, codes, prices, charger_kw) if tariff else np.zeros(len(t))
     charging = []
     for a, b, c in runs(codes):
         if c == CHARGING:
-            kwh = float(r.charge_kw[sl][a:b].sum() / 60)
+            kwh = float(charge_kw[a:b].sum() / 60)
             di = int(pd.Series(s.dock_idx[sl][a:b]).mode().iat[0])
+            windows = [{"start": _iso(t[a + w0]), "end": _iso(t[a + w1 - 1] + pd.Timedelta(minutes=1)),
+                        "kw": round(float(sched_kw[a:b][w0:w1].mean()))}
+                       for w0, w1, on in runs((sched_kw[a:b] > 0).astype(int)) if on]
             charging.append({"start": _iso(t[a]), "end": _iso(t[b - 1] + pd.Timedelta(minutes=1)),
-                             "kwh": round(kwh, 1), "dock": docks[di]["name"] if di >= 0 else None})
+                             "kwh": round(kwh, 1), "dock": docks[di]["name"] if di >= 0 else None,
+                             "cost_arrival_usd": round(float((charge_kw[a:b] * prices[a:b]).sum() / 60), 2),
+                             "cost_scheduled_usd": round(float((sched_kw[a:b] * prices[a:b]).sum() / 60), 2),
+                             "scheduled_windows": windows})
     gen = []
     for a, b, on in runs(r.generator_on[sl].astype(int)):
         if on:
@@ -92,7 +103,11 @@ def tug_day(s: TugSeries, day: pd.Timestamp, sl: slice, battery_kwh: float, dock
             "idle_min": int(((codes == IDLE) | (codes == CHARGING)).sum()),
             "min_soc": round(float(r.soc[sl].min()), 3), "electric_only": bool(not r.generator_on[sl].any()),
             "jobs": len(job_rows),
+            "charge_cost_usd_arrival": round(arrival_cost(charge_kw, prices), 2),
+            "charge_cost_usd_scheduled": round(scheduled_cost(charge_kw, codes, prices, charger_kw), 2),
         },
+        "tariff": ({"off_peak": tariff["off_peak"], "mid_peak": tariff["mid_peak"], "on_peak": tariff["on_peak"],
+                    "charger_kw": charger_kw, "bands": tier_bands(t, tariff)} if tariff else None),
         "recording_url": f"/recordings/{s.tug_id}/{date}.rrd",
     }
 
@@ -127,7 +142,7 @@ def write_site(cfg, series, docks, meta, sweep_rows, assumption_rows, out_dir: P
         d.mkdir(parents=True, exist_ok=True)
         energy_days = []
         for day, sl in day_slices(s.t):
-            td = tug_day(s, day, sl, cap, docks)
+            td = tug_day(s, day, sl, cap, docks, cfg["tariff"], float(cfg["battery"]["charger_power_kw"]))
             (d / f"{td['date']}.json").write_text(json.dumps(td, separators=(",", ":")))
             energy_days.append(td["totals"]["energy_kwh"])
         per_tug.append({"tug_id": s.tug_id, "name": s.name, "days": len(energy_days),

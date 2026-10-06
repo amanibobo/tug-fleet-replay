@@ -57,11 +57,16 @@ Static file path: `/data/tugdays/{tug_id}/{date}.json`.
     { "job_id": "...", "start": "...", "end": "...", "energy_kwh": 512.0,
       "assist_min": 38, "transit_min": 22, "max_sog": 9.1 }
   ],
-  "charging": [ { "start": "...", "end": "...", "kwh": 850.0, "dock": "Pier D, Long Beach" } ],
+  "charging": [ { "start": "...", "end": "...", "kwh": 850.0, "dock": "Dock A",
+                  "cost_arrival_usd": 190.5, "cost_scheduled_usd": 119.0,
+                  "scheduled_windows": [ { "start": "...", "end": "...", "kw": 2000 } ] } ],
+  "tariff": { "off_peak": 0.14, "mid_peak": 0.22, "on_peak": 0.45, "charger_kw": 2000,
+              "bands": [ { "start": "...", "end": "...", "tier": "on_peak", "usd_per_kwh": 0.45 } ] },
   "generator": [ { "start": "...", "end": "...", "kwh": 120.0 } ],
   "totals": { "energy_kwh": 2410.0, "generator_kwh": 120.0, "charged_kwh": 850.0,
               "assist_min": 300, "transit_min": 210, "idle_min": 930, "min_soc": 0.12,
-              "electric_only": false },
+              "electric_only": false, "jobs": 3,
+              "charge_cost_usd_arrival": 190.5, "charge_cost_usd_scheduled": 119.0 },
   "recording_url": "/recordings/366999123/2024-12-02.rrd"
 }
 ```

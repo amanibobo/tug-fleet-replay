@@ -19,3 +19,4 @@ cdk.out/
 .claude/
 skills-lock.json
 design-plans/
+data/live/
