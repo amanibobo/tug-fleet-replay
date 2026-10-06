@@ -75,7 +75,6 @@ export default function RerunInspector({ open, onClose, recordingUrl, title }: P
       <aside className={styles.panel} data-open={open || undefined} aria-hidden={!open} aria-label="Rerun inspector">
         <header className={styles.head}>
           <div className={styles.titles}>
-            <span className="label">Rerun inspector</span>
             <span className="heading">{title}</span>
           </div>
           <div className={styles.actions}>

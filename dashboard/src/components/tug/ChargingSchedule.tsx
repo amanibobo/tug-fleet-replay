@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Footnote from "@/components/Footnote";
 import Tile from "@/components/Tile";
 import Stat from "@/components/Stat";
 import { clamp, fmtInt, fmtUsd } from "@/lib/format";
@@ -201,10 +200,6 @@ export default function ChargingSchedule({ day }: Props) {
         </div>
       </div>
 
-      <Footnote className={styles.footnote}>
-        Scheduled charging moves the same energy to the cheapest minutes of each stop. The stop&apos;s end time is used
-        as the deadline. Estimates. Parameters in config.yaml.
-      </Footnote>
     </Tile>
   );
 }

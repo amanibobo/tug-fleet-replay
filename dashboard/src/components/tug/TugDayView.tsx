@@ -5,8 +5,6 @@ import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import FixtureBadge from "@/components/FixtureBadge";
-import Footer from "@/components/Footer";
-import Footnote from "@/components/Footnote";
 import Stat from "@/components/Stat";
 import Tile from "@/components/Tile";
 import { useOnboarding } from "@/components/onboarding/OnboardingProvider";
@@ -131,7 +129,6 @@ export default function TugDayView({ id }: { id: string }) {
           <Stat size="lg" className={styles.statCell} label="Minimum charge" value={totals ? fmtPct(totals.min_soc) : "0%"} />
           <Stat size="lg" className={styles.statCell} label="Jobs" value={day ? fmtInt(day.jobs.length) : "0"} />
         </div>
-        <Footnote />
       </Tile>
 
       <Tile
@@ -176,7 +173,6 @@ export default function TugDayView({ id }: { id: string }) {
         </Tile>
       </div>
 
-      <Footer className={styles.footer} dataset={dataset ?? null} />
 
       <RerunInspector
         open={inspectorOpen}

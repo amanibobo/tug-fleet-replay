@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useMemo, useState } from "react";
-import Footer from "@/components/Footer";
 import Checklist from "@/components/onboarding/Checklist";
 import { useOnboarding } from "@/components/onboarding/OnboardingProvider";
 import Tour from "@/components/onboarding/Tour";
@@ -74,7 +73,6 @@ export default function FleetConsole() {
           fixture={fleet.fixture}
         />
 
-        <Footer className={styles.footer} dataset={fleet.dataset} />
       </aside>
 
       <div className={styles.mapWrap} data-tour="map">
