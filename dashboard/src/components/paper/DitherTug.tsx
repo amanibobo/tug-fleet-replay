@@ -38,6 +38,8 @@ export default function DitherTug({ ink, mode }: Props) {
     let raf = 0;
     let timer = 0;
     let lum: Float32Array | null = null;
+    let rgb: Uint8ClampedArray | null = null;
+    const TINT = 0.5; // how far each dash leans from ink toward the source color
     let gw = 0;
     let gh = 0;
     let cw = 0;
@@ -72,6 +74,7 @@ export default function DitherTug({ ink, mode }: Props) {
       octx.fillRect(0, 0, gw, gh);
       octx.drawImage(img, 0, 0, gw, gh);
       const px = octx.getImageData(0, 0, gw, gh).data;
+      rgb = px;
       lum = new Float32Array(gw * gh);
       for (let i = 0; i < gw * gh; i++) {
         const r = px[i * 4];
@@ -125,7 +128,16 @@ export default function DitherTug({ ink, mode }: Props) {
           for (let k = 0; k < len && x + k < gw; k++) sum += lum[y * gw + x + k];
           const mean = sum / len;
           const alpha = Math.min(0.95, 0.3 + mean * 0.7);
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
+          let cr = r;
+          let cg = g;
+          let cb = b;
+          if (rgb) {
+            const i = (y * gw + Math.min(gw - 1, x + (len >> 1))) * 4;
+            cr = Math.round(r + (rgb[i] - r) * TINT);
+            cg = Math.round(g + (rgb[i + 1] - g) * TINT);
+            cb = Math.round(b + (rgb[i + 2] - b) * TINT);
+          }
+          ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${alpha.toFixed(3)})`;
           const jitter = (rand() - 0.5) * cellW * 0.6;
           ctx.fillRect(x * cellW + jitter, yy, len * cellW - cellW * 0.45, rowH);
           x += len + 1 + Math.floor(rand() * 3);
