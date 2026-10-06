@@ -7,7 +7,7 @@ import ThemeSquare from "./theme/ThemeSquare";
 import styles from "./Nav.module.css";
 
 export const GITHUB_URL = "https://github.com/amanibobo/tug-fleet-replay";
-export const PORTFOLIO_URL = "https://amanibobo.vercel.app";
+export const PORTFOLIO_URL = "https://amanibobo.dev";
 const FEEDBACK_URL = "mailto:amanibobo1@gmail.com?subject=Tugboard%20feedback";
 
 export default function Nav() {
