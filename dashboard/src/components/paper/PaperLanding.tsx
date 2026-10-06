@@ -1,29 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import { GITHUB_URL, PORTFOLIO_URL } from "@/components/Nav";
 import DemoModal, { YouTubeMark } from "./DemoModal";
 import DitherTug from "./DitherTug";
 import Grain from "./Grain";
 import styles from "./Paper.module.css";
 
-/** Set this to a public video path (for example "/demo.mp4") once the demo exists; the card autoplays it muted. */
-const DEMO_VIDEO: string | null = null;
-
-/** An alternate landing: four corners of small type and one dithered tug. Hovering the tug shows the demo. */
+/** An alternate landing: four corners of small type and one dithered tug. Clicking the tug plays the demo. */
 export default function PaperLanding() {
-  const [hover, setHover] = useState(false);
   const [demo, setDemo] = useState(false);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const stage = useRef<HTMLDivElement>(null);
-
-  const move = useCallback((e: React.MouseEvent) => {
-    const box = stage.current?.getBoundingClientRect();
-    if (!box) return;
-    setPos({ x: e.clientX - box.left, y: e.clientY - box.top });
-  }, []);
 
   return (
     <main className={styles.page} data-paper>
@@ -41,11 +28,7 @@ export default function PaperLanding() {
 
       <section className={styles.stage} aria-label="A harbor tug, dithered">
         <div
-          ref={stage}
           className={styles.hoverZone}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          onMouseMove={move}
           onClick={() => setDemo(true)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
@@ -53,31 +36,11 @@ export default function PaperLanding() {
               setDemo(true);
             }
           }}
-          onFocus={() => setHover(true)}
-          onBlur={() => setHover(false)}
           tabIndex={0}
           role="button"
           aria-label="Play the demo video"
         >
           <DitherTug ink={[38, 32, 24]} mode="dash" />
-          <div
-            className={styles.demoCard}
-            data-open={hover || undefined}
-            style={{ left: pos.x, top: pos.y }}
-            aria-hidden={!hover}
-          >
-            {DEMO_VIDEO ? (
-              <video className={styles.demoMedia} src={DEMO_VIDEO} poster="/poster.png" muted loop autoPlay playsInline />
-            ) : (
-              <Image src="/poster.png" alt="" width={1280} height={720} className={styles.demoMedia} unoptimized />
-            )}
-            <span className={styles.demoPlay} aria-hidden>
-              <svg width="12" height="14" viewBox="0 0 10 12">
-                <path d="M0 0l10 6-10 6z" fill="currentColor" />
-              </svg>
-            </span>
-            <span className={styles.demoCaption}>{DEMO_VIDEO ? "Demo, 75 s" : "Demo video, coming soon"}</span>
-          </div>
         </div>
       </section>
 
