@@ -90,10 +90,17 @@ export default function PaperLanding() {
           </p>
           <span className={styles.v}>Independent project. Tracks from NOAA AIS, Dec 2 to 8, 2024.</span>
         </div>
-        <button type="button" className={styles.demoLink} onClick={() => setDemo(true)}>
-          <YouTubeMark />
-          <span>Demo video</span>
-        </button>
+        <div className={styles.center}>
+          <button type="button" className={styles.demoLink} onClick={() => setDemo(true)}>
+            <YouTubeMark />
+            <span>Demo video</span>
+          </button>
+          <ul className={styles.list} aria-label="What is inside">
+            <li>Real tracks</li>
+            <li>Labeled minutes</li>
+            <li>Battery simulation</li>
+          </ul>
+        </div>
         <nav className={styles.br} aria-label="Links">
           <Link href="/app" className={styles.link}>
             Open the console
