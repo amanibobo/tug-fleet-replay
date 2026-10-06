@@ -1,9 +1,7 @@
 "use client";
 
 import { memo, useState } from "react";
-import Footnote from "@/components/Footnote";
 import Slider from "@/components/Slider";
-import Stat from "@/components/Stat";
 import { fmtHours, fmtInt, fmtUsd } from "@/lib/format";
 import type { SummaryState } from "@/lib/useSummary";
 import { useAnimatedNumber, useDebounced } from "@/lib/useAnimatedNumber";
@@ -15,7 +13,7 @@ interface Props {
   onSlide?: () => void;
 }
 
-/** Headline block: label, the 56px share, one line, the battery slider, a 2x2 stat grid, a footnote. */
+/** Headline card: the share in a square tile with its sentence, the battery slider, and four stat tiles. */
 function HeadlinePanel({ summary, onSlide }: Props) {
   const { bounds, defaultKwh, pick, status } = summary;
   const [picked, setKwh] = useState<number | null>(null);
@@ -25,6 +23,7 @@ function HeadlinePanel({ summary, onSlide }: Props) {
   const row = pick(debounced);
   const share = useAnimatedNumber(row ? row.electric_share * 100 : 0, 320);
   const tugDays = summary.summary?.dataset.tug_days;
+  const ready = status === "ready" && !!row;
 
   const saving =
     row && row.charge_cost_usd_arrival > 0
@@ -33,22 +32,26 @@ function HeadlinePanel({ summary, onSlide }: Props) {
 
   return (
     <section className={styles.panel} aria-label="Week summary" data-tour="headline">
-      <span className={`label ${styles.kicker}`}>Electric share this week</span>
-      <div className={`headline ${styles.headline}`} aria-live="polite">
-        {status === "ready" && row ? (
-          <>
-            {share.toFixed(0)}
-            <span className={styles.pct}>%</span>
-          </>
-        ) : (
-          <span className={styles.placeholder}>0</span>
-        )}
+      <div className={styles.lead}>
+        <div className={styles.tile} aria-live="polite">
+          {ready ? `${share.toFixed(0)}%` : "–"}
+        </div>
+        <div className={styles.leadText}>
+          <span className={styles.leadTitle}>Electric tug-days this week</span>
+          <span className={styles.leadSub}>
+            {ready ? `${share.toFixed(0)}% of ${tugDays ? fmtInt(tugDays) : ""} ran without the generator` : "Loading the week"}
+          </span>
+        </div>
       </div>
-      <p className={styles.caption}>of {tugDays ? fmtInt(tugDays) : ""} tug-days ran without the generator</p>
 
+      <div className={styles.rule} />
+
+      <div className={styles.sectionHead}>
+        <span className={styles.sectionTitle}>Battery</span>
+        <span className={styles.chip}>{fmtInt(kwh)} kWh</span>
+      </div>
       <Slider
-        label="Battery"
-        trailing={`${fmtInt(kwh)} kWh`}
+        label=""
         min={bounds?.min ?? 1000}
         max={bounds?.max ?? 8000}
         step={bounds?.step ?? 250}
@@ -59,18 +62,39 @@ function HeadlinePanel({ summary, onSlide }: Props) {
         }}
         disabled={!bounds}
         className={styles.slider}
+        ariaLabel="Battery size in kWh"
       />
 
-      <div className={styles.stats}>
-        <Stat className={styles.cell} label="Generator hours" value={row ? fmtHours(row.generator_hours) : "0"} />
-        <Stat className={styles.cell} label="Charged" value={row ? fmtInt(row.charged_kwh) : "0"} unit="kWh" />
-        <Stat className={styles.cell} label="Charging cost at arrival" value={row ? fmtUsd(row.charge_cost_usd_arrival) : "$0"} />
-        <Stat className={styles.cell} label="Charging cost scheduled" value={row ? fmtUsd(row.charge_cost_usd_scheduled) : "$0"} />
+      <div className={styles.sectionHead}>
+        <span className={styles.sectionTitle}>This week</span>
       </div>
-
-      <Footnote className={styles.footnote}>
-        {saving != null ? `Scheduled charging costs ${saving}% less. ` : ""}Estimates. Parameters in config.yaml.
-      </Footnote>
+      <div className={styles.grid}>
+        <div className={styles.stat}>
+          <span className={styles.statLabel}>Generator</span>
+          <span className={styles.statValue}>
+            <b>{row ? fmtHours(row.generator_hours) : "0 h"}</b>
+          </span>
+        </div>
+        <div className={styles.stat}>
+          <span className={styles.statLabel}>Charged</span>
+          <span className={styles.statValue}>
+            <b>{row ? fmtInt(row.charged_kwh) : "0"}</b> kWh
+          </span>
+        </div>
+        <div className={styles.stat}>
+          <span className={styles.statLabel}>Cost at arrival</span>
+          <span className={styles.statValue}>
+            <b>{row ? fmtUsd(row.charge_cost_usd_arrival) : "$0"}</b>
+          </span>
+        </div>
+        <div className={styles.stat}>
+          <span className={styles.statLabel}>Cost scheduled</span>
+          <span className={styles.statValue}>
+            <b>{row ? fmtUsd(row.charge_cost_usd_scheduled) : "$0"}</b>
+          </span>
+          {saving != null ? <span className={styles.statNote}>{saving}% less</span> : null}
+        </div>
+      </div>
     </section>
   );
 }

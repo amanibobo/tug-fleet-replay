@@ -26,9 +26,9 @@
 
 .rail > *:not(.footer) {
   flex: none;
-  background: var(--d-rail);
+  background: var(--d-surface);
   border: 1px solid var(--d-line);
-  border-radius: var(--d-radius);
+  border-radius: 12px;
   overflow: hidden;
 }
 
