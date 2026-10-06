@@ -1,12 +1,14 @@
 # Tugboard
 
+![A container ship drawn in animated ink dashes](docs/media/ship.gif)
+
 Fleet replay for hybrid-electric tugs. Real Port of Los Angeles tug traffic, replayed as if each tug were a hybrid-electric boat streaming live telemetry. The headline output is one number: the share of tug-days that run without the generator at a given battery size.
 
 Live: https://tug-fleet-replay.vercel.app
 
 **Headline: 70.8% of 154 tug-days ran electric-only at 6,000 kWh** (22 harbor tugs, Dec 2–8 2024, 8 detected docks). Drag the slider on the dashboard to see how that moves with battery size.
 
-> Independent project. Not affiliated with Arc Boats, Curtin Maritime or any tug operator. Vessel names come from public AIS broadcasts. Every powertrain number is a labeled estimate; see [Assumptions](#assumptions).
+> Vessel names come from public AIS broadcasts. Every powertrain number is a labeled estimate; see [Assumptions](#assumptions).
 
 ## What it does
 
