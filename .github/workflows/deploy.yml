@@ -1,0 +1,140 @@
+# Manual deploy: CDK stack -> static data -> dashboard, all to one AWS account via OIDC.
+#
+# One-time setup in AWS:
+#   1. `npx cdk bootstrap aws://ACCOUNT/REGION` from infra/ with admin credentials.
+#   2. Create an IAM role trusted by GitHub's OIDC provider (token.actions.githubusercontent.com)
+#      for this repo, with permissions to assume the cdk-hnb659fds-* roles, plus s3:* on the
+#      history bucket and cloudfront:CreateInvalidation. Store its ARN as the repo secret
+#      AWS_DEPLOY_ROLE_ARN. Optional repo variable AWS_REGION (default us-west-2).
+#
+# Vercel is the simpler alternative for the dashboard: import dashboard/ as a Next.js project
+# and set the NEXT_PUBLIC_* variables printed by this workflow. Then set deploy_dashboard=false.
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_static:
+        description: Upload data/processed/site to S3 (skipped if the directory is absent)
+        type: boolean
+        default: true
+      deploy_dashboard:
+        description: Build the dashboard as a static export and upload it to the same CloudFront
+        type: boolean
+        default: true
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-west-2' }}
+  STACK_NAME: TugReplayStack
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: tug-replay-deploy
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            infra/package-lock.json
+            dashboard/package-lock.json
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+
+      # ---------------------------------------------------------------- 1. backend
+      - name: Install infra
+        working-directory: infra
+        run: npm ci
+
+      - name: cdk deploy
+        working-directory: infra
+        run: npx cdk deploy --require-approval never --outputs-file outputs.json
+        env:
+          CDK_DISABLE_VERSION_CHECK: "1"
+
+      - name: Read stack outputs
+        id: outputs
+        working-directory: infra
+        run: |
+          jq -r --arg s "$STACK_NAME" '.[$s] | to_entries[] | "\(.key)=\(.value)"' outputs.json | tee -a "$GITHUB_OUTPUT"
+          {
+            echo "## TugReplayStack"
+            echo
+            echo '```'
+            jq -r --arg s "$STACK_NAME" '.[$s] | to_entries[] | "\(.key)=\(.value)"' outputs.json
+            echo '```'
+            echo
+            echo "Dashboard env (paste into dashboard/.env.local or Vercel):"
+            echo
+            echo '```'
+            echo "NEXT_PUBLIC_DATA_MODE=ws"
+            echo "NEXT_PUBLIC_WS_URL=$(jq -r --arg s "$STACK_NAME" '.[$s].WebSocketUrl' outputs.json)"
+            echo "NEXT_PUBLIC_API_URL=$(jq -r --arg s "$STACK_NAME" '.[$s].HttpApiUrl' outputs.json)"
+            echo "NEXT_PUBLIC_CDN_URL=$(jq -r --arg s "$STACK_NAME" '.[$s].CdnUrl' outputs.json)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # ---------------------------------------------------------------- 2. static data
+      - name: Publish static data
+        if: ${{ inputs.publish_static }}
+        run: |
+          if [ -d data/processed/site ]; then
+            uv run --no-project --with boto3 python infra/scripts/publish_static.py \
+              --bucket "${{ steps.outputs.outputs.BucketName }}" \
+              --distribution "${{ steps.outputs.outputs.DistributionId }}"
+          else
+            echo "::notice::data/processed/site not present in the checkout; skipping publish_static (run it locally after the pipeline)"
+          fi
+
+      # ---------------------------------------------------------------- 3. dashboard
+      - name: Build dashboard (static export)
+        if: ${{ inputs.deploy_dashboard }}
+        working-directory: dashboard
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_PUBLIC_DATA_MODE: ws
+          NEXT_PUBLIC_WS_URL: ${{ steps.outputs.outputs.WebSocketUrl }}
+          NEXT_PUBLIC_API_URL: ${{ steps.outputs.outputs.HttpApiUrl }}
+          NEXT_PUBLIC_CDN_URL: ${{ steps.outputs.outputs.CdnUrl }}
+        run: |
+          npm ci
+          npm run build
+          if [ ! -f out/index.html ]; then
+            echo "::error::dashboard/out/index.html missing. next.config must set output: 'export' for the S3 deploy (or use Vercel)."
+            exit 1
+          fi
+
+      - name: Upload dashboard to S3
+        if: ${{ inputs.deploy_dashboard }}
+        env:
+          BUCKET: ${{ steps.outputs.outputs.BucketName }}
+          DIST: ${{ steps.outputs.outputs.DistributionId }}
+        run: |
+          # Keep the data the pipeline publishes (tugdays/, recordings/, fleet.json, summary.json) out of --delete.
+          KEEP=(--exclude "tugdays/*" --exclude "recordings/*" --exclude "fleet.json" --exclude "summary.json")
+          # hashed assets: cache forever
+          aws s3 sync dashboard/out "s3://$BUCKET/" --delete "${KEEP[@]}" --exclude "*.html" \
+            --cache-control "public, max-age=31536000, immutable"
+          # html: always revalidate
+          aws s3 sync dashboard/out "s3://$BUCKET/" "${KEEP[@]}" --exclude "*" --include "*.html" \
+            --cache-control "no-cache" --content-type "text/html; charset=utf-8"
+          aws cloudfront create-invalidation --distribution-id "$DIST" --paths "/*" >/dev/null
+          echo "dashboard: ${{ steps.outputs.outputs.CdnUrl }}" >> "$GITHUB_STEP_SUMMARY"

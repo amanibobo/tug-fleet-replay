@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pipeline:
+    name: pipeline (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - name: Install project
+        run: uv sync --extra dev
+      - name: Test
+        run: uv run pytest
+
+  dashboard:
+    name: dashboard (lint, build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: dashboard/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_DATA_MODE: static
+          NEXT_TELEMETRY_DISABLED: "1"
+
+  infra:
+    name: infra (jest, lambda tests, cdk synth)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: infra/package-lock.json
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        working-directory: infra
+        run: npm ci
+      - name: CDK assertions
+        working-directory: infra
+        run: npm test
+      - name: Lambda unit tests
+        run: uv run --no-project --with pytest --with boto3 pytest infra/lambdas/tests
+      - name: Synth (no credentials)
+        working-directory: infra
+        run: npx cdk synth --quiet
+        env:
+          CDK_DISABLE_VERSION_CHECK: "1"

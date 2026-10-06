@@ -1,0 +1,10 @@
+node_modules/
+cdk.out/
+outputs.json
+*.js
+!jest.config.js
+*.d.ts
+.certs/
+__pycache__/
+*.pyc
+.pytest_cache/

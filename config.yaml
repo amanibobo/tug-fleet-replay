@@ -1,0 +1,72 @@
+# Every number here is an estimate unless a source is cited. The dashboard and README read this file.
+
+data:
+  source: "NOAA MarineCadastre AIS daily files (https://coast.noaa.gov/htdata/CMSP/AISDataHandler/)"
+  start_date: "2024-12-02"      # Monday. Newest full year published is 2024; this week avoids the holidays.
+  days: 7
+  bbox:                         # San Pedro Bay: Port of Los Angeles and Port of Long Beach
+    lat_min: 33.60
+    lat_max: 33.80
+    lon_min: -118.32
+    lon_max: -118.05
+  vessel_types: [31, 32, 52, 1023, 1025]   # 31/32 towing, 52 tug (ITU), 1023/1025 MarineCadastre "Tug Tow". Confirmed against the 2024 data dictionary on day 1.
+  min_points_per_day: 50        # vessels with fewer positions in a day are dropped as noise
+
+activity:
+  # Rules applied per AIS point, then smoothed. Speeds in knots.
+  idle_max_sog: 0.5
+  assist_max_sog: 4.0           # a tug pushing or escorting moves slowly relative to the ship
+  transit_min_sog: 4.0
+  smoothing_window: 5           # points (median filter on labels)
+  min_segment_s: 180            # segments shorter than this are merged into their neighbour
+  job_gap_min: 45               # idle gap that splits two jobs
+  assist_ship_distance_m: 60    # slow and within this of a ship's hull (length/2 from its AIS position) = assist
+  assist_with_ship_max_sog: 8.0 # an escorted ship moves; assist holds up to this speed when a ship is alongside
+  ship_min_length_m: 100        # what counts as a ship for the rule above
+
+energy:
+  # Powertrain estimates for a 4,000 hp (about 3 MW) harbor tug. Arc has not published a power curve.
+  transit_power_kw_at_8kn: 900  # power at a reference speed; scaled by (sog/8)^3
+  transit_min_power_kw: 60      # hotel load floor when moving slowly
+  assist_power_kw: 1400         # weakest estimate: AIS has speed, not bollard pull
+  idle_power_kw: 45             # hotel load, HVAC, electronics
+  max_power_kw: 3000            # clamp
+
+battery:
+  capacity_kwh: 6000            # Arc/Curtin tugs: "6 megawatt-hour batteries" (Marine Log, Sept 2025)
+  usable_fraction: 0.9
+  start_soc: 1.0
+  slider_min_kwh: 1000
+  slider_max_kwh: 8000
+  slider_step_kwh: 250
+  generator_cut_in_soc: 0.15    # generator starts when state of charge falls below this
+  generator_cut_out_soc: 0.35   # and stops once the battery recovers to this
+  generator_power_kw: 600       # "a small diesel generator can top off the batteries" (Marine Log)
+  charger_power_kw: 2000        # shore charger while idle at the dock
+  dock_charge_min_idle_min: 20  # idle this long near a known dock counts as a charging stop
+
+docks: auto
+  # "auto" clusters idle positions across the fleet (tracks.detect_docks) and names them Dock A, B, ...
+  # Replace with a list of {name, lat, lon, radius_m} to pin them. `tug docks` prints the detected set.
+tariff:
+  # SCE TOU-8 style shape, rounded. $/kWh. Confirm against the current tariff before quoting.
+  off_peak: 0.14
+  mid_peak: 0.22
+  on_peak: 0.45
+  on_peak_hours: [16, 17, 18, 19, 20]
+  mid_peak_hours: [8, 9, 10, 11, 12, 13, 14, 15, 21]
+
+replay:
+  speedup: 120                  # 1 replay second = 2 real minutes; a day plays in 12 minutes
+  tick_s: 1.0
+
+fleet:
+  # Which AIS vessels count as harbor tugs for this replay
+  min_length_m: 15
+  max_length_m: 45
+  max_sog_p99: 14           # knots; pilot and patrol boats run faster
+  min_points_per_day: 200   # about one fix every 7 minutes
+  min_days_present: 5
+  min_moving_share: 0.03    # median share of fixes above 0.5 kn; parked boats fall below
+  max_tugs: 0               # 0 = keep every qualifying tug
+  max_interp_gap_min: 30

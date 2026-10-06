@@ -1,0 +1,21 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/
+data/processed/*.parquet
+data/processed/site/
+node_modules/
+.next/
+out/
+cdk.out/
+.env*
+!.env.example
+.DS_Store
+*.log
+
+# agent tooling, not part of the project
+.agents/
+.claude/
+skills-lock.json
+design-plans/
