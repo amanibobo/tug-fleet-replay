@@ -9,6 +9,12 @@ type Item = { slug: string; heading: string };
 export default function Toc({ items }: { items: Item[] }) {
   const [active, setActive] = useState(items[0]?.slug ?? "");
 
+  // keep the active link visible inside the contents column as the reader scrolls
+  useEffect(() => {
+    const link = document.querySelector<HTMLElement>(`[data-toc="${active}"]`);
+    link?.scrollIntoView({ block: "nearest" });
+  }, [active]);
+
   useEffect(() => {
     const sections = items.map((i) => document.getElementById(i.slug)).filter((el): el is HTMLElement => el !== null);
     if (!sections.length) return;
@@ -39,6 +45,7 @@ export default function Toc({ items }: { items: Item[] }) {
               href={`#${item.slug}`}
               className={styles.tocLink}
               aria-current={active === item.slug ? "true" : undefined}
+              data-toc={item.slug}
             >
               {item.heading}
             </a>

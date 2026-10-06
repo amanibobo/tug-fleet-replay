@@ -4,9 +4,7 @@ import { useEffect, useRef } from "react";
 import styles from "./Paper.module.css";
 export type DitherMode = "dash" | "dots";
 
-const SRC = "/tug-side.svg";
-const SRC_W = 1200;
-const SRC_H = 520;
+const DEFAULT_SRC = "/tug-side.svg";
 
 /**
  * Draws the tug as horizontal ink dashes whose density follows the image's darkness, the
@@ -16,9 +14,27 @@ const SRC_H = 520;
 interface Props {
   ink: [number, number, number];
   mode: DitherMode;
+  /** image to dither; any same-origin raster or SVG on a white background */
+  src?: string;
+  /** intrinsic size of that image, used for the aspect ratio */
+  srcWidth?: number;
+  srcHeight?: number;
+  className?: string;
+  label?: string;
 }
 
-export default function DitherTug({ ink, mode }: Props) {
+export default function DitherTug({
+  ink,
+  mode,
+  src = DEFAULT_SRC,
+  srcWidth = 1200,
+  srcHeight = 520,
+  className,
+  label = "A harbor tug drawn in ink dashes",
+}: Props) {
+  const SRC = src;
+  const SRC_W = srcWidth;
+  const SRC_H = srcHeight;
   const ref = useRef<HTMLCanvasElement>(null);
   const style = useRef({ ink, mode });
   const redraw = useRef<() => void>(() => {});
@@ -173,7 +189,7 @@ export default function DitherTug({ ink, mode }: Props) {
       window.clearInterval(timer);
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [SRC, SRC_W, SRC_H]);
 
-  return <canvas ref={ref} className={styles.canvas} role="img" aria-label="A harbor tug drawn in ink dashes" />;
+  return <canvas ref={ref} className={`${styles.canvas} ${className ?? ""}`} role="img" aria-label={label} />;
 }

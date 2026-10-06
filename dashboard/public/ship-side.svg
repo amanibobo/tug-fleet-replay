@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420">
+  <defs>
+    <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6a6a6a"/><stop offset="0.5" stop-color="#3a3a3a"/><stop offset="1" stop-color="#1a1a1a"/>
+    </linearGradient>
+    <linearGradient id="box" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9c9c9c"/><stop offset="1" stop-color="#5e5e5e"/>
+    </linearGradient>
+    <linearGradient id="boxDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6e6e6e"/><stop offset="1" stop-color="#303030"/>
+    </linearGradient>
+    <linearGradient id="house" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e2e2e2"/><stop offset="1" stop-color="#a8a8a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="420" fill="#ffffff"/>
+
+  <!-- hull: long, flared bow on the right with a bulb, transom stern on the left -->
+  <path d="M86 236 L1058 222 Q1104 220 1126 262 L1134 300 Q1130 332 1092 336 L112 336 Q70 332 74 290 Z" fill="url(#hull)"/>
+  <path d="M1118 322 Q1160 318 1166 336 Q1150 348 1110 342 Z" fill="#242424"/>
+  <!-- deck line and boot top -->
+  <path d="M96 246 L1062 232" stroke="#8a8a8a" stroke-width="3" fill="none"/>
+  <path d="M100 318 L1114 318 L1110 330 L104 330 Z" fill="#0f0f0f"/>
+  <!-- hull markings: draft marks near the bow, a bow thruster circle -->
+  <circle cx="1060" cy="296" r="9" fill="none" stroke="#9a9a9a" stroke-width="3"/>
+  <g fill="#9a9a9a"><rect x="1092" y="268" width="10" height="3"/><rect x="1092" y="280" width="10" height="3"/><rect x="1092" y="292" width="10" height="3"/></g>
+
+  <!-- container stacks: bays of varying height, alternating tones -->
+  <g>
+    <!-- forward of the house -->
+    <rect x="560" y="150" width="46" height="86" fill="url(#box)"/><rect x="610" y="122" width="46" height="114" fill="url(#boxDark)"/>
+    <rect x="660" y="136" width="46" height="100" fill="url(#box)"/><rect x="710" y="108" width="46" height="128" fill="url(#boxDark)"/>
+    <rect x="760" y="122" width="46" height="114" fill="url(#box)"/><rect x="810" y="150" width="46" height="86" fill="url(#boxDark)"/>
+    <rect x="860" y="164" width="46" height="72" fill="url(#box)"/><rect x="910" y="178" width="46" height="58" fill="url(#boxDark)"/>
+    <rect x="960" y="192" width="40" height="44" fill="url(#box)"/>
+    <!-- aft of the house -->
+    <rect x="130" y="150" width="46" height="86" fill="url(#boxDark)"/><rect x="180" y="122" width="46" height="114" fill="url(#box)"/>
+    <rect x="230" y="108" width="46" height="128" fill="url(#boxDark)"/><rect x="280" y="122" width="46" height="114" fill="url(#box)"/>
+    <rect x="330" y="136" width="46" height="100" fill="url(#boxDark)"/><rect x="380" y="150" width="46" height="86" fill="url(#box)"/>
+  </g>
+  <!-- container tier lines -->
+  <g stroke="#1e1e1e" stroke-width="2">
+    <line x1="130" y1="178" x2="1000" y2="178"/><line x1="130" y1="206" x2="1000" y2="206"/><line x1="180" y1="150" x2="956" y2="150"/>
+  </g>
+
+  <!-- accommodation block and bridge, set about a third from the stern -->
+  <rect x="430" y="96" width="120" height="140" fill="url(#house)"/>
+  <rect x="420" y="76" width="140" height="26" rx="3" fill="#cfcfcf"/>
+  <rect x="428" y="82" width="124" height="12" fill="#1a1a1a"/>
+  <g fill="#2a2a2a">
+    <rect x="446" y="116" width="14" height="10"/><rect x="470" y="116" width="14" height="10"/><rect x="494" y="116" width="14" height="10"/><rect x="518" y="116" width="14" height="10"/>
+    <rect x="446" y="140" width="14" height="10"/><rect x="470" y="140" width="14" height="10"/><rect x="494" y="140" width="14" height="10"/><rect x="518" y="140" width="14" height="10"/>
+    <rect x="446" y="164" width="14" height="10"/><rect x="470" y="164" width="14" height="10"/><rect x="494" y="164" width="14" height="10"/><rect x="518" y="164" width="14" height="10"/>
+  </g>
+  <!-- funnel aft of the bridge, mast on top -->
+  <path d="M452 236 L452 190 L478 190 L482 236 Z" fill="#2c2c2c" transform="translate(-320 0)"/>
+  <rect x="124" y="180" width="40" height="10" rx="2" fill="#141414"/>
+  <rect x="486" y="40" width="5" height="40" fill="#222"/>
+  <rect x="470" y="52" width="38" height="4" fill="#222"/>
+  <circle cx="488" cy="36" r="5" fill="#111"/>
+  <!-- bow mast and foc'sle gear -->
+  <rect x="1040" y="196" width="5" height="26" fill="#222"/>
+  <rect x="1008" y="212" width="26" height="10" rx="2" fill="#333"/>
+
+  <!-- waterline shadow -->
+  <path d="M100 334 L1096 334 Q1140 330 1160 338 L1150 350 Q1120 352 1080 350 L120 350 Q80 348 100 334 Z" fill="#2a2a2a"/>
+</svg>

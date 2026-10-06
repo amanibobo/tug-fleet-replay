@@ -6,6 +6,7 @@ import { formatInline } from "./inline";
 import { Figure } from "./rough";
 import { FIGURES } from "./figures";
 import { ANIMS } from "./anims";
+import HeaderShip from "./HeaderShip";
 import Toc from "./Toc";
 import styles from "./Docs.module.css";
 
@@ -34,8 +35,7 @@ export default function Article({ doc }: { doc: Doc }) {
         <article className={styles.article}>
           <header>
             <h1 className={styles.title}>{doc.title}</h1>
-            <p className={styles.dek}>From the research to the stack, in the order I did it, with the numbers as they came out.</p>
-            <p className={styles.meta}>{doc.sections.length} sections · figures drawn by hand-ish</p>
+            <HeaderShip />
           </header>
 
           {doc.sections.map((section) => {
