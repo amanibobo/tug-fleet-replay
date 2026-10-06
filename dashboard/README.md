@@ -1,8 +1,8 @@
 # Tug fleet replay — dashboard
 
 Next.js console that replays Port of Los Angeles tug traffic as hybrid-electric telemetry.
-Dark, map-first, one headline number: the share of tug-days that ran without the generator at a
-given battery size. Independent project; not affiliated with Arc.
+Light paper, map-first, one headline number: the share of tug-days that ran without the generator
+at a given battery size. Independent project; not affiliated with Arc.
 
 ## Scripts
 
@@ -61,13 +61,21 @@ Simulated figures are marked once per panel with the footnote "Estimates. Parame
 src/app/            routes: / (fleet), /tugs/[id] (tug day), /about
 src/components/     Nav, Panel, BatteryBar, StatusChip, Slider, Stat, Footnote, FixtureBadge, Footer
 src/components/fleet/   FleetConsole, FleetMap (MapLibre), ClockPanel, HeadlinePanel, FleetList, TugDetail
-src/components/tug/     TugDayView, DayTimeline (SVG), JobsList, TrackMap, RerunInspector
-src/components/about/   AboutContent, Architecture (CSS diagram)
+src/components/tug/     TugDayView, DayTimeline (SVG), ChargingSchedule (SVG), JobsList, TrackMap, RerunInspector
+src/components/about/   AboutContent, Architecture (vertical list)
 src/lib/            types, env, format, useFleet, useTugDay, useSummary, useAnimatedNumber
 scripts/            make-fixture.mjs
 ```
 
-Styling is plain CSS modules plus `src/app/globals.css`, which holds the tokens from
-`../docs/DESIGN.md`. Font: Inter Tight via `next/font/google`. Map style: Carto dark matter with the
-water tinted toward `--sea`. The Rerun viewer (`@rerun-io/web-viewer-react@0.38.1`, matching the
-Python SDK) is imported with `next/dynamic` only when the inspector opens.
+Styling is plain CSS modules plus `src/app/globals.css`, which holds the tokens and type roles from
+`../docs/DESIGN.md` (v3, "paper instrument": warm paper background, dark ink, hairline surfaces,
+muted status colors, no shadows or gradients, light mode only). Fonts: IBM Plex Sans and IBM Plex
+Mono via `next/font/google`, exposed as `--font-plex-sans` and `--font-plex-mono`. Map style: CARTO
+Positron, untinted; markers are 8px squares rotated by heading in the activity color. The Rerun
+viewer (`@rerun-io/web-viewer-react@0.38.1`, matching the Python SDK) is imported with `next/dynamic`
+only when the inspector opens and runs with `theme="light"`.
+
+The tug day page's Charging schedule panel reads `tariff.bands`, `charging[].scheduled_windows` and
+`totals.charge_cost_usd_*` from the tug-day file (contract section 3). The arrival profile is charger
+power from each stop's start until the stop's kWh is delivered at `tariff.charger_kw`; the scheduled
+profile is the pipeline's `scheduled_windows`. The panel is hidden when `tariff` is null.

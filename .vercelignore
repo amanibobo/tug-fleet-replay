@@ -1,0 +1,13 @@
+# Vercel builds only the dashboard (project root directory = dashboard). Keep the Python side out of the upload
+# so the CLI does not detect a Python project.
+pipeline
+infra
+data
+docs
+design-plans
+pyproject.toml
+uv.lock
+.venv
+.agents
+.claude
+Makefile

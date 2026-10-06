@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, type CSSProperties } from "react";
+import { useMemo } from "react";
+import Slider from "@/components/Slider";
 import { DAY_MS, hhmmss, isoDate, prettyDate } from "@/lib/format";
 import { SPEEDS, type FleetState } from "@/lib/useFleet";
 import styles from "./ClockPanel.module.css";
@@ -18,8 +19,6 @@ export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed
     }
     return out;
   }, [range]);
-
-  const pct = range && clock != null ? ((clock - range.start) / (range.end - range.start)) * 100 : 0;
 
   return (
     <section className={`${styles.panel} ${className ?? ""}`} aria-label="Replay clock">
@@ -52,17 +51,14 @@ export default function ClockPanel({ clock, playing, speed, setPlaying, setSpeed
       </div>
 
       <div className={styles.scrub}>
-        <input
-          type="range"
-          className={styles.range}
-          aria-label="Scrub the week"
+        <Slider
+          ariaLabel="Scrub the week"
           min={range?.start ?? 0}
           max={range ? range.end - 1 : 1}
           step={60_000}
           value={clock ?? 0}
           disabled={!controllable || !range}
-          style={{ "--pct": `${pct}%` } as CSSProperties}
-          onChange={(e) => seek(Number(e.target.value))}
+          onChange={seek}
         />
         <div className={styles.ticks} aria-hidden>
           {days.map((d) => (

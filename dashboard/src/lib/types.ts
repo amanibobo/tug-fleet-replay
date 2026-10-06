@@ -75,11 +75,39 @@ export interface Job {
   max_sog: number;
 }
 
+export interface ScheduledWindow {
+  start: string;
+  end: string;
+  kw: number;
+}
+
 export interface ChargingSpan {
   start: string;
   end: string;
   kwh: number;
   dock: string;
+  cost_arrival_usd: number;
+  cost_scheduled_usd: number;
+  /** Where the scheduler puts the same energy inside this stop. */
+  scheduled_windows: ScheduledWindow[];
+}
+
+export type TariffTier = "off_peak" | "mid_peak" | "on_peak";
+
+export interface TariffBand {
+  start: string;
+  end: string;
+  tier: TariffTier;
+  usd_per_kwh: number;
+}
+
+export interface Tariff {
+  off_peak: number;
+  mid_peak: number;
+  on_peak: number;
+  charger_kw: number;
+  /** Contiguous bands covering the day. */
+  bands: TariffBand[];
 }
 
 export interface GeneratorSpan {
@@ -97,6 +125,9 @@ export interface DayTotals {
   idle_min: number;
   min_soc: number;
   electric_only: boolean;
+  jobs: number;
+  charge_cost_usd_arrival: number;
+  charge_cost_usd_scheduled: number;
 }
 
 export interface TugDay {
@@ -110,6 +141,8 @@ export interface TugDay {
   charging: ChargingSpan[];
   generator: GeneratorSpan[];
   totals: DayTotals;
+  /** Null when the pipeline ran without a tariff; the Charging schedule panel is hidden then. */
+  tariff: Tariff | null;
   recording_url: string;
   fixture?: boolean;
 }

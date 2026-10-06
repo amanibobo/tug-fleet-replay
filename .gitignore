@@ -20,3 +20,4 @@ cdk.out/
 skills-lock.json
 design-plans/
 data/live/
+.vercel

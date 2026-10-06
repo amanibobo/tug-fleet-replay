@@ -10,10 +10,10 @@ export function statusOf(t: Pick<Telemetry, "generator_on" | "activity">): Statu
 }
 
 export const STATUS_COLOR: Record<Status, string> = {
-  electric: "var(--ok)",
-  generator: "var(--bad)",
-  charging: "var(--info)",
-  idle: "var(--ink-3)",
+  electric: "var(--green)",
+  generator: "var(--red)",
+  charging: "var(--green)",
+  idle: "var(--gray)",
 };
 
 export const ACTIVITY_COLOR: Record<Activity, string> = {
@@ -25,23 +25,24 @@ export const ACTIVITY_COLOR: Record<Activity, string> = {
 
 /** Hex versions for MapLibre, which cannot read CSS variables. */
 export const ACTIVITY_HEX: Record<Activity, string> = {
-  transit: "#3391ff",
-  assist: "#ff6123",
-  idle: "#6b7280",
-  charging: "#34d399",
+  transit: "#2f5d8a",
+  assist: "#b5471b",
+  idle: "#9a9ea6",
+  charging: "#1f6f4a",
 };
 
 export const STATUS_HEX: Record<Status, string> = {
-  electric: "#34d399",
-  generator: "#f87171",
-  charging: "#3391ff",
-  idle: "#6b7280",
+  electric: "#1f6f4a",
+  generator: "#8f2d2d",
+  charging: "#1f6f4a",
+  idle: "#9a9ea6",
 };
 
+/** Battery fill: green when healthy, amber under 35%, red under 15%. */
 export function socColor(soc: number): string {
-  if (soc < 0.15) return "var(--bad)";
-  if (soc < 0.35) return "var(--warn)";
-  return "var(--ok)";
+  if (soc < 0.15) return "var(--red)";
+  if (soc < 0.35) return "var(--amber)";
+  return "var(--green)";
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -74,14 +75,14 @@ export function prettyDate(d: Date | number | string, withWeekday = true): strin
   return withWeekday ? `${WEEKDAYS[x.getUTCDay()]}, ${core}` : core;
 }
 
-/** "Dec 2–8, 2024" */
-export function dateRange(start: string, end: string): string {
+/** "Dec 2–8, 2024", or "Dec 2–8 2024" without the comma. */
+export function dateRange(start: string, end: string, comma = true): string {
   const a = new Date(`${start}T00:00:00Z`);
   const b = new Date(`${end}T00:00:00Z`);
   const sameMonth = a.getUTCMonth() === b.getUTCMonth();
   const left = `${MONTHS[a.getUTCMonth()]} ${a.getUTCDate()}`;
   const right = sameMonth ? `${b.getUTCDate()}` : `${MONTHS[b.getUTCMonth()]} ${b.getUTCDate()}`;
-  return `${left}–${right}, ${b.getUTCFullYear()}`;
+  return `${left}–${right}${comma ? "," : ""} ${b.getUTCFullYear()}`;
 }
 
 export function shiftDate(date: string, days: number): string {

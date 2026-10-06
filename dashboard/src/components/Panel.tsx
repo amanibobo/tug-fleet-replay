@@ -6,12 +6,21 @@ interface Props {
   className?: string;
   style?: CSSProperties;
   padding?: "none" | "sm" | "md";
+  /** Title row: `.heading` left, a `.label` note right, hairline under. */
+  title?: ReactNode;
+  note?: ReactNode;
 }
 
-/** A solid raised surface with a 1px line. */
-export default function Panel({ children, className, style, padding = "md" }: Props) {
+/** A flat paper-2 surface with a 1px hairline. */
+export default function Panel({ children, className, style, padding = "md", title, note }: Props) {
   return (
     <section className={[styles.panel, styles[`pad_${padding}`], className ?? ""].join(" ")} style={style}>
+      {title != null ? (
+        <div className={styles.head}>
+          <h2 className="heading">{title}</h2>
+          {note != null ? <div className={`label ${styles.note}`}>{note}</div> : null}
+        </div>
+      ) : null}
       {children}
     </section>
   );

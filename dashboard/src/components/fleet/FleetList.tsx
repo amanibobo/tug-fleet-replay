@@ -51,7 +51,7 @@ export default function FleetList({ tugs, selectedId, onSelect, loading, clock, 
                     <span className={styles.name}>{t.name}</span>
                     <StatusChip status={statusOf(t)} className={styles.chip} />
                     <span className={styles.batt}>
-                      <BatteryBar soc={t.soc} width={56} height={4} />
+                      <BatteryBar soc={t.soc} width={56} />
                       <span className={`num ${styles.soc}`}>{fmtPct(t.soc)}</span>
                     </span>
                   </button>

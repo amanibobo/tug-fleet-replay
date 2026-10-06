@@ -48,6 +48,16 @@ cd dashboard && NEXT_PUBLIC_DATA_MODE=ws NEXT_PUBLIC_WS_URL=ws://localhost:8765 
 make replay-rerun                # or: watch the harbor move in a native Rerun viewer
 ```
 
+## Deploy the dashboard (Vercel)
+
+The dashboard is linked to the Vercel project `tug-fleet-replay` (settings live in `dashboard/.vercel`, gitignored). From `dashboard/`:
+
+```bash
+npx vercel deploy --prod --yes
+```
+
+Vercel builds the Next.js app and serves the committed data and recordings from `public/`. No environment variables are needed in static mode. The repo-root `.vercelignore` keeps the Python side out of the upload; deploy from `dashboard/`, not the repo root.
+
 ## Deploy to AWS
 
 See [infra/README.md](infra/README.md). `cd infra && npm run deploy` creates IoT Core, Lambda, DynamoDB, S3 + CloudFront, and the WebSocket and HTTP APIs with CDK; `scripts/iot_provision.sh` mints the replayer's device certificate; `.venv/bin/tug replay --to iot` streams.
@@ -79,6 +89,10 @@ All in [config.yaml](config.yaml); the dashboard's About page lists the same tab
 | Data gaps | ≤ 30 min interpolated; longer gaps hold position at zero speed | AIS class A at a dock still reports every few minutes |
 
 The scheduled-charging cost uses the stop's real end time as the deadline, which a live scheduler would not know exactly.
+
+## Newer data: record live AIS
+
+NOAA publishes its archive about a year late. `tug record` streams live AIS for the San Pedro box from [aisstream.io](https://aisstream.io) (free API key in `.env`, see `.env.example`) into `data/live/raw/` as JSON lines, one file per UTC day, flushed on every message. `tug finalize` turns those into the same `tugs_*.parquet` and `ships_*.parquet` files the NOAA fetch produces, and `tug build --processed data/live/processed` runs the normal pipeline on them. Record at least three full days before building; the fleet filter needs tugs present on most days.
 
 ## Data
 

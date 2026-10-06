@@ -1,15 +1,13 @@
 .track {
   position: relative;
-  border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--paper-3);
   overflow: hidden;
 }
 
 .fill {
   position: absolute;
   inset: 0 auto 0 0;
-  border-radius: var(--r-pill);
   transition:
-    width var(--t) var(--ease-out),
-    background var(--t) var(--ease-out);
+    width var(--t) var(--ease),
+    background var(--t) var(--ease);
 }

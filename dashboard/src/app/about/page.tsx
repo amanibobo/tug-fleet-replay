@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
 import AboutContent from "@/components/about/AboutContent";
 import styles from "./about.module.css";
 
@@ -11,7 +10,6 @@ export default function AboutPage() {
   return (
     <main className={`page ${styles.page}`}>
       <AboutContent />
-      <Footer className={styles.footer} />
     </main>
   );
 }

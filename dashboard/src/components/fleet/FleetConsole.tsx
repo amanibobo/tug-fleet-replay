@@ -37,7 +37,7 @@ export default function FleetConsole() {
       <aside className={styles.rail} aria-label="Fleet console">
         <section className={styles.section}>
           <div className={styles.titleRow}>
-            <h1 className={`title ${styles.title}`}>Tug fleet replay</h1>
+            <h1 className="title">Tug fleet replay</h1>
             {fleet.fixture ? <FixtureBadge /> : null}
           </div>
           <p className={styles.sub}>
@@ -78,7 +78,7 @@ export default function FleetConsole() {
           className={styles.listSection}
         />
 
-        <Footer className={styles.footer} />
+        <Footer className={styles.footer} dataset={fleet.dataset} />
       </aside>
     </main>
   );

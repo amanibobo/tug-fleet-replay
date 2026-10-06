@@ -155,16 +155,6 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
         onClick={onClick}
       >
         <defs>
-          <linearGradient id="socFill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stopColor="var(--ok)" stopOpacity="0.28" />
-            <stop offset="1" stopColor="var(--ok)" stopOpacity="0.02" />
-          </linearGradient>
-          <clipPath id="clipWarn">
-            <rect x="0" y={y(WARN_SOC)} width={Math.max(width, 1)} height={y(BAD_SOC) - y(WARN_SOC)} />
-          </clipPath>
-          <clipPath id="clipBad">
-            <rect x="0" y={y(BAD_SOC)} width={Math.max(width, 1)} height={CURVE_TOP + CURVE_H - y(BAD_SOC) + 2} />
-          </clipPath>
           <clipPath id="clipPlot">
             <rect x={PAD_L} y={0} width={Math.max(plotW, 0)} height={HEIGHT} />
           </clipPath>
@@ -179,21 +169,19 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
             </text>
           </g>
         ))}
-        <line x1={PAD_L} x2={PAD_L + plotW} y1={y(WARN_SOC)} y2={y(WARN_SOC)} className={styles.threshWarn} />
-        <line x1={PAD_L} x2={PAD_L + plotW} y1={y(BAD_SOC)} y2={y(BAD_SOC)} className={styles.threshBad} />
+        <line x1={PAD_L} x2={PAD_L + plotW} y1={y(WARN_SOC)} y2={y(WARN_SOC)} className={styles.thresh} />
+        <line x1={PAD_L} x2={PAD_L + plotW} y1={y(BAD_SOC)} y2={y(BAD_SOC)} className={styles.thresh} />
 
-        {/* SOC curve */}
+        {/* SOC curve: ink line over a 6% ink area */}
         {day && curvePath.line ? (
           <g clipPath="url(#clipPlot)">
-            <path d={curvePath.area} fill="url(#socFill)" />
-            <path d={curvePath.line} className={styles.lineOk} />
-            <path d={curvePath.line} className={styles.lineWarn} clipPath="url(#clipWarn)" />
-            <path d={curvePath.line} className={styles.lineBad} clipPath="url(#clipBad)" />
+            <path d={curvePath.area} className={styles.area} />
+            <path d={curvePath.line} className={styles.line} />
           </g>
         ) : null}
 
         {/* activity band */}
-        <rect x={PAD_L} y={bandY} width={plotW} height={BAND_H} rx={2} className={styles.bandTrack} />
+        <rect x={PAD_L} y={bandY} width={plotW} height={BAND_H} className={styles.bandTrack} />
         {day
           ? day.segments.map((s, i) => {
               const a = minuteOf(s.start, dayStart);
@@ -207,7 +195,7 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
                   width={w}
                   height={BAND_H}
                   fill={ACTIVITY_COLOR[s.activity]}
-                  opacity={s.activity === "idle" ? 0.45 : 0.9}
+                  opacity={s.activity === "idle" ? 0.55 : 1}
                 />
               );
             })
@@ -218,14 +206,14 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
           ? day.charging.map((c, i) => {
               const a = minuteOf(c.start, dayStart);
               const b = minuteOf(c.end, dayStart);
-              return <rect key={`c${i}`} x={x(a)} y={chargeY} width={Math.max(1, x(b) - x(a))} height={SPAN_H} fill="var(--act-charging)" rx={1} />;
+              return <rect key={`c${i}`} x={x(a)} y={chargeY} width={Math.max(1, x(b) - x(a))} height={SPAN_H} fill="var(--green)" />;
             })
           : null}
         {day
           ? day.generator.map((g, i) => {
               const a = minuteOf(g.start, dayStart);
               const b = minuteOf(g.end, dayStart);
-              return <rect key={`g${i}`} x={x(a)} y={genY} width={Math.max(1, x(b) - x(a))} height={SPAN_H} fill="var(--bad)" rx={1} />;
+              return <rect key={`g${i}`} x={x(a)} y={genY} width={Math.max(1, x(b) - x(a))} height={SPAN_H} fill="var(--red)" />;
             })
           : null}
         <text x={PAD_L - 8} y={chargeY + SPAN_H / 2 + 4} className={styles.yLabel} textAnchor="end">
@@ -263,7 +251,7 @@ export default function DayTimeline({ day, cursor, onCursor }: Props) {
           </g>
         ) : null}
 
-        {!day ? <rect x={PAD_L} y={CURVE_TOP} width={plotW} height={CURVE_H} className={styles.skeleton} rx={6} /> : null}
+        {!day ? <rect x={PAD_L} y={CURVE_TOP} width={plotW} height={CURVE_H} className={styles.skeleton} /> : null}
       </svg>
 
       {probeSample ? (

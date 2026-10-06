@@ -3,13 +3,13 @@
 import { useEffect, useRef } from "react";
 import maplibregl, { type Map as MlMap, type Marker, type GeoJSONSource } from "maplibre-gl";
 import type { Feature, FeatureCollection, LineString } from "geojson";
-import { STATUS_HEX, statusOf } from "@/lib/format";
+import { ACTIVITY_HEX } from "@/lib/format";
 import type { LngLat, Telemetry } from "@/lib/types";
 import { prefersReducedMotion } from "@/lib/useAnimatedNumber";
 import styles from "./FleetMap.module.css";
 
-export const MAP_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
-export const SEA = "#0e2933";
+/** CARTO Positron, no key, not tinted. */
+export const MAP_STYLE = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 const CENTER: LngLat = [-118.232, 33.738];
 
 interface Props {
@@ -22,19 +22,10 @@ interface Props {
 interface MarkerEntry {
   marker: Marker;
   el: HTMLDivElement;
-  tick: HTMLDivElement;
+  square: HTMLDivElement;
   fill: HTMLDivElement;
   label: HTMLDivElement;
   angle: number;
-}
-
-/** Tint every water fill layer toward --sea. */
-export function tintWater(map: MlMap): void {
-  for (const layer of map.getStyle().layers ?? []) {
-    if (layer.type === "fill" && /water|ocean|sea/i.test(layer.id)) {
-      map.setPaintProperty(layer.id, "fill-color", SEA);
-    }
-  }
 }
 
 function buildMarker(tug: Telemetry, onSelect: (id: string) => void): MarkerEntry {
@@ -44,12 +35,8 @@ function buildMarker(tug: Telemetry, onSelect: (id: string) => void): MarkerEntr
   el.setAttribute("aria-label", tug.name);
   el.tabIndex = 0;
 
-  const tick = document.createElement("div");
-  tick.className = styles.tick;
-  const dot = document.createElement("div");
-  dot.className = styles.dot;
-  const ring = document.createElement("div");
-  ring.className = styles.ring;
+  const square = document.createElement("div");
+  square.className = styles.square;
   const bar = document.createElement("div");
   bar.className = styles.bar;
   const fill = document.createElement("div");
@@ -59,7 +46,7 @@ function buildMarker(tug: Telemetry, onSelect: (id: string) => void): MarkerEntr
   label.className = styles.label;
   label.textContent = tug.name;
 
-  el.append(ring, tick, dot, bar, label);
+  el.append(square, bar, label);
   el.addEventListener("click", (e) => {
     e.stopPropagation();
     onSelect(tug.tug_id);
@@ -72,10 +59,10 @@ function buildMarker(tug: Telemetry, onSelect: (id: string) => void): MarkerEntr
   });
 
   const marker = new maplibregl.Marker({ element: el, anchor: "center" });
-  return { marker, el, tick, fill, label, angle: tug.heading };
+  return { marker, el, square, fill, label, angle: tug.heading };
 }
 
-/** Shortest-path unwrap so the heading tick never spins the long way round. */
+/** Shortest-path unwrap so the marker never spins the long way round. */
 function unwrap(prev: number, next: number): number {
   let d = ((next - prev) % 360 + 540) % 360 - 180;
   if (Math.abs(d) < 0.01) d = 0;
@@ -108,7 +95,6 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
     mapRef.current = map;
 
     map.on("load", () => {
-      tintWater(map);
       map.addSource("trails", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       map.addLayer({
         id: "trails",
@@ -117,7 +103,7 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": ["get", "color"],
-          "line-opacity": 0.6,
+          "line-opacity": 0.7,
           "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1.2, 14, 2.5],
         },
       });
@@ -153,14 +139,14 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
         markers.current.set(tug.tug_id, entry);
       }
       entry.marker.setLngLat([tug.lon, tug.lat]);
-      const status = statusOf(tug);
-      if (entry.el.dataset.status !== status) entry.el.dataset.status = status;
+      if (entry.el.dataset.activity !== tug.activity) entry.el.dataset.activity = tug.activity;
       const selected = tug.tug_id === selectedId;
       if ((entry.el.dataset.selected === "true") !== selected) {
         entry.el.dataset.selected = selected ? "true" : "false";
       }
       entry.angle = unwrap(entry.angle, tug.heading);
-      entry.tick.style.transform = `rotate(${entry.angle}deg)`;
+      // The square sits at 45deg so a heading of 0 reads as a diamond pointing north.
+      entry.square.style.transform = `rotate(${entry.angle + 45}deg)`;
       entry.fill.style.width = `${Math.round(tug.soc * 100)}%`;
       entry.fill.dataset.level = tug.soc < 0.15 ? "bad" : tug.soc < 0.35 ? "warn" : "ok";
       if (entry.label.textContent !== tug.name) entry.label.textContent = tug.name;
@@ -181,7 +167,7 @@ export default function FleetMap({ tugs, trails, selectedId, onSelect }: Props) 
           if (!pts || pts.length < 2) continue;
           features.push({
             type: "Feature",
-            properties: { color: STATUS_HEX[statusOf(tug)], id: tug.tug_id },
+            properties: { color: ACTIVITY_HEX[tug.activity], id: tug.tug_id },
             geometry: { type: "LineString", coordinates: pts },
           });
         }

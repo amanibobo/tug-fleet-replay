@@ -11,7 +11,7 @@
 
 .pct {
   font-size: 0.5em;
-  color: var(--ink);
+  color: var(--ink-2);
   margin-left: 2px;
   letter-spacing: -1px;
 }
@@ -48,19 +48,16 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 6px;
-  font-size: 20px;
-  letter-spacing: -0.3px;
 }
 
 .costNote,
 .vs {
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0;
-  color: var(--ink-2);
+  color: var(--ink-3);
 }
 
 .vs {
-  color: var(--ink-3);
   margin: 0 2px;
 }
 

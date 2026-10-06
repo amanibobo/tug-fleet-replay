@@ -12,6 +12,7 @@ import Stat from "@/components/Stat";
 import { fmtInt, fmtPct, prettyDate, shiftDate } from "@/lib/format";
 import { useSummary } from "@/lib/useSummary";
 import { useTugDay } from "@/lib/useTugDay";
+import ChargingSchedule from "./ChargingSchedule";
 import DayTimeline from "./DayTimeline";
 import JobsList from "./JobsList";
 import RerunInspector from "./RerunInspector";
@@ -62,7 +63,7 @@ export default function TugDayView({ id }: { id: string }) {
           <Link href="/" className={styles.back}>
             Fleet
           </Link>
-          <h1 className={`title ${styles.name}`}>{name}</h1>
+          <h1 className="title">{name}</h1>
           <div className={styles.meta}>
             <span className={`mono ${styles.mmsi}`}>MMSI {id}</span>
             {day?.fixture ? <FixtureBadge /> : null}
@@ -128,17 +129,20 @@ export default function TugDayView({ id }: { id: string }) {
         <Footnote />
       </section>
 
-      <Panel padding="none" className={styles.timelinePanel}>
-        <div className={styles.panelHead}>
-          <h2 className="heading">Battery and activity</h2>
+      <Panel
+        padding="none"
+        className={styles.timelinePanel}
+        title="Battery and activity"
+        note={
           <span className={styles.legend} aria-hidden>
             <LegendItem color="var(--act-transit)" label="Transit" />
             <LegendItem color="var(--act-assist)" label="Assist" />
             <LegendItem color="var(--act-idle)" label="Idle" />
             <LegendItem color="var(--act-charging)" label="Charging" />
-            <LegendItem color="var(--bad)" label="Generator" />
+            <LegendItem color="var(--red)" label="Generator" />
           </span>
-        </div>
+        }
+      >
         {status === "error" ? (
           <div className={styles.empty}>
             No data for this day{error ? <span className="muted"> ({error})</span> : null}.
@@ -148,29 +152,26 @@ export default function TugDayView({ id }: { id: string }) {
         )}
       </Panel>
 
+      <ChargingSchedule day={day} />
+
       <div className={styles.lower}>
-        <Panel padding="none" className={styles.jobsPanel}>
-          <div className={styles.panelHead}>
-            <h2 className="heading">Jobs</h2>
-            <span className={styles.panelMeta}>
-              {day ? `${day.jobs.length} ${day.jobs.length === 1 ? "job" : "jobs"}` : ""}
-            </span>
-          </div>
+        <Panel
+          padding="none"
+          className={styles.jobsPanel}
+          title="Jobs"
+          note={day ? `${day.jobs.length} ${day.jobs.length === 1 ? "job" : "jobs"}` : ""}
+        >
           <JobsList day={day} onPick={setCursor} />
         </Panel>
 
-        <Panel padding="none" className={styles.mapPanel}>
-          <div className={styles.panelHead}>
-            <h2 className="heading">Track</h2>
-            <span className={styles.panelMeta}>Colored by activity</span>
-          </div>
+        <Panel padding="none" className={styles.mapPanel} title="Track" note="Colored by activity">
           <div className={styles.mapBox}>
             <TrackMap day={day} cursor={cursor} />
           </div>
         </Panel>
       </div>
 
-      <Footer className={styles.footer} />
+      <Footer className={styles.footer} dataset={dataset ?? null} />
 
       <RerunInspector
         open={inspectorOpen}

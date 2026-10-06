@@ -5,7 +5,7 @@
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0;
-  color: var(--warn);
+  color: var(--amber);
   line-height: 1;
   white-space: nowrap;
 }
@@ -15,5 +15,5 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--warn);
+  background: var(--amber);
 }

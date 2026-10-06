@@ -2,9 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 6px 16px 16px;
-  background: var(--bg-hover);
-  border-bottom: 1px solid var(--line);
+  padding: 4px 16px 16px;
+  background: var(--paper-3);
 }
 
 .statusRow {
@@ -25,25 +24,6 @@
   color: var(--ink-3);
 }
 
-.close {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  background: transparent;
-  color: var(--ink-2);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
-}
-
-.close:hover {
-  color: var(--ink);
-  background: var(--bg-raised);
-}
-
 .battery {
   display: flex;
   flex-direction: column;
@@ -51,7 +31,7 @@
 }
 
 .socText {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--ink-2);
 }
 

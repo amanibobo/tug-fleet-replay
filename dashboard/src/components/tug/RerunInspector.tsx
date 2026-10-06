@@ -80,7 +80,7 @@ export default function RerunInspector({ open, onClose, recordingUrl, title }: P
             <button type="button" className="btn btnSecondary" onClick={copy} disabled={!absUrl}>
               {copied ? "Copied" : "Copy recording link"}
             </button>
-            <button type="button" className={styles.close} onClick={onClose} aria-label="Close inspector">
+            <button type="button" className="btn btnSecondary btnIcon" onClick={onClose} aria-label="Close inspector">
               <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
                 <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" />
               </svg>
@@ -109,7 +109,7 @@ export default function RerunInspector({ open, onClose, recordingUrl, title }: P
                     width="100%"
                     height="100%"
                     hide_welcome_screen
-                    theme="dark"
+                    theme="light"
                     onReady={() => setReady(true)}
                   />
                 </div>
@@ -125,7 +125,9 @@ export default function RerunInspector({ open, onClose, recordingUrl, title }: P
 function Skeleton() {
   return (
     <div className={styles.skeleton} role="status">
-      <div className={styles.skelBar} />
+      <div className={styles.skelTrack} aria-hidden>
+        <div className={styles.skelFill} />
+      </div>
       <span className="muted">Loading inspector (about 25 MB)</span>
     </div>
   );

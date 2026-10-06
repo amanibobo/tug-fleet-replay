@@ -16,12 +16,12 @@
   grid-template-columns: 24px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 10px 16px;
   border: none;
   border-bottom: 1px solid var(--line);
   background: transparent;
   text-align: left;
-  transition: background var(--t-fast) var(--ease-out);
+  transition: background var(--t-fast) var(--ease);
 }
 
 .list li:last-child .row {
@@ -29,16 +29,15 @@
 }
 
 .row:hover {
-  background: var(--bg-hover);
+  background: var(--paper-3);
 }
 
 .row:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: -1px;
+  outline-offset: -2px;
 }
 
 .idx {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--ink-3);
 }
 
@@ -68,13 +67,14 @@
   gap: 4px;
   font-size: 18px;
   font-weight: 400;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
+  color: var(--ink);
   white-space: nowrap;
 }
 
 .unit {
   font-size: 12px;
-  color: var(--ink-2);
+  color: var(--ink-3);
   letter-spacing: 0;
 }
 
@@ -86,14 +86,13 @@
 
 .skeleton {
   height: 56px;
-  margin: 6px 16px;
-  border-radius: var(--r-sm);
-  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-2);
   animation: pulse 1.6s var(--ease) infinite;
 }
 
 @keyframes pulse {
   50% {
-    background: rgba(255, 255, 255, 0.07);
+    background: var(--paper-3);
   }
 }

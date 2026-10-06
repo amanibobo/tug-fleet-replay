@@ -1,6 +1,7 @@
 "use client";
 
 import FixtureBadge from "@/components/FixtureBadge";
+import Footer from "@/components/Footer";
 import Footnote from "@/components/Footnote";
 import { useSummary } from "@/lib/useSummary";
 import Architecture from "./Architecture";
@@ -133,6 +134,8 @@ export default function AboutContent() {
           powertrain, battery and tariff figures are public estimates, not measurements of any real vessel.
         </p>
       </section>
+
+      <Footer dataset={summary?.dataset ?? null} />
     </>
   );
 }

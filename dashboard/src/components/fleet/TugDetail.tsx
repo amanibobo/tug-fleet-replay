@@ -30,7 +30,7 @@ export default function TugDetail({ tug, clock, onClose }: Props) {
           <StatusChip status={statusOf(tug)} />
           <span className={styles.activity}>{ACTIVITY_LABEL[tug.activity]}</span>
         </span>
-        <button type="button" className={styles.close} onClick={onClose} aria-label="Close detail">
+        <button type="button" className="btn btnSecondary btnIcon" onClick={onClose} aria-label="Close detail">
           <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
             <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" />
           </svg>
@@ -38,7 +38,7 @@ export default function TugDetail({ tug, clock, onClose }: Props) {
       </div>
 
       <div className={styles.battery}>
-        <BatteryBar soc={tug.soc} height={4} />
+        <BatteryBar soc={tug.soc} />
         <span className={`num ${styles.socText}`}>
           {fmtInt(tug.soc * tug.battery_kwh)} of {fmtInt(tug.battery_kwh)} kWh
         </span>

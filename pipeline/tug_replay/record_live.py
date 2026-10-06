@@ -18,7 +18,7 @@ import json
 import os
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -68,25 +68,25 @@ async def record(raw_dir: Path, bbox: dict, seconds: float | None = None, log=pr
                 fh = None
                 day = None
                 async for msg in ws:
-                    d = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+                    d = datetime.now(UTC).strftime("%Y-%m-%d")
                     if d != day:
                         if fh:
                             fh.close()
-                        fh = open(raw_dir / f"{d}.jsonl", "a")
+                        fh = open(raw_dir / f"{d}.jsonl", "a")  # noqa: ASYNC230, SIM115 (handle outlives the loop body)
                         day = d
                     if isinstance(msg, bytes):
                         msg = msg.decode()
                     fh.write(msg.rstrip("\n") + "\n")
+                    fh.flush()
                     n += 1
                     if n % 500 == 0:
-                        fh.flush()
                         log(f"{n} messages, {raw_dir / (day + '.jsonl')}")
                     if seconds and time.monotonic() - started > seconds:
                         fh.close()
                         return n
-        except (OSError, asyncio.TimeoutError) as e:
+        except (TimeoutError, OSError) as e:
             log(f"stream dropped ({e}); reconnecting in {backoff:.0f}s")
-        except Exception as e:  # websockets raises its own hierarchy; keep recording
+        except Exception as e:  # noqa: BLE001  websockets raises its own hierarchy; keep recording
             log(f"stream error ({type(e).__name__}: {e}); reconnecting in {backoff:.0f}s")
         if seconds and time.monotonic() - started > seconds:
             return n

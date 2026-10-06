@@ -18,64 +18,51 @@
   stroke-width: 1;
 }
 
-.threshWarn {
-  stroke: var(--warn);
-  stroke-opacity: 0.35;
-  stroke-dasharray: 2 4;
-}
-
-.threshBad {
-  stroke: var(--bad);
-  stroke-opacity: 0.4;
+.thresh {
+  stroke: var(--line-strong);
+  stroke-width: 1;
   stroke-dasharray: 2 4;
 }
 
 .yLabel,
 .xLabel {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 12px;
   fill: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
 
-.lineOk,
-.lineWarn,
-.lineBad {
+.area {
+  fill: var(--ink);
+  fill-opacity: 0.06;
+}
+
+.line {
   fill: none;
-  stroke-width: 1.75;
+  stroke: var(--ink);
+  stroke-width: 1.5;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
 
-.lineOk {
-  stroke: var(--ok);
-}
-
-.lineWarn {
-  stroke: var(--warn);
-}
-
-.lineBad {
-  stroke: var(--bad);
-}
-
 .bandTrack {
-  fill: rgba(255, 255, 255, 0.04);
+  fill: var(--ink);
+  fill-opacity: 0.06;
 }
 
 .cursor {
-  stroke: var(--accent);
-  stroke-width: 1.25;
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
 }
 
 .crosshair {
   stroke: var(--ink);
-  stroke-opacity: 0.35;
   stroke-width: 1;
 }
 
 .probeDot {
-  fill: var(--bg);
+  fill: var(--paper-2);
   stroke: var(--ink);
   stroke-width: 1.5;
 }
@@ -85,13 +72,14 @@
 }
 
 .skeleton {
-  fill: rgba(255, 255, 255, 0.03);
+  fill: var(--ink);
+  fill-opacity: 0.03;
   animation: pulse 1.6s var(--ease) infinite;
 }
 
 @keyframes pulse {
   50% {
-    fill: rgba(255, 255, 255, 0.07);
+    fill-opacity: 0.07;
   }
 }
 
@@ -103,8 +91,7 @@
   gap: 6px;
   min-width: 150px;
   padding: 10px 12px;
-  border-radius: var(--r-sm);
-  background: var(--bg-raised);
+  background: var(--paper-2);
   border: 1px solid var(--line-strong);
   pointer-events: none;
   z-index: 2;
@@ -135,5 +122,5 @@
 
 .tipGen {
   font-size: 13px;
-  color: var(--bad);
+  color: var(--red);
 }
