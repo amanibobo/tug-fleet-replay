@@ -91,29 +91,37 @@
 /* ---- stat tiles ---- */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
   margin-top: 10px;
 }
 
 .stat {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 10px 12px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 6px;
   border-radius: 10px;
   background: var(--d-bg);
   border: 1px solid var(--d-line);
   min-width: 0;
 }
 
+.stat svg {
+  flex: none;
+}
+
+.statText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
 .statLabel {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--d-fg);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .statValue {
@@ -123,7 +131,6 @@
 }
 
 .statNote {
-  font-size: 12px;
   color: var(--d-green);
 }
 

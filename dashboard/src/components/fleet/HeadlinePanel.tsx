@@ -5,6 +5,7 @@ import Slider from "@/components/Slider";
 import { fmtHours, fmtInt, fmtUsd } from "@/lib/format";
 import type { SummaryState } from "@/lib/useSummary";
 import { useAnimatedNumber, useDebounced } from "@/lib/useAnimatedNumber";
+import { ArrivalIcon, BatteryIcon, GeneratorIcon, ScheduleIcon } from "./StatIcons";
 import styles from "./HeadlinePanel.module.css";
 
 interface Props {
@@ -70,29 +71,41 @@ function HeadlinePanel({ summary, onSlide }: Props) {
       </div>
       <div className={styles.grid}>
         <div className={styles.stat}>
-          <span className={styles.statLabel}>Generator</span>
-          <span className={styles.statValue}>
-            <b>{row ? fmtHours(row.generator_hours) : "0 h"}</b>
-          </span>
+          <GeneratorIcon />
+          <div className={styles.statText}>
+            <span className={styles.statLabel}>Generator</span>
+            <span className={styles.statValue}>
+              <b>{row ? fmtHours(row.generator_hours) : "0 h"}</b>
+            </span>
+          </div>
         </div>
         <div className={styles.stat}>
-          <span className={styles.statLabel}>Charged</span>
-          <span className={styles.statValue}>
-            <b>{row ? fmtInt(row.charged_kwh) : "0"}</b> kWh
-          </span>
+          <BatteryIcon />
+          <div className={styles.statText}>
+            <span className={styles.statLabel}>Charged</span>
+            <span className={styles.statValue}>
+              <b>{row ? fmtInt(row.charged_kwh) : "0"}</b> kWh
+            </span>
+          </div>
         </div>
         <div className={styles.stat}>
-          <span className={styles.statLabel}>Cost at arrival</span>
-          <span className={styles.statValue}>
-            <b>{row ? fmtUsd(row.charge_cost_usd_arrival) : "$0"}</b>
-          </span>
+          <ArrivalIcon />
+          <div className={styles.statText}>
+            <span className={styles.statLabel}>Cost at arrival</span>
+            <span className={styles.statValue}>
+              <b>{row ? fmtUsd(row.charge_cost_usd_arrival) : "$0"}</b>
+            </span>
+          </div>
         </div>
         <div className={styles.stat}>
-          <span className={styles.statLabel}>Cost scheduled</span>
-          <span className={styles.statValue}>
-            <b>{row ? fmtUsd(row.charge_cost_usd_scheduled) : "$0"}</b>
-          </span>
-          {saving != null ? <span className={styles.statNote}>{saving}% less</span> : null}
+          <ScheduleIcon />
+          <div className={styles.statText}>
+            <span className={styles.statLabel}>Cost scheduled</span>
+            <span className={styles.statValue}>
+              <b>{row ? fmtUsd(row.charge_cost_usd_scheduled) : "$0"}</b>
+              {saving != null ? <span className={styles.statNote}> · {saving}% less</span> : null}
+            </span>
+          </div>
         </div>
       </div>
     </section>
